@@ -1,0 +1,59 @@
+.css-1og0dba {
+  padding: 0 !important;
+}
+.css-h6yqnv {
+  padding: 0 !important;
+}
+.css-i6s8oy{
+  background-color: white!important;
+}
+.css-hyum1k-MuiToolbar-root,
+.css-hyum1k-MuiToolbar-root {
+  background-color: white;
+}
+.css-3il4n3-MuiPaper-root-MuiAppBar-root,
+.css-ciy9n4-MuiPaper-root-MuiAppBar-root,
+.css-1oii3nt-MuiPaper-root-MuiAppBar-root {
+  box-shadow: none !important;
+}
+.active-icon {
+  display: none;
+}
+.active {
+  background-color: #dddce6;
+}
+
+.active .active-icon {
+  display: block !important;
+}
+.active .not-active {
+  display: none !important;
+}
+.css-18sg6k4-MuiPaper-root-MuiDrawer-paper {
+  overflow-y: scroll;
+  width: 17.86237188872621% !important;
+  height: 100%;
+  border: none !important;
+}
+.css-18sg6k4-MuiPaper-root-MuiDrawer-paper::-webkit-scrollbar {
+  width: 8px;
+  background-color: white;
+}
+.css-18sg6k4-MuiPaper-root-MuiDrawer-paper::-webkit-scrollbar-thumb {
+  background-color: #282561;
+  border-radius: 12px;
+}
+.css-14pg498-MuiButtonBase-root-MuiIconButton-root {
+  margin-right: 1.2rem !important;
+}
+.content {
+  overflow-y: scroll;
+}
+.content::-webkit-scrollbar {
+  width: 8px !important;
+  background-color: white !important;
+}
+.content::-webkit-scrollbar-thumb {
+  background-color: #282561 !important;
+  border-radius: 12px !important;
+}

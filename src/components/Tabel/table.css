@@ -1,0 +1,96 @@
+.css-k008qs{
+  gap: 0px!important;
+}
+.table-data .MuiDataGrid-cell {
+  text-align: start !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.table-data .css-wop1k0-MuiDataGrid-footerContainer {
+  direction: ltr;
+}
+.table-data .css-t89xny-MuiDataGrid-columnHeaderTitle {
+  font-weight: 600 !important;
+  color: #202224;
+  font-size: 16px;
+}
+.table-data .css-18sg6k4-MuiPaper-root-MuiDrawer-paper{
+  border: none;
+}
+
+.table-data .css-yrdy0g-MuiDataGrid-columnHeaderRow{
+  background-color: #F1F4F9 !important;
+  align-items: center!important;
+  font-family: "Nunito Sans", sans-serif !important;
+  border:0!important;
+  border-radius: 6px!important;
+}
+.dataGrid{
+  border: 0 !important;
+}
+.table-data .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper{
+  width: fit-content!important;
+  border-radius: 12px!important;
+
+}
+.table-data .css-6hp17o-MuiList-root-MuiMenu-list{
+  display: flex!important;
+  flex-direction: column!important;
+  align-items: end!important;
+  text-align: right!important;
+  width: 100%!important;
+  direction: rtl!important;
+  
+}
+.table-data .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper{
+  width: 15%!important;
+  border-radius: 16px!important;
+}
+.table-data .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root{
+  width: 100%!important;
+}
+.table-data .css-1793420-MuiDataGrid-virtualScroller{
+  overflow-y: hidden!important;
+}
+
+
+.table-data .css-1rtad1{
+  height: 8px!important;
+  border-radius: 6px!important;
+}
+.table-data .css-1b9e9gy{
+
+  display: none!important;
+}
+.table-data .css-9ffb5l{
+  justify-content: start!important;
+}
+.table-data .css-i4bv87-MuiSvgIcon-root{
+  rotate: 177deg!important;
+}
+
+
+.table-data .css-7sga7m{
+  gap: 1rem!important;
+}
+.table-data .css-vubbuv,.table-data .css-vubbuv{
+  rotate: 180deg!important;
+}
+.table-data .css-pdct74-MuiTablePagination-selectLabel,.table-data .css-1chpzqh{
+  position: relative;
+  color: transparent;
+  width: 150px;
+}
+.table-data .css-pdct74-MuiTablePagination-selectLabel::after,.table-data .css-1chpzqh::after{
+  content: "عدد الصفوف في الصفحة";
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: black;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.table-data .css-rtrcn9-MuiTablePagination-root .MuiTablePagination-input {
+  margin-right: 0!important;
+}

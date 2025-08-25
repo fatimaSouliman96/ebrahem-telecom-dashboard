@@ -1,0 +1,80 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+  direction: rtl;
+}
+ 
+#root {
+  margin: 0 ;
+  padding: 0;
+  box-sizing: content-box;
+}
+.color-main{
+  color: #282561;
+}
+.btn-style{
+  background-color: #282561;
+  border-radius: 8px;
+  color: white;
+  font-weight: 400;
+}
+.rtl {
+  direction: rtl;
+}
+
+.css-1086bdv-MuiPaper-root-MuiAccordion-root{
+ box-shadow: none!important;
+}
+.css-1f773le-MuiButtonBase-root-MuiAccordionSummary-root{
+  direction: rtl;
+}
+.scroll{
+  overflow-y: scroll;
+  outline: none!important;
+}
+.scroll::-webkit-scrollbar {
+  border-radius: 50px;
+  width: 8px;
+  background-color: white;
+}
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #282561;
+  border-radius: 40px;
+}
+::-webkit-scrollbar {
+  width: 9px!important;
+  height: 8px;
+  background-color: white;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #282561;
+  border-radius: 40px;
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+  width: 15px;
+  height: 15px;
+}
+.selection{
+  background-image: url("../public/assets/icons/icon_chevron-down.svg");
+  background-repeat: no-repeat;
+  background-position: 0.7rem;
+}
+.css-1gkse3u{
+  border: 0!important;
+  box-shadow: none!important;
+  width: fit-content!important;
+  border-radius: 10px!important;
+}
+.css-u26vfm-MuiPaper-root-MuiAccordion-root::before{
+  display: none!important;
+}

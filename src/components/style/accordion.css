@@ -1,0 +1,14 @@
+.css-bxe7yx:first-of-type,
+.css-bxe7yx:last-of-type,
+.css-1aj41gs:last-of-type,
+.css-u26vfm-MuiPaper-root-MuiAccordion-root:first-of-type,
+.css-u26vfm-MuiPaper-root-MuiAccordion-root:last-of-type,
+.css-1086bdv-MuiPaper-root-MuiAccordion-root:last-of-type {
+  border-radius: 16px !important;
+}
+.css-1aj41gs{
+  box-shadow: none!important;
+}
+.css-bxe7yx::before {
+  background-color: transparent !important;
+}

@@ -1,0 +1,10 @@
+export { default as homeRouter } from './Home/routes/homeRouter';
+export { default as financialRouter } from './Financial/routes/financialRouter';
+export { default as ordersRouter } from './orders/routes/orderRouter';
+export { default as accountsManage } from './AccountsManage/routes/accountsManage';
+export { default as transfer } from './Transfer/routes/transfer';
+export { default as addBalance } from './AddBalance/routes/addBalance';
+export { default as pricesRouter } from './prices/routes/pricesRouter';
+export { default as accountRouter } from './account statement/routes/AccountRouter';
+export { default as accountDetailRouter } from './account statement/routes/AccountDetailsRouter';
+export { default as providersRouter } from './providers/routes/providersRouter';
