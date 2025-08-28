@@ -59,27 +59,36 @@ export default function AppsForm() {
     }
 
     const handleChangeBouguet = (e) => {
+         console.log(e.target.value)
+         const nameBundle = e.target.value
+        const bouqet = allApps.filter(e => e.name == nameBundle)
+        setBundellName(nameBundle)
         setErrors({ ...errors, qyt: "" })
         setErrors({ ...errors, amount: "" })
         setAmount("")
         setQyt("")
-        setProductId(e.target.value)
-        const options = Array.from(e.target.options || []);
-        options.forEach((o) => {
-            if (o.selected === true) {
-                setBundellName(o.text)
-                console.log(o.text)
-            }
-        });
-        const bouqet = allApps.filter(e => e.id == e.target.value)
+        setProductId(bouqet[0].id)
+       
+
+        // const options = Array.from(e.target.options || []);
+        // options.forEach((o) => {
+        //     if (o.selected === true) {
+        //         setBundellName(o.text)
+        //     }
+        // });
+        
+        console.log(bouqet)
         setType(bouqet[0].type)
         if (isDecimal(bouqet[0].price)) {
+            console.log("isDecimal")
             let roundPrice = roundNumber(bouqet[0].price)
             setAppPrice(roundPrice)
             if (bouqet[0].min == 1 && bouqet[0].max == 1) {
+                console.log("bouqet[0].min == 1 && bouqet[0].max == 1")
                 if (isFixed == 0) {
                     isFixed0AndMin1(roundPrice)
                 } else if (isFixed == 1) {
+                    console.log("isFixed == 1")
                     isFixed1AndMin1(roundPrice)
                 } else {
                     null
@@ -106,15 +115,18 @@ export default function AppsForm() {
     }
 
     const handleChangeQyt = (e) => {
+        console.log("qqq")
         setErrors({ ...errors, qyt: "" })
         setQyt(e.target.value)
         if (e.target.value < min || e.target.value > max) {
             setErrors({ ...errors, qyt: `يجب ان تكون الكمية بين ${min} و ${max}` })
         } else {
             setErrors({ ...errors, qyt: "" })
-            if (isFixed == 0) {
+            if (1 === 0) {
+                console.log("isFixed == 0")
                 isFixed0AndMinNot1(e.target.value)
-            } else if (isFixed == 1) {
+            } else if (1 === 1) {
+                console.log("isFixed == 1")
                 isFixed1AndMinNot1(e.target.value)
             } else {
                 null
@@ -269,7 +281,7 @@ export default function AppsForm() {
                             <option value="" disabled >اختر التطبيق</option>
                             {
                                 apps ? apps.map(app => {
-                                    return <option value={app.id} >{app.game}</option>
+                                    return <option key={app.id} value={app.id} >{app.game}</option>
                                 })
                                     :
                                     <p className='text-sm text-main-color font-medium' >يتم تحميل التطبيقات</p>
@@ -293,8 +305,8 @@ export default function AppsForm() {
 
                             <option value="" disabled>اختر باقة</option>
                             {
-                                bouquets ? bouquets.map(app => {
-                                    return <option value={app.id} >{app.name}</option>
+                                bouquets ? bouquets.map((app, index) => {
+                                    return <option key={index} value={app.name} >{app.name}</option>
                                 })
                                     :
                                     <p className='text-sm text-main-color font-medium' >يتم تحميل الباقات</p>
