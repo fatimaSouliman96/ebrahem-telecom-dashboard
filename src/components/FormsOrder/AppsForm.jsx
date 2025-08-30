@@ -27,10 +27,9 @@ export default function AppsForm() {
     const [max, setMax] = useState(1)
     const [type, setType] = useState()
 
-    const [errors, setErrors] = useState({
-        qyt: "",
-        amount: ""
-    })
+    const [errorsQyt, setErrorsQyt] = useState("")
+    const [errorsAmount, setErrorsAmount] = useState("")
+
     const [balance, setBalance] = useState();
 
     const getBalanses = async () => {
@@ -46,12 +45,13 @@ export default function AppsForm() {
 
 
     const handleChangeApp = (value) => {
+        setProductId("")
         setMin(1)
         setMax(1)
-        setErrors({ ...errors, qyt: "" })
-        setErrors({ ...errors, amount: "" })
+        setErrorsQyt("")
+        setErrorsAmount("")
         setAmount("")
-        setProductId("")
+        setBundellName("")
         setApp(value)
         const newApp = apps.filter(e => e.id == value)
         const newBouquets = allApps.filter(e => e.game === newApp[0].game)
@@ -59,24 +59,21 @@ export default function AppsForm() {
     }
 
     const handleChangeBouguet = (e) => {
-         console.log(e.target.value)
-         const nameBundle = e.target.value
-        const bouqet = allApps.filter(e => e.name == nameBundle)
-        setBundellName(nameBundle)
-        setErrors({ ...errors, qyt: "" })
-        setErrors({ ...errors, amount: "" })
+        const id = e.target.value
+        const bouqet = allApps.filter(e => e.id == id)
+        setProductId(id)
+        setErrorsQyt("")
+        setErrorsAmount("")
         setAmount("")
         setQyt("")
-        setProductId(bouqet[0].id)
        
+        const options = Array.from(e.target.options || []);
+        options.forEach((o) => {
+            if (o.selected === true) {
+                setBundellName(o.text)
+            }
+        });
 
-        // const options = Array.from(e.target.options || []);
-        // options.forEach((o) => {
-        //     if (o.selected === true) {
-        //         setBundellName(o.text)
-        //     }
-        // });
-        
         console.log(bouqet)
         setType(bouqet[0].type)
         if (isDecimal(bouqet[0].price)) {
@@ -116,17 +113,15 @@ export default function AppsForm() {
 
     const handleChangeQyt = (e) => {
         console.log("qqq")
-        setErrors({ ...errors, qyt: "" })
+        setErrorsQyt("")
         setQyt(e.target.value)
         if (e.target.value < min || e.target.value > max) {
-            setErrors({ ...errors, qyt: `يجب ان تكون الكمية بين ${min} و ${max}` })
+            setErrorsQyt(`يجب ان تكون الكمية بين ${min} و ${max}`)
         } else {
-            setErrors({ ...errors, qyt: "" })
-            if (1 === 0) {
-                console.log("isFixed == 0")
+            setErrorsQyt("")
+            if (isFixed === 0) {
                 isFixed0AndMinNot1(e.target.value)
-            } else if (1 === 1) {
-                console.log("isFixed == 1")
+            } else if (isFixed === 1) {
                 isFixed1AndMinNot1(e.target.value)
             } else {
                 null
@@ -178,9 +173,9 @@ export default function AppsForm() {
 
     const valdutionAmount = (value) => {
         if (value > parseInt(balance)) {
-            setErrors({ ...errors, amount: `لا يوجد رصيد كافي رصيدك ${balance}` })
+            setErrorsAmount(`لا يوجد رصيد كافي رصيدك ${balance}`)
         } else {
-            setErrors({ ...errors, amount: "" })
+            setErrorsAmount("")
         }
     }
     const fetchApps = async () => {
@@ -201,7 +196,7 @@ export default function AppsForm() {
                 const uniqueApps = res.data.products.filter((app, index, self) =>
                     index === self.findIndex((a) => a.game === app.game)
                 );
-         
+
 
                 setApps(uniqueApps);
             })
@@ -222,6 +217,7 @@ export default function AppsForm() {
 
         e.preventDefault()
 
+ 
         await axios.request(
             {
                 url: `${baseUrl}pay-application-pay`,
@@ -302,11 +298,10 @@ export default function AppsForm() {
                             id="name"
                             className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
                         >
-
                             <option value="" disabled>اختر باقة</option>
                             {
                                 bouquets ? bouquets.map((app, index) => {
-                                    return <option key={index} value={app.name} >{app.name}</option>
+                                    return <option key={index} value={app.id} >{app.name}</option>
                                 })
                                     :
                                     <p className='text-sm text-main-color font-medium' >يتم تحميل الباقات</p>
@@ -349,7 +344,7 @@ export default function AppsForm() {
                             id="amount"
                             className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
                         />
-                        {errors.qyt !== "" && <p className='text-red-600 text-xs'>{errors.qyt}</p>}
+                        {errorsQyt !== "" && <p className='text-red-600 text-xs'>{errorsQyt}</p>}
                     </div>}
                     <div className="flex flex-col gap-3 ">
                         <label htmlFor="city" className="text-xs font-medium">
@@ -363,7 +358,7 @@ export default function AppsForm() {
                             id="amount"
                             className="h-[58px] rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
                         >{amount}</p>
-                        {errors.amount !== "" && <p className='text-red-600 text-xs' >{errors.amount}</p>}
+                        {errorsAmount !== "" && <p className='text-red-600 text-xs' >{errorsAmount}</p>}
                     </div>
                 </div>
                 <button
