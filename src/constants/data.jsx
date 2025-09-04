@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import NumberDisplay from '../hooks/NumberDisplay'
+
 // ===================================================================
 // ========================== Operations ===============================
 
@@ -1819,9 +1820,17 @@ export const providersColumns = [
         <p className="font-semibold text-[#202224]/80 ">
           {
             params.row.is_active == 1 ?
-            "مفعل"
+            <div className="flex items-center gap-1" >
+               <div className="w-2 h-2 rounded bg-green-500" ></div>
+              <p>مفعل</p>
+             
+            </div>
             :
-            "غير مفعل"
+             <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded bg-red-500" ></div>
+              <p>غير مفعل</p>
+              
+            </div>
           }
         </p>
       );

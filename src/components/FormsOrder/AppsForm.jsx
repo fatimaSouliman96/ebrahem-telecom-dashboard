@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import CircularProgress from "@mui/material/CircularProgress";;
 import { fetchBalances } from '../../services/getBalances';
 
-export default function AppsForm() {
+export default function AppsForm({ application }) {
 
     const [submit, setSubmit] = useState(false)
     const [app, setApp] = useState("")
@@ -59,14 +59,16 @@ export default function AppsForm() {
     }
 
     const handleChangeBouguet = (e) => {
+        setProductId(e.target.value)
+        console.log("change ==========")
+        console.log(e.target.value)
         const id = e.target.value
         const bouqet = allApps.filter(e => e.id == id)
-        setProductId(id)
         setErrorsQyt("")
         setErrorsAmount("")
         setAmount("")
         setQyt("")
-       
+
         const options = Array.from(e.target.options || []);
         options.forEach((o) => {
             if (o.selected === true) {
@@ -74,18 +76,18 @@ export default function AppsForm() {
             }
         });
 
-        console.log(bouqet)
+
         setType(bouqet[0].type)
         if (isDecimal(bouqet[0].price)) {
-            console.log("isDecimal")
+
             let roundPrice = roundNumber(bouqet[0].price)
             setAppPrice(roundPrice)
             if (bouqet[0].min == 1 && bouqet[0].max == 1) {
-                console.log("bouqet[0].min == 1 && bouqet[0].max == 1")
+
                 if (isFixed == 0) {
                     isFixed0AndMin1(roundPrice)
                 } else if (isFixed == 1) {
-                    console.log("isFixed == 1")
+
                     isFixed1AndMin1(roundPrice)
                 } else {
                     null
@@ -112,7 +114,7 @@ export default function AppsForm() {
     }
 
     const handleChangeQyt = (e) => {
-        console.log("qqq")
+
         setErrorsQyt("")
         setQyt(e.target.value)
         if (e.target.value < min || e.target.value > max) {
@@ -131,6 +133,7 @@ export default function AppsForm() {
     }
 
     const isFixed0AndMin1 = (valuePrice) => {
+        setQyt("1")
         const value = ((price * valuePrice) / 100) + parseInt(valuePrice)
         setSendAmount(valuePrice)
         setAmount(value)
@@ -149,6 +152,7 @@ export default function AppsForm() {
     }
 
     const isFixed1AndMin1 = (valuePrice) => {
+        setQyt("1")
         if (isFixed == 1) {
             if (min == 1 && max == 1) {
                 const value = parseInt(price) + parseInt(valuePrice)
@@ -208,16 +212,21 @@ export default function AppsForm() {
     }
 
     useEffect(() => {
-        fetchApps()
-        getBalanses()
+        if (application == true) {
+            fetchApps()
+            getBalanses()
+        }
+
     }, [])
 
     const onSubmit = async (e) => {
+        console.log("submit ==========")
+        console.log(productId)
         setSubmit(true)
 
         e.preventDefault()
 
- 
+
         await axios.request(
             {
                 url: `${baseUrl}pay-application-pay`,
@@ -230,7 +239,7 @@ export default function AppsForm() {
                     customer_name: user.name,
                     amount: sendAmount,
                     action: "payment",
-                    product_id: app,
+                    product_id: productId,
                     player_id: id,
                     qty: qyt,
                     type: type,
@@ -243,6 +252,10 @@ export default function AppsForm() {
                 setApp("")
                 setQyt("")
                 setAmount('')
+                setSendAmount("")
+                setProductId("")
+                setId("")
+                setMax(1)
 
                 toast.success("تمت العملية بنجاح سوف يتم مراجعة الطلب")
 
@@ -257,124 +270,134 @@ export default function AppsForm() {
 
     return (
         <>
-            <form className="flex flex-col gap-4" onSubmit={e => onSubmit(e)} >
-                <div className="grid grid-cols-2 w-full justify-between gap-4">
-                    <div className="flex flex-col gap-3 ">
-                        <label htmlFor="name" className="text-xs font-medium">
-                            اسم التطبيق
-                            <span className='text-red-600 text-xs' >*</span>
-                        </label>
-                        <select
-                            required
-                            type="text"
-                            name="name"
-                            value={app}
-                            onChange={e => handleChangeApp(e.target.value)}
-                            id="name"
-                            className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                        >
+            {
+                application == true ?
+                    <>
+                        <form className="flex flex-col gap-4" onSubmit={e => onSubmit(e)} >
+                            <div className="grid grid-cols-2 w-full justify-between gap-4">
+                                <div className="flex flex-col gap-3 ">
+                                    <label htmlFor="name" className="text-xs font-medium">
+                                        اسم التطبيق
+                                        <span className='text-red-600 text-xs' >*</span>
+                                    </label>
+                                    <select
+                                        required
+                                        type="text"
+                                        name="name"
+                                        value={app}
+                                        onChange={e => handleChangeApp(e.target.value)}
+                                        id="name"
+                                        className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                                    >
 
-                            <option value="" disabled >اختر التطبيق</option>
-                            {
-                                apps ? apps.map(app => {
-                                    return <option key={app.id} value={app.id} >{app.game}</option>
-                                })
-                                    :
-                                    <p className='text-sm text-main-color font-medium' >يتم تحميل التطبيقات</p>
-                            }
-                        </select>
-                    </div>
-                    <div className="flex flex-col gap-3 ">
-                        <label htmlFor="name" className="text-xs font-medium">
-                            الباقة
-                            <span className='text-red-600 text-xs' >*</span>
-                        </label>
-                        <select
-                            required
-                            type="text"
-                            name="name"
-                            value={productId}
-                            onChange={e => handleChangeBouguet(e)}
-                            id="name"
-                            className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                        >
-                            <option value="" disabled>اختر باقة</option>
-                            {
-                                bouquets ? bouquets.map((app, index) => {
-                                    return <option key={index} value={app.id} >{app.name}</option>
-                                })
-                                    :
-                                    <p className='text-sm text-main-color font-medium' >يتم تحميل الباقات</p>
-                            }
-                        </select>
-                    </div>
-                    <div className="flex flex-col gap-3">
-                        <label htmlFor="city" className="text-xs font-medium">
-                            أدخل ID الزبون
-                            <span className='text-red-600 text-xs' >*</span>
-                        </label>
-                        <input
+                                        <option value="" disabled >اختر التطبيق</option>
+                                        {
+                                            apps ? apps.map(app => {
+                                                return <option key={app.id} value={app.id} >{app.game}</option>
+                                            })
+                                                :
+                                                <p className='text-sm text-main-color font-medium' >يتم تحميل التطبيقات</p>
+                                        }
+                                    </select>
+                                </div>
+                                <div className="flex flex-col gap-3 ">
+                                    <label htmlFor="name" className="text-xs font-medium">
+                                        الباقة
+                                        <span className='text-red-600 text-xs' >*</span>
+                                    </label>
+                                    <select
+                                        required
+                                        type="text"
+                                        name="name"
+                                        value={productId}
+                                        onChange={e => handleChangeBouguet(e)}
+                                        id="name"
+                                        className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                                    >
+                                        <option value="" disabled>اختر باقة</option>
+                                        {
+                                            bouquets ? bouquets.map((app, index) => {
+                                                return <option key={index} value={app.id} >{app.name}</option>
+                                            })
+                                                :
+                                                <p className='text-sm text-main-color font-medium' >يتم تحميل الباقات</p>
+                                        }
+                                    </select>
+                                </div>
+                                <div className="flex flex-col gap-3">
+                                    <label htmlFor="city" className="text-xs font-medium">
+                                        أدخل ID الزبون
+                                        <span className='text-red-600 text-xs' >*</span>
+                                    </label>
+                                    <input
 
-                            value={id}
-                            onChange={e => {
-                                setId(e.target.value)
-                                max == 1 && setQyt(1)
+                                        value={id}
+                                        onChange={e => {
+                                            setId(e.target.value)
+                                            max == 1 && setQyt(1)
 
-                            }}
-                            required
-                            type="number"
-                            name="amount"
-                            placeholder=""
-                            id="amount"
-                            className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                        />
-                    </div>
-                    {max !== 1 && <div className="flex flex-col gap-3 ">
-                        <label htmlFor="city" className="text-xs font-medium">
-                            الكمية
-                            <span className='text-red-600 text-xs' >*</span>
-                        </label>
-                        <input
-                            value={qyt}
-                            onChange={e => handleChangeQyt(e)}
-                            required
-                            type="number"
-                            name="amount"
-                            placeholder={`يجب ان تكون الكمية بين ${min} و ${max}`}
-                            id="amount"
-                            className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                        />
-                        {errorsQyt !== "" && <p className='text-red-600 text-xs'>{errorsQyt}</p>}
-                    </div>}
-                    <div className="flex flex-col gap-3 ">
-                        <label htmlFor="city" className="text-xs font-medium">
-                            المبلغ
-                            <span className='text-red-600 text-xs' >*</span>
-                        </label>
-                        <p
-                            required
-                            type="number"
-                            name="amount"
-                            id="amount"
-                            className="h-[58px] rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                        >{amount}</p>
-                        {errorsAmount !== "" && <p className='text-red-600 text-xs' >{errorsAmount}</p>}
-                    </div>
-                </div>
-                <button
-                    type='submit'
-                    style={{
-                        width: "274px",
-                        height: "44px",
-                    }}
-                    className={`bg-main-color text-white rounded-lg flex-center main-button`}
-                >
-                    ارسل الآن
-                </button>
-            </form>
-            {submit && <div className='w-full h-full flex items-center justify-center absolute top-0 left-0 bg-[#ffffff7e]'>
-                <CircularProgress />
-            </div>}
+                                        }}
+                                        required
+                                        type="number"
+                                        name="amount"
+                                        placeholder=""
+                                        id="amount"
+                                        className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                                    />
+                                </div>
+                                {max !== 1 && <div className="flex flex-col gap-3 ">
+                                    <label htmlFor="city" className="text-xs font-medium">
+                                        الكمية
+                                        <span className='text-red-600 text-xs' >*</span>
+                                    </label>
+                                    <input
+                                        value={qyt}
+                                        onChange={e => handleChangeQyt(e)}
+                                        required
+                                        type="number"
+                                        name="amount"
+                                        placeholder={`يجب ان تكون الكمية بين ${min} و ${max}`}
+                                        id="amount"
+                                        className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                                    />
+                                    {errorsQyt !== "" && <p className='text-red-600 text-xs'>{errorsQyt}</p>}
+                                </div>}
+                                <div className="flex flex-col gap-3 ">
+                                    <label htmlFor="city" className="text-xs font-medium">
+                                        المبلغ
+                                        <span className='text-red-600 text-xs' >*</span>
+                                    </label>
+                                    <p
+                                        required
+                                        type="number"
+                                        name="amount"
+                                        id="amount"
+                                        className="h-[58px] rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                                    >{amount}</p>
+                                    {errorsAmount !== "" && <p className='text-red-600 text-xs' >{errorsAmount}</p>}
+                                </div>
+                            </div>
+                            <button
+                                type='submit'
+                                style={{
+                                    width: "274px",
+                                    height: "44px",
+                                }}
+                                className={`bg-main-color text-white rounded-lg flex-center main-button`}
+                            >
+                                ارسل الآن
+                            </button>
+                        </form>
+                        {submit && <div className='w-full h-full flex items-center justify-center absolute top-0 left-0 bg-[#ffffff7e]'>
+                            <CircularProgress />
+                        </div>}
+                    </>
+                    :
+                    <p className='text-red-500' > ليس لديك صلاحية لارسال طلبات تطبيقات
+                        <br></br>
+                        يمكنك مراجعة المسؤولين
+                    </p>
+            }
         </>
     )
 }

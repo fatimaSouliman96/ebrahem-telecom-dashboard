@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import { baseUrl } from '../../constants/baseUrl';
 import toast from 'react-hot-toast';
 import ProvidarPrices from '../ProvidarPrices/ProvidarPrices';
+import SwitchProvider from '../switchProvider/SwitchProvider';
 
 
 export default function ActionProvider({ data, fetchData }) {
@@ -86,24 +87,7 @@ export default function ActionProvider({ data, fetchData }) {
 
                 <img title='تعديل' onClick={handleOpenEdit} className='w-6 h-6 cursor-pointer ' src='/assets/icons/edit.svg' />
                 <img title='حذف' onClick={handleOpenDelete} className='w-6 cursor-pointer h-6 mr-4' src='/assets/icons/trash-red.svg' />
-
-                {fixedValue == 0 ? <FormGroup>
-                    <FormControlLabel
-                        control={
-                            <IOSSwitch title={"تفعيل لمزود"} sx={{ m: 1 }} onChange={e => handleActive(e)} />
-                        }
-                    />
-
-                </FormGroup>
-                    :
-                    <FormGroup>
-                        <FormControlLabel
-                            control={
-                                <IOSSwitch title={"تعطيل المزود"} sx={{ m: 1 }} defaultChecked onChange={e => handleActive(e)} />
-                            }
-                        />
-
-                    </FormGroup>}
+                {/* <SwitchProvider handleActive={handleActive} is_active={data.is_active} /> */}
                  <img onClick={handleOpenPrices} className='w-6 h-6 mr-4 cursor-pointer ' src='/assets/icons/icon3.svg' />   
 
             </div>

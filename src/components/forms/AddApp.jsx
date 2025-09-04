@@ -43,7 +43,7 @@ export default function AddApp({fetchAllApps, handleClose}) {
             },
           });
       
-          toast.success("تمت اضافة المستخدم بنجاح");
+          toast.success("تمت اضافة التطبيق بنجاح");
           fetchAllApps();
           handleClose();
         } catch (error) {

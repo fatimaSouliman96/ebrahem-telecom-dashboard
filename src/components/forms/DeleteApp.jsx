@@ -48,7 +48,7 @@ export default function DeleteApp({ handelClose, fetchData, id }) {
             <div className='flex justify-center items-center w-[100px] h-[100px] bg-[#EA0234] rounded-full'>
                 <img src={deleteIcon} />
             </div>
-            <p className='text-base font-semibold'> هل تريد حذف هذا المزود ؟</p>
+            <p className='text-base font-semibold'> هل تريد حذف هذا التطبيق ؟</p>
             <div className='flex justify-between w-full gap-3'>
                 <button onClick={() => handelClose()} className='w-1/2 h-[43px] border border-main-color rounded-xl text-main-color'>الغاء الأمر</button>
                 <button onClick={(e) => deleteProvider(e)} className='w-1/2  h-[43px] rounded-xl text-white bg-[#EA0234]'>حذف</button>

@@ -47,9 +47,10 @@ const Navbar = ({ open, setOpen, value, handelChangeSearch }) => {
   const getBalanses = async () => {
     const res = await fetchBalances()
     setBalance(res.main_balance)
-    localStorage.setItem("creditBalance", res.creditBalance )
+    setCridet(res.credit_balance)
+    localStorage.setItem("creditBalance", res.credit_balance )
     localStorage.setItem("balance", res.main_balance )
-    setCridet(res.creditBalance)
+    
   }
   useEffect(() => {
     getBalanses()
@@ -108,16 +109,15 @@ const Navbar = ({ open, setOpen, value, handelChangeSearch }) => {
         </div>
       </nav>
 
-      <DropDownProfile
+      { <DropDownProfile
         changePassword={handleOpenModalPassword}
         openModal={handleOpenModal}
         open={openProfile}
         anchorEl={anchorEl}
         close={handleCloseProfile}
-        balance={localStorage.getItem("balance")}
-        cridet={localStorage.getItem("creditBalance")
-   }
-      />
+        balance={balance}
+        cridet={cridet}
+      />}
 
       <ModalPassword
         open={openModalPassword}

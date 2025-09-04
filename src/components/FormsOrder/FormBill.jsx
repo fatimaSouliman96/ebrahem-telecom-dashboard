@@ -30,7 +30,7 @@ export default function FormBill({ fetchData, setting }) {
 
   const [balance, setBalance] = useState();
 
-  const [serviceProvider, setServiceProvider] = useState()
+  const [serviceProvider, setServiceProvider] = useState([])
   const [s, sets] = useState()
 
   const getBalanses = async () => {
@@ -57,7 +57,7 @@ export default function FormBill({ fetchData, setting }) {
     await axios.request(
       {
         method: "get",
-        url: `${baseUrl}isp/isp-s/${id}`,
+        url: `${baseUrl}isp/isp-bundles/${id}`,
         headers: {
           "Accept": "application/json",
           "Authorization": `Bearer ${Cookies.get('token')}`,
@@ -70,7 +70,8 @@ export default function FormBill({ fetchData, setting }) {
   }
   useEffect(() => {
     getBalanses();
-    getServiceProvider()
+    
+    setting.electricity == true && getServiceProvider()
 
   }, []);
   const user = JSON.parse(localStorage.getItem("user"))
@@ -184,7 +185,7 @@ export default function FormBill({ fetchData, setting }) {
             static_IP: staticId,
             customer_name: name,
             amount: amount,
-            bundel: parseInt(Id),
+            bundle: Id,
             action: "payment"
           })
           :
@@ -195,7 +196,7 @@ export default function FormBill({ fetchData, setting }) {
             customer_name: name,
             amount: amount,
             order_type: orderType,
-            bundel: Id,
+            bundle: Id,
             action: "payment"
           })
         break;
@@ -276,7 +277,7 @@ export default function FormBill({ fetchData, setting }) {
             className="selection appearance-none  rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
           >
             {setting.water == true && <option value={"water"}>مياه</option>}
-            {setting.electricity == true && <option value={"elec"}>كهربا</option>}
+            {setting.electricity == true && <option value={"elec"}>كهرباء</option>}
             {setting.adsl == true && <option value={"net"}>انترنت</option>}
             {setting.fixed_line == true && <option value={"line"}>أرضي</option>}
           </select>
@@ -439,9 +440,13 @@ export default function FormBill({ fetchData, setting }) {
             >
               <option value={""}></option>
               {
-                serviceProvider?.map(ele => {
+                serviceProvider? serviceProvider?.length !== 0 ? serviceProvider?.map(ele => {
                   return <option value={ele.id}>{ele.name}</option>
                 })
+                :
+                <option>لا يوجد مزودات</option>
+                :
+                <option>يوجد خطأ ما الرجاء المحاولة لاحقا</option>
               }
             </select>
             {errors.amount !== "" && <p className='text-red-600'>{errors.amount}</p>}
@@ -449,7 +454,7 @@ export default function FormBill({ fetchData, setting }) {
         {billType == "net" ?
           <div className="flex flex-col gap-3 ">
             <label htmlFor="city" className="text-xs font-medium">
-              معرف مزود خدمة الانترنت
+             الباقة
               <span className='text-red-600 text-xs font-medium'>*</span>
             </label>
             <select

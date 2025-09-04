@@ -1,7 +1,5 @@
 import axios from "axios"
 import logOutImg from "../../../public/assets/logOut.svg"
-
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useState } from "react";
@@ -36,24 +34,27 @@ export default function LogOut(props) {
       })
       .catch(e => {
         setLogOut(false)
-         navigate("/log_in")
+        navigate("/log_in")
       })
 
 
   }
 
   return (
-    <div className='w-[352px] flex flex-col gap-3 items-center'>
-      <img src={logOutImg} />
-      <p className="text-base">هل تريد تسجيل الخروج؟</p>
+    <>
+      <div className='w-[352px] flex flex-col gap-3 items-center'>
+        <img src={logOutImg} />
+        <p className="text-base">هل تريد تسجيل الخروج؟</p>
 
-      <div className="flex justify-between w-full pt-4">
-        <button onClick={() => props.close()} className="p-1 text-base border text-[#282561] border-[#282561] w-[48%] h-[43px]  rounded-xl">الغاء الأمر</button>
-        <button onClick={() => handelLogOut()} className=" p-1 text-base text-white bg-[#EA0234] w-[48%] h-[43px] rounded-xl">موافق</button>
+        <div className="flex justify-between w-full pt-4">
+          <button onClick={() => props.close()} className="p-1 text-base border text-[#282561] border-[#282561] w-[48%] h-[43px]  rounded-xl">الغاء الأمر</button>
+          <button onClick={() => handelLogOut()} className=" p-1 text-base text-white bg-[#EA0234] w-[48%] h-[43px] rounded-xl">موافق</button>
+        </div>
+
       </div>
       <div style={{ zIndex: "999" }} className={
         clsx(
-          'w-full h-full flex justify-center items-center absolute top-0 left-0 bg-[#ffffff7e] rounded-[12px]',
+          'w-screen h-screen flex justify-center items-center absolute top-[-234px] left-[-560px] bg-[#ffffff7e] rounded-[12px]',
           {
             'hidden'
               : logOut == false
@@ -63,6 +64,6 @@ export default function LogOut(props) {
         <CircularProgress />
 
       </div>
-    </div>
+    </>
   )
 }

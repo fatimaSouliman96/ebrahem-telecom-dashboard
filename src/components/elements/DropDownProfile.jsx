@@ -8,7 +8,6 @@ export default function DropDownProfile({
   open,
   anchorEl,
   close,
-  openModal,
   changePassword,
   balance,
   cridet
@@ -54,8 +53,8 @@ export default function DropDownProfile({
             }
           </div>
           <div className="flex flex-col color-main pl-4 text-center pr-2 pt-2 ">
-            <div className="font-inter text-base font-bold flex items-center gap-2 "> <p >الرصيد الأساسي :</p> <p className="text-[#282561ba]" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(balance))} L.S</p>  </div>
-            <div className="font-inter text-base font-bold flex items-center gap-2"> <p >الرصيد الإتماني :</p> <p className="text-[#282561ba]"  style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>{NumberDisplay(parseInt(cridet))} L.S</p>  </div>
+            {balance && <div className="font-inter text-base font-bold flex items-center gap-2 "> <p >الرصيد الأساسي :</p> <p className="text-[#282561ba]" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(balance))} L.S</p>  </div>}
+            {cridet && <div className="font-inter text-base font-bold flex items-center gap-2"> <p >الرصيد الإتماني :</p> <p className="text-[#282561ba]"  style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>{NumberDisplay(parseInt(cridet))} L.S</p>  </div>}
           </div>
           <hr className="mx-10 mt-4 h-2 text-[#CAC4D0]" />
           <button

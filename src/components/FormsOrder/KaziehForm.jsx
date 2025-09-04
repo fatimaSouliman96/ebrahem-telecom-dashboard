@@ -9,7 +9,7 @@ import { fetchBalances } from '../../services/getBalances';
 
 
 
-export default function KaziehForm({ fetchData }) {
+export default function KaziehForm({ fetchData, kazieh }) {
 
   const [submit, setSubmit] = useState(false)
 
@@ -123,28 +123,28 @@ export default function KaziehForm({ fetchData }) {
     setCode(e.target.value)
   }
 
-const handleChangeNumber = (e) => {
-  let value = e.target.value.replace(/\D/g, ""); // فقط أرقام
-  setNumber(value); // تحديث القيمة مباشرةً
+  const handleChangeNumber = (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // فقط أرقام
+    setNumber(value); // تحديث القيمة مباشرةً
 
-  let error = "";
+    let error = "";
 
-  if (!value) {
-    error = "";
-  } else if (!value.startsWith("094") &&
-    !value.startsWith("095") &&
-    !value.startsWith("096")) {
-    error = "يجب أن يبدأ الرقم بـ 094 أو 095 أو 096";
-  } else if (value.length < 10) {
-    error = "الرقم قصير جدًا، يجب أن يكون 10 أرقام";
-  } else if (value.length > 10) {
-    error = "الرقم طويل جدًا، يجب أن يكون 10 أرقام";
-  } 
-   
-  
+    if (!value) {
+      error = "";
+    } else if (!value.startsWith("094") &&
+      !value.startsWith("095") &&
+      !value.startsWith("096")) {
+      error = "يجب أن يبدأ الرقم بـ 094 أو 095 أو 096";
+    } else if (value.length < 10) {
+      error = "الرقم قصير جدًا، يجب أن يكون 10 أرقام";
+    } else if (value.length > 10) {
+      error = "الرقم طويل جدًا، يجب أن يكون 10 أرقام";
+    }
 
-  setErrors({ ...errors, phone: error });
-};
+
+
+    setErrors({ ...errors, phone: error });
+  };
 
 
 
@@ -249,9 +249,9 @@ const handleChangeNumber = (e) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // تحقق من كود المسلم إذا كانت الشركة MTN
+    // تحقق من كود المستخدم إذا كانت الشركة MTN
     if (company === "MTN" && (!code || code.trim() === "")) {
-      toast.error("يرجى إدخال كود المسلم لأن الشركة MTN");
+      toast.error("يرجى إدخال كود المستخدم لأن الشركة MTN");
       return;
     }
 
@@ -261,11 +261,11 @@ const handleChangeNumber = (e) => {
 
       formData.append("top_up_type", topUpType);
       formData.append("company", company);
-      formData.append("code", code);
-      formData.append("number", number);
+      code && formData.append("code", code);
+      number && formData.append("number", number);
       formData.append("quantity", quantity);
       formData.append("amount", amount);
-      user.roles[0].name !== "pointOfSale" && formData.append("order_type", orderType);
+      // user.roles[0].name !== "pointOfSale" && formData.append("order_type", orderType);
       formData.append("unit_price", amount);
       formData.append("source", "kazieh");
 
@@ -308,213 +308,237 @@ const handleChangeNumber = (e) => {
 
 
   return (
-    <form className="flex flex-col gap-4 " onSubmit={e => handleSubmit(e)}>
-      <div className="grid grid-cols-2  w-full justify-between items-center gap-4">
-        {/* نوع الرصيد */}
-        <div className="flex flex-col gap-3 h-[110px]">
-          <label htmlFor="point" className="text-xs font-medium">
-            نوع الرصيد
-            <span className='text-red-600 text-xs font-medium' >*</span>
-          </label>
-          <select
-            required
-            value={topUpType}
-            onChange={e => handleChangeTopUpType(e)}
-            type="text"
-            name="order"
-            id="point"
-            className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-          >
-            <option > </option>
-            <option value={"lastpaid"}>لاحق الدفع</option>
-            <option value={"prepaid"}>مسبق الدفع</option>
-            <option value={"cash"}>كاش</option>
-          </select>
-        </div>
-        {/* الشركة */}
-        <div className="flex flex-col gap-3 h-[110px]">
-          <label htmlFor="point" className="text-xs font-medium">
-            الشركة
-            <span className='text-red-600 text-xs font-medium' >*</span>
-          </label>
-          <select
-            required
-            value={company}
-            onChange={e => handleChangeCompany(e)}
-            type="text"
-            name="order"
-            id="point"
-            className="selection appearance-none  rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-          >
-            <option > </option>
-            <option value={"Syriatel"}>سيرياتيل</option>
-            <option value={"MTN"}>MTN</option>
-            <option value={"Wafaa"}>وفا</option>
-          </select>
-        </div>
-        {/* نوع الطلب */}
-        {user.roles[0].name !== "pointOfSale" && <div className="flex flex-col gap-3 col-span-1 h-[110px]">
-          <label htmlFor="point" className="text-xs font-medium">
-            نوع الطلب
-            <span className='text-red-600 text-xs font-medium' >*</span>
-          </label>
-          <select
-            required
-            value={orderType}
-            onChange={e => handleChangeOrderType(e)}
-            type="text"
-            name="order"
-            id="point"
-            className="selection appearance-none  rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-          >
-            <option></option>
-            <option value={"retail"}>مفرق</option>
-            <option value={"wholesale"}>جملة</option>
-          </select>
-        </div>}
+    <>
+      {kazieh == true ?
+        <form className="flex flex-col gap-4 " onSubmit={e => handleSubmit(e)}>
+          <div className="grid grid-cols-2  w-full justify-between items-center gap-4">
+            {/* نوع الرصيد */}
+            <div className="flex flex-col gap-3 h-[110px]">
+              <label htmlFor="point" className="text-xs font-medium">
+                نوع الرصيد
+                <span className='text-red-600 text-xs font-medium' >*</span>
+              </label>
+              <select
+                required
+                value={topUpType}
+                onChange={e => handleChangeTopUpType(e)}
+                type="text"
+                name="order"
+                id="point"
+                className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+              >
+                <option > </option>
+                <option value={"lastpaid"}>لاحق الدفع</option>
+                <option value={"prepaid"}>مسبق الدفع</option>
+                <option value={"cash"}>كاش</option>
+              </select>
+            </div>
+            {/* الشركة */}
+            <div className="flex flex-col gap-3 h-[110px]">
+              <label htmlFor="point" className="text-xs font-medium">
+                الشركة
+                <span className='text-red-600 text-xs font-medium' >*</span>
+              </label>
+              <select
+                required
+                value={company}
+                onChange={e => handleChangeCompany(e)}
+                type="text"
+                name="order"
+                id="point"
+                className="selection appearance-none  rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+              >
+                <option > </option>
+                <option value={"Syriatel"}>سيرياتيل</option>
+                <option value={"MTN"}>MTN</option>
+                <option value={"Wafaa"}>وفا</option>
+              </select>
+            </div>
+            {/* نوع الطلب */}
+            {user.roles[0].name !== "pointOfSale" && <div className="flex flex-col gap-3 col-span-1 h-[110px]">
+              <label htmlFor="point" className="text-xs font-medium">
+                نوع الطلب
+                <span className='text-red-600 text-xs font-medium' >*</span>
+              </label>
+              <select
+                required
+                value={orderType}
+                onChange={e => handleChangeOrderType(e)}
+                type="text"
+                name="order"
+                id="point"
+                className="selection appearance-none  rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+              >
+                <option></option>
+                <option value={"retail"}>مفرق</option>
+                <option value={"wholesale"}>جملة</option>
+              </select>
+            </div>}
 
-        <div
-          onClick={e => fetchPrices(e)}
-          style={{
-            width: "274px",
-            height: "44px",
-          }}
-          className={`col-span-2 flex items-center justify-center cursor-pointer bg-main-color text-white rounded-lg flex-center main-div`}
-        >
-          التالي
-        </div>
+            <div
+              onClick={e => fetchPrices(e)}
+              style={{
+                width: "274px",
+                height: "44px",
+              }}
+              className={`col-span-2 flex items-center justify-center cursor-pointer bg-main-color text-white rounded-lg flex-center main-div`}
+            >
+              التالي
+            </div>
 
 
-        {prices == true ?
-          pricesData ? pricesData.length !== 0 ?
-            <>
-              {/* الكمية */}
-              {
-                topUpType == "prepaid" ?
-                  <div className="flex flex-col gap-3 h-[110px] ">
+            {prices == true ?
+              pricesData ? pricesData.length !== 0 ?
+                <>
+                  {/* الكمية */}
+                  {
+                    topUpType == "prepaid" ?
+                      <div className="flex flex-col gap-3 h-[110px] ">
+                        <label htmlFor="name" className="text-xs font-medium">
+                          الكمية
+                          <span className='text-red-600 text-xs font-medium'>*</span>
+                        </label>
+                        <select
+                          type="number"
+                          name="quantity"
+                          placeholder=""
+                          id="quantity"
+
+                          onChange={e => handleChangeQuantity(e)}
+                          className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                        >
+                          <option></option>
+                          {pricesData?.map(ele => {
+                            if (topUpType == ele.top_up_type && company == ele.company) {
+                              return <option key={ele.id} value={ele.price} >{ele.minimum}</option>
+                            }
+
+                          })
+
+                          }
+                        </select>
+                      </div>
+                      :
+                      <div className="flex flex-col gap-3 h-[110px] ">
+                        <label htmlFor="name" className="text-xs font-medium">
+                          الكمية
+                          <span className='text-red-600 text-xs font-medium'>*</span>
+                        </label>
+                        <input
+                          required
+                          type="number"
+                          name="quantity"
+                          id="quantity"
+                          value={quantity}
+                          onChange={e => handleChangeQuantity(e)}
+                          className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                        />
+                        {errorsQuantity !== "" && <p className='text-red-600 text-base'>{errorsQuantity}</p>}
+                      </div>
+                  }
+                  {/* المبلغ */}
+                  <div className="flex flex-col gap-3 h-[110px]">
                     <label htmlFor="name" className="text-xs font-medium">
-                      الكمية
-                      <span className='text-red-600 text-xs font-medium'>*</span>
+                      المبلغ
+
                     </label>
-                    <select
-                      type="number"
-                      name="quantity"
-                      placeholder=""
-                      id="quantity"
-
-                      onChange={e => handleChangeQuantity(e)}
-                      className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                    >
-                      <option></option>
-                      {pricesData?.map(ele => {
-                        if (topUpType == ele.top_up_type && company == ele.company) {
-                          return <option key={ele.id} value={ele.price} >{ele.minimum}</option>
-                        }
-
-                      })
-
-                      }
-                    </select>
+                    <p
+                      id="amount"
+                      className="rounded-xl border-black/10 border px-5 h-[58px] py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                    >{amount}</p>
+                    {errors.amount && <p className='text-red-600 text-base'>{errors.amount}</p>}
                   </div>
-                  :
-                  <div className="flex flex-col gap-3 h-[110px] ">
-                    <label htmlFor="name" className="text-xs font-medium">
-                      الكمية
-                      <span className='text-red-600 text-xs font-medium'>*</span>
+                  {/* كود المستلم */}
+                  {company == "Syriatel" ? number == "" && <div className="flex flex-col gap-3 h-[110px]">
+                    <label htmlFor="code" className="text-xs font-medium">
+                      كود المستلم
+                       <span className='text-red-600 text-xs font-medium'>*</span>
+                      
                     </label>
                     <input
                       required
                       type="number"
-                      name="quantity"
-                      id="quantity"
-                      value={quantity}
-                      onChange={e => handleChangeQuantity(e)}
+                      name="code"
+                      placeholder="*****"
+                      id="code"
+                      value={code}
+                      onChange={e => handleChangeCode(e)}
                       className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
                     />
-                    {errorsQuantity !== "" && <p className='text-red-600 text-base'>{errorsQuantity}</p>}
-                  </div>
+                  </div> : <div className="flex flex-col gap-3 h-[110px]">
+                    <label htmlFor="code" className="text-xs font-medium">
+                      كود المستلم
+                      <span className='text-red-600 text-xs font-medium'>*</span>
+                    </label>
+                    <input
+
+                      type="number"
+                      name="code"
+                      placeholder="*****"
+                      id="code"
+                      value={code}
+                      onChange={e => handleChangeCode(e)}
+                      className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                    />
+                  </div>}
+                  {/* رقم المستلم */}
+                  {company == "MTN" ? <div className="flex flex-col gap-3 h-[110px]">
+                      <label htmlFor="number" className="text-xs font-medium">
+                        رقم المستلم
+                        <span className='text-red-600 text-xs font-medium'>*</span>
+                      </label>
+                      <input
+                        required
+                        type="tel"
+                        name="number"
+                        placeholder="09********"
+                        id="number"
+                        value={number}
+                        onChange={e => handleChangeNumber(e)}
+                        className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                      />
+                      {errors.phone && <p className='text-red-600 text-xs font-medium'>{errors.phone}</p>}
+                    </div> : null}
+
+                  <button
+                    type='submit'
+                    style={{
+                      width: "274px",
+                      height: "44px",
+                    }}
+                    className={`col-span-2 bg-main-color text-white rounded-lg flex-center main-button`}
+                  >
+                    ارسل الآن
+                  </button>
+                </>
+                :
+                <p>لا يوجد اسعار</p>
+                :
+                <CircularProgress />
+              :
+              null
+            }
+
+
+          </div>
+          <div className={
+            clsx(
+              'w-full h-full flex items-center justify-center absolute top-0 left-0 bg-[#ffffff7e]',
+              {
+                'hidden'
+                  : submit == false
               }
-              {/* المبلغ */}
-              <div className="flex flex-col gap-3 h-[110px]">
-                <label htmlFor="name" className="text-xs font-medium">
-                  المبلغ
-
-                </label>
-                <p
-                  id="amount"
-                  className="rounded-xl border-black/10 border px-5 h-[58px] py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                >{amount}</p>
-                {errors.amount && <p className='text-red-600 text-base'>{errors.amount}</p>}
-              </div>
-              {/* كود المستلم */}
-              { number == "" && <div className="flex flex-col gap-3 h-[110px]">
-                <label htmlFor="name" className="text-xs font-medium">
-                  كود المستلم
-                  { company == "MTN" && <span className='text-red-600 text-xs font-medium'>*</span>}
-                </label>
-                <input
-
-                  type="number"
-                  name="code"
-                  placeholder="*****"
-                  id="code"
-                  value={code}
-                  onChange={e => handleChangeCode(e)}
-                  className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                />
-              </div>}
-              {/* رقم المستلم */}
-              {company !== "Syriatel" &&
-              code === "" && <div className="flex flex-col gap-3 h-[110px]">
-                <label htmlFor="name" className="text-xs font-medium">
-                  رقم المستلم
-                  <span className='text-red-600 text-xs font-medium'>*</span>
-                </label>
-                <input
-                  required
-                  type="tel"
-                  name="number"
-                  placeholder="09********"
-                  id="number"
-                  value={number}
-                  onChange={e => handleChangeNumber(e)}
-                  className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                />
-                {errors.phone && <p className='text-red-600 text-xs font-medium'>{errors.phone}</p>}
-              </div> }
-
-              <button
-                type='submit'
-                style={{
-                  width: "274px",
-                  height: "44px",
-                }}
-                className={`col-span-2 bg-main-color text-white rounded-lg flex-center main-button`}
-              >
-                ارسل الآن
-              </button>
-            </>
-            :
-            <p>لا يوجد اسعار</p>
-            :
+            )
+          }>
             <CircularProgress />
-          :
-          null
-        }
-
-
-      </div>
-      <div className={
-        clsx(
-          'w-full h-full flex items-center justify-center absolute top-0 left-0 bg-[#ffffff7e]',
-          {
-            'hidden'
-              : submit == false
-          }
-        )
-      }>
-        <CircularProgress />
-      </div>
-    </form>
+          </div>
+        </form>
+        :
+        <p className='text-red-500' > ليس لديك صلاحية لارسال طلبات كازية
+          <br></br>
+          يمكنك مراجعة المسؤولين
+        </p>
+      }
+    </>
   )
 }
