@@ -14,12 +14,14 @@ export default function Apps() {
     const [open, setOpen] = useState(false)
     const [allApps, setAllapps] = useState()
     const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const handleClose = () => {
         setOpen(false)
     }
 
     const fetchAllApps = async () => {
+        setLoading(true)
         await axios.request(
             {
                 url: `${baseUrl}apps`,
@@ -30,9 +32,11 @@ export default function Apps() {
                 }
             }
         ).then((res) => {
+                   setLoading(false)
             setAllapps(res.data.applications)
         })
             .catch(e => {
+                                   setLoading(false)
                 toast.error("Faild to fetch data")
                 setError(true)
             })
@@ -64,6 +68,7 @@ export default function Apps() {
                         appsPage={true}
                         notFound={"لا يوجد تطبيقات"}
                         fetchData={fetchAllApps}
+                        loading={loading}
                     />
                 </Tabel.LayoutTable>
             </OrdersContext.Provider>

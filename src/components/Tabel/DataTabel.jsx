@@ -1,4 +1,4 @@
-import React from "react";
+
 import "./table.css";
 import { DataGrid } from "@mui/x-data-grid";
 import ActionsManageModal from "./../Modals/ActionsManageModal";
@@ -25,15 +25,13 @@ import Cookies from 'js-cookie';
 import EditSpecialPrice from "../forms/EditSpecialPrice";
 import { useNavigate } from "react-router-dom";
 import ActionProvider from "../actionProviders/ActionProvider.jsx";
-import ActionProviderPrices from "../actionProvidersPrices/ActionProviderPrices.jsx";
 import DeleteApp from "../forms/DeleteApp.jsx";
 import AppPrices from "../appPrices/AppPrices.jsx";
 import ModalDetails from "../Modals/ModalDetails";
-import Details from "../FormsOrder/Details.jsx";
-import Rejected from "../FormsOrder/Rejected.jsx";
 import DetalisFinancial from "../Modals/DetalisFinancial.jsx";
 import ModalDetailsInquries from "../Modals/ModalDetailsInquries.jsx";
 import AgentTrancferReDiricte from "../forms/AgentTrancferReDiricte.jsx";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 
 const DataTable = ({
@@ -56,13 +54,16 @@ const DataTable = ({
   appsPage,
   error,
   inquiresPage,
-  agentPage
+  agentPage,
+  total,
+  loading
 }) => {
 
 
   const navigate = useNavigate()
   const rows = useContext(OrdersContext)
-
+  const [offset, setOffset] = useState(0);
+  console.log(offset)
   const [submit, setSubmit] = useState(false)
   const [app, setApp] = useState()
   const [actionPopup, setActionsPopup] = useState(false);
@@ -88,7 +89,45 @@ const DataTable = ({
   const [openDetailsfinincal, setOpenDetailsfinincal] = useState(false)
   const [billName, setBillName] = useState()
   const [stutas, setStutas] = useState()
+  const [page, setPage] = useState(1)
 
+  const getPaginationRange = (current, total) => {
+    const delta = 2;
+    const range = [];
+    const rangeWithDots = [];
+    let last;
+
+    for (let i = 1; i <= total; i++) {
+      if (
+        i === 1 ||
+        i === total ||
+        (i >= current - delta && i <= current + delta)
+      ) {
+        range.push(i);
+      }
+    }
+
+    for (let i of range) {
+      if (last) {
+        if (i - last === 2) {
+          rangeWithDots.push(last + 1);
+        } else if (i - last > 2) {
+          rangeWithDots.push("...");
+        }
+      }
+      rangeWithDots.push(i);
+      last = i;
+    }
+
+    return rangeWithDots;
+  };
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > total) return;
+
+    setPage(newPage);
+    setOffset(newPage - 1);
+    fetchData(newPage - 1);
+  };
 
   const handleOpenApp = () => {
     setOpenApp(true)
@@ -150,11 +189,11 @@ const DataTable = ({
   };
 
   const showDetailsOrder = (value) => {
-    
+
     setOpenModalOrder(true);
     setUserId(value);
   };
-  const showDetailsInquires = (value) => {   
+  const showDetailsInquires = (value) => {
     setOpenModalInquires(true);
     setUserId(value);
   };
@@ -196,7 +235,7 @@ const DataTable = ({
       });
     }
     if (agentPage) {
-         rows?.map(ele => {
+      rows?.map(ele => {
         return ele.details = "عرض التفاصيل"
       }
       )
@@ -215,7 +254,7 @@ const DataTable = ({
           </button>
         ),
       });
-     
+
     }
     if (inquiresPage) {
 
@@ -681,59 +720,64 @@ const DataTable = ({
   return (
 
     <div className="table-data">
-      {rows ?
-        rows.length > 0 ? <div className="dataTable" style={{ direction: "rtl" }}>
+      {loading && (
+        <CircularProgress className="ml-[50%] mt-[10%]" />
+      )}
+
+      {!loading && error && (
+        <p className="text-center">
+          يوجد خطأ في الشبكة، الرجاء المحاولة لاحقًا أو تسجيل الخروج
+        </p>
+      )}
+
+      {!loading && !error && rows && rows.length === 0 && (
+        <p className="text-center">{notFound}</p>
+      )}
+
+      {!loading && !error && rows && rows.length > 0 && (
+        <div className="dataTable" style={{ direction: "rtl" }}>
           <Menu
             id="basic-menu"
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-
+            MenuListProps={{ 'aria-labelledby': 'basic-button' }}
           >
             <MenuItem className="text-right" onClick={handleClose}>
               <img width={24} height={24} src={dollar} />
               <p className="pr-2 text-base font-medium text-[#282561]">
                 مبلغ ثابت
-
               </p>
-              {
-                fixed == 0 ?
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <IOSSwitch sx={{ m: 1 }} onChange={(e) => handleFixed(e)} />
-                      }
+
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <IOSSwitch
+                      sx={{ m: 1 }}
+                      checked={fixed !== 0}
+                      onChange={handleFixed}
                     />
-
-                  </FormGroup>
-                  :
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <IOSSwitch sx={{ m: 1 }} defaultChecked onChange={(e) => handleFixed(e)} />
-                      }
-                    />
-
-                  </FormGroup>
-
-              }
+                  }
+                />
+              </FormGroup>
             </MenuItem>
 
             <hr className="bg-[#CAC4D0] w-[90%] h-[2px] mx-2 mr-4 " />
-            <MenuItem className="text-right" onClick={() => {
-              handleOpenEdit()
-              handleClose()
-            }}>
+
+            <MenuItem
+              className="text-right"
+              onClick={() => {
+                handleOpenEdit()
+                handleClose()
+              }}
+            >
               <img src={editIcon} width={24} height={24} />
               <p className="pr-2 text-base font-medium text-[#282561]">
                 تعديل الفئة
               </p>
             </MenuItem>
-
           </Menu>
+
           <DataGrid
             className="dataGrid"
             rows={rows}
@@ -741,13 +785,7 @@ const DataTable = ({
             columns={extendedColumns}
             initialState={{
               pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
-            slotProps={{
-              toolbar: {
-                showQuickFilter: true,
-                quickFilterProps: { debounceMs: 500 },
+                paginationModel: { page: 0 },
               },
             }}
             pageSizeOptions={[5, 10, 15, 20]}
@@ -755,13 +793,9 @@ const DataTable = ({
             disableRowSelectionOnClick
           />
         </div>
-          : <p className="text-center">{notFound}</p>
+      )}
 
-        : !error  ? <CircularProgress className="ml-[50%] mt-[10%]" /> : null
-              
-      }
-      { error  &&  <p className="text-center">يوجد خطأ في االشبكة الرجاء المحاولة لاحقا او تسجيل الخروج</p>}
-        
+
       {actionPopup && (
         <ActionsManageModal
           handleClose={setActionsPopup}
@@ -823,6 +857,53 @@ const DataTable = ({
       }>
         <CircularProgress />
       </div>
+
+      <div className="flex" >
+        <p>
+          عدد الصفحات :
+        </p>
+        {total}
+      </div>
+      <div className="flex" >
+        الصفحة {page} من  {total}
+      </div>
+
+      <div className="flex items-center justify-center gap-2 mt-6">
+
+        {/* السابق */}
+        <ArrowBackIos
+          className={`cursor-pointer ${page === 1 && "opacity-50 pointer-events-none"}`}
+          onClick={() => handlePageChange(page - 1)}
+        />
+
+        {/* أرقام الصفحات */}
+        {getPaginationRange(page, total).map((item, index) =>
+          item === "..." ? (
+            <span key={index} className="px-2">...</span>
+          ) : (
+            <button
+              key={index}
+              onClick={() => handlePageChange(item)}
+              className={clsx(
+                "px-3 py-1 rounded",
+                item === page
+                  ? "bg-[#4880FF] text-white"
+                  : "bg-gray-200 hover:bg-gray-300"
+              )}
+            >
+              {item}
+            </button>
+          )
+        )}
+
+        {/* التالي */}
+        <ArrowForwardIos
+          className={`cursor-pointer ${page === total && "opacity-50 pointer-events-none"}`}
+          onClick={() => handlePageChange(page + 1)}
+        />
+      </div>
+
+
     </div>
 
   );

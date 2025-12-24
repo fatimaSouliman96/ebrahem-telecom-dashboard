@@ -94,3 +94,6 @@
 .table-data .css-rtrcn9-MuiTablePagination-root .MuiTablePagination-input {
   margin-right: 0!important;
 }
+.MuiTablePagination-toolbar{
+  display: none!important;
+}

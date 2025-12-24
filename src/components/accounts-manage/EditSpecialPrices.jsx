@@ -26,6 +26,7 @@ export default function SpecialPrices({ id, name }) {
   const [fileValue, setFileValue] = useState()
   const [error, setError] = useState(false)
   const [errorUnit, setErrorUnit] = useState(false)
+    const [loading, setLoading] = useState(false)
 
   const handleClose = () => {
     setOpen(false)
@@ -40,6 +41,7 @@ export default function SpecialPrices({ id, name }) {
   }
 
   const fetchDataBills = async () => {
+       setLoading(true)
     await axios.request(
       {
         url: `${baseUrl}${id}/getSpecialClientBillPrices`,
@@ -50,10 +52,12 @@ export default function SpecialPrices({ id, name }) {
         }
       }
     ).then((res) => {
+        setLoading(false)
       setDataBills(res.data)
     })
       .catch(e => {
         setError(true)
+        setLoading(false)
         toast.error("Faild to log out")
       })
   }
@@ -94,6 +98,7 @@ export default function SpecialPrices({ id, name }) {
 
   }
   const fetchDataUnits = async () => {
+     setLoading(true)
     await axios.request(
       {
         url: `${baseUrl}${id}/getSpecialClientUnitPrices`,
@@ -104,12 +109,13 @@ export default function SpecialPrices({ id, name }) {
         }
       }
     ).then((res) => {
-
+   setLoading(false)
       setDataUnitsSy(res.data.filter(ele => ele.company == "Syriatel"))
       setDataUnitsMTN(res.data.filter(ele => ele.company == "MTN"))
       setDataUnitsWafa(res.data.filter(ele => ele.company == "Wafaa"))
     })
       .catch(e => {
+        setLoading(false)
         setErrorUnit(true)
         toast.error("Faild to log out")
       })
@@ -224,6 +230,7 @@ export default function SpecialPrices({ id, name }) {
         <Tabel.LayoutTable pricesPage={true} handleDownload={handleDownload} title={"الأسعار"}>
 
           <Tabel.DataTable
+          loading={loading}
             columns={choose == 4 ? pricesBillsSpecialColumns : pricesSpecialColumns}
             pricesPage={true}
             error={errorUnit ? errorUnit :  error}

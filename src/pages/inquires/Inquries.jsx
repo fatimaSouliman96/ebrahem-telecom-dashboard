@@ -15,23 +15,28 @@ export default function Inquries() {
   const [orders, setOrders] = useState()
   const [error, setError] = useState(false)
   const user = JSON.parse(localStorage.getItem("user"))
+  const [loading, setLoading] = useState(false)
 
   const fetchData = async () => {
+    setLoading(true)
     await axios.request(
       {
         url: `${baseUrl}operations-inquiry`,
         method: "get",
         headers: {
-            "Accept": "application/json",
-            "Authorization": `Bearer ${Cookies.get('token')}`,
-        }}
-    
+          "Accept": "application/json",
+          "Authorization": `Bearer ${Cookies.get('token')}`,
+        }
+      }
+
 
     )
       .then(res => {
+        setLoading(false)
         setOrders(res.data.data)
       })
-      .catch( () => {
+      .catch(() => {
+        setLoading(false)
         toast.error("Faild to fetch data")
         setError(true)
       })
@@ -48,10 +53,11 @@ export default function Inquries() {
       {user.roles[0].name !== "pointOfSale" && <OrdersContext.Provider value={orders}>
         <Tabel.LayoutTable title={"الاستعلامات"}>
           <Tabel.DataTable
-          error={error}
+            error={error}
             columns={inquriesColumns}
             inquiresPage={true}
             fetchData={fetchData}
+            loading={loading}
             notFound={"لا يوجد استعلامات"}
           />
         </Tabel.LayoutTable>

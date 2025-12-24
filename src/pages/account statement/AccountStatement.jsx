@@ -46,31 +46,11 @@ export default function AccountStatement() {
         fetchData()
     }, [])
 
+   
     const handleSubmit = async (e) => {
         e.preventDefault()
         setSubmit(true)
-        if (userId !== "") {
-            await axios.request(
-                {
-                    url: `${baseUrl}account_statement_view/${userId}`,
-                    method: "get",
-                    headers: {
-                        "Accept": "application/json",
-                        Authorization: `Bearer ${Cookies.get('token')}`,
-                    }
-                }
-
-            )
-                .then(res => {
-                    navigate("/account_details", { state: { data: res.data.data } })
-                    setSubmit(false)
-                    setUserDetails(res.data.data)
-                })
-                .catch(e => {
-                    console.log(e)
-                    setSubmit(false)
-                })
-        }
+       navigate("/account_details", { state: { data: userId } })
     }
 
     return (

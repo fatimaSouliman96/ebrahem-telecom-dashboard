@@ -21,11 +21,12 @@ export default function ProvidarPrices({ id, name }) {
 
   const [submit, setSubmit] = useState(false)
   const [open, setOpen] = useState(false);
-  const [openAdd, setOpenAdd] = useState(false);
+
   const [unitFile, setUnitFile] = useState()
   const [fileSet, setFileSet] = useState(false)
   const [fileValue, setFileValue] = useState()
   const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleClose = () => {
     setOpen(false)
@@ -33,16 +34,11 @@ export default function ProvidarPrices({ id, name }) {
   const handleOpen = () => {
     setOpen(true)
   }
-  const handleCloseAdd = () => {
-    setOpenAdd(false)
-  }
-  const handleOpenAdd = () => {
-    setOpenAdd(true)
-  }
+
 
 
   const fetchData = async () => {
-    console.log("kkkkkkkkkkkkkkkkkk")
+      setLoading(true)
     await axios.request(
       {
         url: `${baseUrl}isp/isp-bundles/${id}`,
@@ -53,10 +49,12 @@ export default function ProvidarPrices({ id, name }) {
         }
       }
     ).then((res) => {
+        setLoading(false)
       setDataPrices(res.data)
     })
       .catch(e => {
         setError(true)
+         setLoading(false)
         toast.error("Faild to log out")
       })
   }
@@ -156,6 +154,7 @@ export default function ProvidarPrices({ id, name }) {
             pricesProviderPage={true}
             fetchData={fetchData}
             special={true}
+            loading={loading}
             notFound={"لا يوجد اسعار ارفع ملف"}
           />
 

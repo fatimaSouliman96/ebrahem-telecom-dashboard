@@ -20,24 +20,33 @@ export default function Transfer() {
   const [balance, setBalance] = useState()
   const [cirdet, setCirdet] = useState()
   const [error, setError] = useState(false)
+  const [total, setTotal] = useState(0);
+    const [loading, setLoading] = useState(false)
 
-  const fetchData = async () => {
+  const fetchData = async ( offset) => {
+    setDataOparation([])
+    setDataOrders([])
+    setLoading(true)
     axios.request(
       {
         method: "get",
-        url: `${baseUrl}view_cash`,
+        url: `${baseUrl}view_cash?limit=10&offset=${offset}`,
         headers: {
           "Accept": "application/json",
           Authorization: `Bearer ${Cookies.get('token')}`,
         }
       }
     ).then((res) => {
-      setDataOparation(res.data.cashRequestBills.filter(ele => ele.status == "pending"))
-      setDataOrders(res.data.cashRequestBills.filter(ele => ele.status == "rejected" || ele.status == "processing" || ele.status == "completed"))
+        setLoading(false)
+      setDataOparation(res.data.cashRequestBills.data.filter(ele => ele.status == "pending"))
+      setDataOrders(res.data.cashRequestBills.data.filter(ele => ele.status == "rejected" || ele.status == "processing" || ele.status == "completed"))
+
       setUsers(res.data.users)
+      setTotal(res.data.cashRequestBills.total)
 
     })
       .catch(e => {
+          setLoading(false)
         toast.error("Faild to load data")
         setError(true)
       })
@@ -46,7 +55,7 @@ export default function Transfer() {
   }
 
   useEffect(() => {
-    fetchData()
+    fetchData(0);
   }, [])
 
   return (
@@ -67,11 +76,14 @@ export default function Transfer() {
             columns={RechargColumns}
             fetchData={fetchData}
             transferPage={true}
+            loading={loading}
             notFound={orders == false ? "لا يوجد عمليات تعبئة" : "لا يوجد طلبات تعبئة"}
             users={users}
+            total={total}
           />
         </Tabel.LayoutTable>
       </OrdersContext.Provider>
+
 
     </>
   );

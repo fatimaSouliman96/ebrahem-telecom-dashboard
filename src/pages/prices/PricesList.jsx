@@ -23,6 +23,7 @@ export default function PricesList() {
   const [open, setOpen] = useState(false);
   const [openEditMax, setOpenEditMax] = useState(false);
   const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [errorUnit, setErrorUnit] = useState(false)
 
   const [max, setMax] = useState()
@@ -31,7 +32,7 @@ export default function PricesList() {
   const handleClose = () => {
     setOpen(false)
   }
-  
+
 
   const handleOpen = () => {
     setOpen(true)
@@ -48,6 +49,7 @@ export default function PricesList() {
   }
 
   const fetchMax = async () => {
+   
     await axios.request(
       {
         url: `${baseUrl}unit-prices/get-max`,
@@ -58,15 +60,16 @@ export default function PricesList() {
         }
       }
     ).then((res) => {
-      console.log(res)
+   
       setMax(res.data.data.max)
     })
       .catch(e => {
-        console.log(e)
+      
         toast.error("Faild to log out")
       })
   }
   const fetchDataBills = async () => {
+     setLoading(true)
     await axios.request(
       {
         url: `${baseUrl}getAllBillPrices`,
@@ -77,15 +80,18 @@ export default function PricesList() {
         }
       }
     ).then((res) => {
+           setLoading(false)
       setDataBills(res.data)
     })
       .catch(e => {
+           setLoading(false)
         setError(true)
         toast.error("Faild to log out")
       })
   }
 
   const fetchDataUnits = async () => {
+      setLoading(true)
     await axios.request(
       {
         url: `${baseUrl}getUnitsPrices`,
@@ -96,15 +102,17 @@ export default function PricesList() {
         }
       }
     ).then((res) => {
+           setLoading(false)
 
       setDataUnitsSy(res.data.filter(ele => ele.company == "Syriatel"))
       setDataUnitsMTN(res.data.filter(ele => ele.company == "MTN"))
       setDataUnitsWafa(res.data.filter(ele => ele.company == "Wafaa"))
     })
-    .catch( () => {
-      setErrorUnit(true)
-      toast.error("Faild to fetch data")
-    })
+      .catch(() => {
+        setErrorUnit(true)
+             setLoading(false)
+        toast.error("Faild to fetch data")
+      })
   }
 
   const fetchData = () => {
@@ -230,9 +238,10 @@ export default function PricesList() {
           <Tabel.DataTable
             columns={choose == 4 ? pricesListBillsColumns : listColumns}
             pricesPage={true}
-            error={errorUnit ? errorUnit :  error}
+            error={errorUnit ? errorUnit : error}
             bills={choose == 4 ? true : false}
             fetchData={fetchData}
+            loading={loading}
             notFound={"لا يوجد اسعار ارفع ملف"}
           />
 

@@ -124,15 +124,31 @@ export default function FormBalance({ fetchData, mobile }) {
 
     if (!value) {
       error = "";
-    } else if (!value.startsWith("094") &&
-      !value.startsWith("095") &&
-      !value.startsWith("096")) {
-      error = "يجب أن يبدأ الرقم بـ 094 أو 095 أو 096";
-    } else if (value.length < 10) {
-      error = "الرقم قصير جدًا، يجب أن يكون 10 أرقام";
-    } else if (value.length > 10) {
-      error = "الرقم طويل جدًا، يجب أن يكون 10 أرقام";
+    } else if (company == "MTN") {
+      // MTN
+      if (!value.startsWith("094") &&
+        !value.startsWith("095") &&
+        !value.startsWith("096")) {
+        error = "يجب أن يبدأ الرقم بـ 094 أو 095 أو 096";
+      } else if (value.length < 10) {
+        error = "الرقم قصير جدًا، يجب أن يكون 10 أرقام";
+      } else if (value.length > 10) {
+        error = "الرقم طويل جدًا، يجب أن يكون 10 أرقام";
+      }
+    
+    } else if (company == "Syriatel") {
+        // Syriatel
+      if (!value.startsWith("093") &&
+        !value.startsWith("098") &&
+        !value.startsWith("099")) {
+        error = "يجب أن يبدأ الرقم بـ 093 أو 098 أو 099";
+      } else if (value.length < 10) {
+        error = "الرقم قصير جدًا، يجب أن يكون 10 أرقام";
+      } else if (value.length > 10) {
+        error = "الرقم طويل جدًا، يجب أن يكون 10 أرقام";
+      }
     }
+
 
 
 
@@ -348,25 +364,26 @@ export default function FormBalance({ fetchData, mobile }) {
               </select>
             </div>
             {/* نوع الطلب */}
-            {user.roles[0].name !== "pointOfSale" && <div className="flex flex-col gap-3 col-span-1 h-[110px]">
-              <label htmlFor="point" className="text-xs font-medium">
-                نوع الطلب
-                <span className='text-red-600 text-xs font-medium' >*</span>
-              </label>
-              <select
-                required
-                value={orderType}
-                onChange={e => handleChangeOrderType(e)}
-                type="text"
-                name="order"
-                id="point"
-                className="selection appearance-none  rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-              >
-                <option></option>
-                <option value={"retail"}>مفرق</option>
-                <option value={"wholesale"}>جملة</option>
-              </select>
-            </div>}
+            {user.roles[0].name !== "pointOfSale" &&
+              <div className="flex flex-col gap-3 col-span-1 h-[110px]">
+                <label htmlFor="point" className="text-xs font-medium">
+                  نوع الطلب
+                  <span className='text-red-600 text-xs font-medium' >*</span>
+                </label>
+                <select
+                  required
+                  value={orderType}
+                  onChange={e => handleChangeOrderType(e)}
+                  type="text"
+                  name="order"
+                  id="point"
+                  className="selection appearance-none  rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                >
+                  <option></option>
+                  <option value={"retail"}>مفرق</option>
+                  <option value={"wholesale"}>جملة</option>
+                </select>
+              </div>}
 
             <div
               onClick={e => fetchPrices(e)}
@@ -441,25 +458,25 @@ export default function FormBalance({ fetchData, mobile }) {
                     >{amount}</p>
                     {errors.amount && <p className='text-red-600 text-base'>{errors.amount}</p>}
                   </div>
-                
+
                   {/* رقم المستلم */}
                   {<div className="flex flex-col gap-3 h-[110px]">
-                      <label htmlFor="name" className="text-xs font-medium">
-                        رقم المستلم
-                        <span className='text-red-600 text-xs font-medium'>*</span>
-                      </label>
-                      <input
-                        required
-                        type="tel"
-                        name="number"
-                        placeholder="09********"
-                        id="number"
-                        value={number}
-                        onChange={e => handleChangeNumber(e)}
-                        className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                      />
-                      {errors.phone && <p className='text-red-600 text-xs font-medium'>{errors.phone}</p>}
-                    </div>}
+                    <label htmlFor="name" className="text-xs font-medium">
+                      رقم المستلم
+                      <span className='text-red-600 text-xs font-medium'>*</span>
+                    </label>
+                    <input
+                      required
+                      type="tel"
+                      name="number"
+                      placeholder="09********"
+                      id="number"
+                      value={number}
+                      onChange={e => handleChangeNumber(e)}
+                      className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                    />
+                    {errors.phone && <p className='text-red-600 text-xs font-medium'>{errors.phone}</p>}
+                  </div>}
 
                   <button
                     type='submit'

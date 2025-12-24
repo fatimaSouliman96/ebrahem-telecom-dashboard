@@ -7,9 +7,8 @@ import clsx from 'clsx';
 import toast from 'react-hot-toast';
 
 
-export default function ActionProviderPrices({ data, fetchData }) {
+export default function ActionProviderPrices() {
 
-    const id = data?.id
     const [openEdit, setOpenEdit] = useState(false);
 
     const [submit, setSubmit] = useState(false)

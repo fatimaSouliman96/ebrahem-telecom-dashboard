@@ -20,8 +20,10 @@ export default function Agents() {
   const [balance, setBalance] = useState()
   const [cirdet, setCirdet] = useState()
   const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const fetchData = async () => {
+    setLoading(true)
     axios.request(
       {
         method: "get",
@@ -32,12 +34,14 @@ export default function Agents() {
         }
       }
     ).then((res) => {
+      setLoading(false)
       setDataOparation(res.data.cashRequestBills.filter(ele => ele.status == "pending"))
       setDataOrders(res.data.cashRequestBills.filter(ele => ele.status == "rejected" || ele.status == "processing" || ele.status == "completed"))
       setUsers(res.data.users)
 
     })
       .catch(e => {
+        setLoading(false)
         toast.error("Faild to load data")
         setError(true)
       })
@@ -64,6 +68,7 @@ export default function Agents() {
             columns={RechargColumns}
             fetchData={fetchData}
             agentPage={true}
+            loading={loading}
             notFound={"لا يوجد عمليات تعبئة"}
             users={users}
           />

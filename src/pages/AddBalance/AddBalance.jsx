@@ -15,9 +15,11 @@ export default function AddBalance() {
   const user = JSON.parse(localStorage.getItem("user"))
   const [balance, setBalance] = useState()
   const [cirdet, setCirdet] = useState()
+   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
   const fetchData = async () => {
+    setLoading(true)
     await axios.request(
       {
         url: `${baseUrl}view_add_public_balance`,
@@ -30,11 +32,13 @@ export default function AddBalance() {
 
     )
       .then(res => {
+         setLoading(false)
         setData(res.data.data)
       })
       .catch(() => {
         toast.error("Faild to fetch data")
         setError(true)
+           setLoading(false)
       })
 
 
@@ -56,7 +60,7 @@ export default function AddBalance() {
       </div>
       <OrdersContext.Provider value={data}>
         <Tabel.LayoutTable title={"عمليات التعبئة"}>
-          <Tabel.DataTable error={error} columns={addBalanceColumns} fetchData={fetchData} notFound={"لا يوجد عمليات"} />
+          <Tabel.DataTable loading={loading} error={error} columns={addBalanceColumns} fetchData={fetchData} notFound={"لا يوجد عمليات"} />
         </Tabel.LayoutTable>
       </OrdersContext.Provider>
 

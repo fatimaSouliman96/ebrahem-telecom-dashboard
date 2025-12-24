@@ -12,11 +12,15 @@ export default function Financial() {
 
   const [data, setData] = useState()
   const [error, setError] = useState(false)
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false)
 
-  const fetchData = async () => {
+  const fetchData = async (offset) => {
+    setLoading(true)
+    setData([])
     await axios.request(
       {
-        url: `${baseUrl}get_Financial_Statements`,
+        url: `${baseUrl}get_Financial_Statements?limit=10&offset=${offset}`,
         method: "get",
         headers: {
           "Accept": "application/json",
@@ -25,15 +29,18 @@ export default function Financial() {
       }
     )
       .then(res => {
-        setData(res.data.data)
+        setLoading(false)
+        setData(res.data.data.data)
+        setTotal(res.data.data.total)
       })
       .catch(() => {
+         setLoading(false)
         toast.error("Faild to fetch data")
         setError(true)
       })
   }
   useEffect(() => {
-    fetchData()
+    fetchData(0)
   }, [])
   return (
     <>
@@ -42,13 +49,17 @@ export default function Financial() {
       </h1>
       <OrdersContext.Provider value={data}>
         <Tabel.LayoutTable title={"العمليات"}>
-          <Tabel.DataTable
+        <Tabel.DataTable
           error={error}
-            columns={finincialColumns}
-            finincalPage={true}
-          />
-        </Tabel.LayoutTable>
+          columns={finincialColumns}
+          finincalPage={true}
+          loading={loading}
+          total={total}
+          fetchData={fetchData}
+        />
+      </Tabel.LayoutTable>
       </OrdersContext.Provider>
+      
 
     </>
   );

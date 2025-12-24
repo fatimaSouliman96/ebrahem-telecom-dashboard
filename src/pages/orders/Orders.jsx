@@ -15,14 +15,18 @@ const token = Cookies.get('token');
 export default function Orders() {
   const [orders, setOrders] = useState()
   const [balance, setBalance] = useState()
-  const [cirdet, setCirdet] = useState()
   const [error, setError] = useState(false)
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false)
+
   const user = JSON.parse(localStorage.getItem("user"))
 
-  const fetchData = async () => {
+
+  const fetchData = async (offset) => {
+    setLoading(true)
     await axios.request(
       {
-        url: `${baseUrl}operations-payment`,
+        url: `${baseUrl}operations-payment?limit=10&offset=${offset}`,
         method: "get",
         headers: {
           "Accept": "application/json",
@@ -33,9 +37,12 @@ export default function Orders() {
 
     )
       .then(res => {
-        setOrders(res.data.data)
+        setLoading(false)
+        setOrders(res.data.data.data)
+        setTotal(res.data.data.total_size)
       })
       .catch(() => {
+         setLoading(false)
         toast.error("Faild to fetch data")
         setError(true)
       })
@@ -43,7 +50,7 @@ export default function Orders() {
   }
 
   useEffect(() => {
-    user.roles[0].name !== "pointOfSale" && fetchData()
+    user.roles[0].name !== "pointOfSale" && fetchData(1)
   }, [])
   return (
     <>
@@ -61,6 +68,8 @@ export default function Orders() {
                   columns={OrdersColumns}
                   ordersPage={true}
                   fetchData={fetchData}
+                  total={total}
+                  loading={loading}
                   notFound={"لا يوجد طلبات اليوم"}
                 />
               </Tabel.LayoutTable>

@@ -17,16 +17,19 @@ export default function AccountsManage() {
   const [agents, setAgents] = useState()
   const [rolles, setRolles] = useState([])
   const [error, setError] = useState(false)
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false)
 
   const handleClose = () => {
     setAddModal(false)
   }
 
 
-  const fetchData = async () => {
+  const fetchData = async (offset) => {
+    setLoading(true)
     await axios.request(
       {
-        url: `${baseUrl}allusers`,
+        url: `${baseUrl}allusers?limit=10&offset=${offset}`,
         method: "get",
         headers: {
           "Accept": "application/json",
@@ -34,19 +37,22 @@ export default function AccountsManage() {
         }
       }
     ).then((res) => {
-      setAllUsers(res.data.users)
+      setLoading(false)
+      setAllUsers(res.data.users.data)
+      setTotal(res.data.users.total)
       setRolles(res.data.roles)
       setAgents(res.data.agents)
     })
       .catch(() => {
         toast.error("Faild to fetch data")
         setError(true)
+         setLoading(false)
       })
   }
 
 
   useEffect(() => {
-    fetchData()
+    fetchData(0)
   }, [])
 
   return (
@@ -66,7 +72,9 @@ export default function AccountsManage() {
       <OrdersContext.Provider value={allUsers}>
         <Tabel.LayoutTable title={"الحسابات"}>
           <Tabel.DataTable
-          error={error}
+            loading={loading}
+            total={total}
+            error={error}
             columns={accountManageColumns}
             accountsPage={true}
             notFound={"لا يوجد مستخدمين"}

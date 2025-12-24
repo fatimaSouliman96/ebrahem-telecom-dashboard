@@ -23,6 +23,7 @@ export default function AppPrices({ id, name }) {
   const [fileSet, setFileSet] = useState(false)
   const [fileValue, setFileValue] = useState()
   const [error, setError] = useState(false)
+     const [loading, setLoading] = useState(false)
 
   const handleClose = () => {
     setOpen(false)
@@ -34,6 +35,7 @@ export default function AppPrices({ id, name }) {
 
 
   const fetchData = async () => {
+     setLoading(true)
     await axios.request(
       {
         url: `${baseUrl}apps/prices/${id}`,
@@ -44,9 +46,11 @@ export default function AppPrices({ id, name }) {
         }
       }
     ).then((res) => {
+        setLoading(false)
       setDataPrices(res.data)
     })
       .catch(e => {
+         setLoading(false)
         toast.error("Faild to fetch data")
         setError(true)
       })
@@ -148,6 +152,7 @@ export default function AppPrices({ id, name }) {
             pricesProviderPage={true}
             fetchData={fetchData}
             special={true}
+            loading={loading}
             notFound={"لا يوجد اسعار ارفع ملف"}
           />
 

@@ -12,6 +12,7 @@ export default function Providers() {
   const [addModal, setAddModal] = useState(false);
   const [allServisesProviders, setAllServisesProviders] = useState()
   const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
 
   const handleClose = () => {
     setAddModal(false)
@@ -19,6 +20,7 @@ export default function Providers() {
 
 
   const fetchData = async () => {
+    setLoading(true)
     await axios.request(
       {
         url: `${baseUrl}isp/list`,
@@ -29,10 +31,12 @@ export default function Providers() {
         }
       }
     ).then((res) => {
+      setLoading(false)
       setAllServisesProviders(res.data.data)
 
     })
       .catch(() => {
+         setLoading(false)
         toast.error("Faild to fetch data")
         setError(true)
       })
@@ -62,6 +66,7 @@ export default function Providers() {
           error={error}
             columns={providersColumns}
             notFound={"لا يوجد مزودات"}
+            loading={loading}
             fetchData={fetchData}
             providersPage={true}
           />

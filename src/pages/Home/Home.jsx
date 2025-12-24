@@ -23,20 +23,32 @@ export default function Home() {
   const [dataCounter, setDataCounter] = useState()
   const [todyBill, setTodyBill] = useState()
   const [error, setError] = useState(false)
+  const [total, setTotal] = useState(0);
+    const [loading, setLoading] = useState(false)
+
 
   const navigate = useNavigate()
-  const fetchData = async () => {
+  
+  const fetchData = async (offset) => {
+  setLoading(true)
     try {
-      const res = await axios.get(`${baseUrl}home-Page`, {
-        headers: {
-          "Accept": "application/json",
-          "Authorization": `Bearer ${Cookies.get("token")}`,
-        },
-      });
+      const res = await axios.get(`${baseUrl}home-Page?limit=10&offset=${offset}`,
+        {
+          headers: {
+            "Accept": "application/json",
+            "Authorization": `Bearer ${Cookies.get("token")}`,
+          },
+        });
 
       // 🔹 إذا نجح الطلب
+        setLoading(false)
       setDataCounter(res.data.data);
-      setTodyBill(res.data.data.today_bill_count);
+      setTodyBill(res.data.data.
+        today_bills.data
+      );
+      console.log(res.data.data.today_bills.total)
+      setTotal(res.data.data.today_bills.total);
+      setOffset(res.data.data.today_bills.offset);
     } catch (e) {
       // 🔹 إذا انتهت الجلسة
       if (e.response?.status === 401) {
@@ -51,7 +63,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchData()
+    fetchData(0);
   }, [])
   return (
     <>
@@ -62,15 +74,18 @@ export default function Home() {
           <Counters dataCounter={dataCounter} />
 
           <OrdersContext.Provider value={todyBill}>
-
             <Tabel.LayoutTable title={todyBill?.length !== 0 ? "العمليات" : "لا يوجد عمليات"}>
               <Tabel.DataTable
                 error={error}
+                total={total}
                 columns={OperationsColumns}
                 mainPage={true}
+                fetchData={fetchData}
+                loading={loading}
               />
             </Tabel.LayoutTable>
           </OrdersContext.Provider>
+
         </>
         :
         <CircularProgress className="ml-[50%] mt-[10%]" />
