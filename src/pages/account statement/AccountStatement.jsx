@@ -36,7 +36,7 @@ export default function AccountStatement() {
                 console.log(e)
                 if (e.response.status == 401) {
                     console.log(e)
-                    navigate("/log_in")
+                    navigate("/")
                 }
                 toast.error("Faild to load data")
             })
@@ -50,7 +50,7 @@ export default function AccountStatement() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setSubmit(true)
-       navigate("/account_details", { state: { data: userId } })
+       navigate("/dashboard/account_details", { state: { data: userId } })
     }
 
     return (

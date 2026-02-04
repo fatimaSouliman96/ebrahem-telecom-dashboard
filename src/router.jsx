@@ -23,7 +23,7 @@ const LogIn = lazy(() => import('./pages/Ath/LogIn'));
 
 export const router = createHashRouter([
   {
-    path: "/log_in",
+    path: "/",
     element:
       <Suspense fallback={<div>جارٍ تحميل صفحة تسجيل الدخول...</div>}>
         <LogIn />
@@ -31,7 +31,7 @@ export const router = createHashRouter([
 
   },
   {
-    path: "/",
+    path: "/dashboard",
     element: <App />,
     children: [
       ...homeRouter,

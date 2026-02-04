@@ -23,10 +23,11 @@ export default function Orders() {
 
 
   const fetchData = async (offset) => {
+    console.log(offset)
     setLoading(true)
     await axios.request(
       {
-        url: `${baseUrl}operations-payment?limit=10&offset=${offset}`,
+        url: `${baseUrl}operations-payment?limit=10&offset=${parseInt(offset)}`,
         method: "get",
         headers: {
           "Accept": "application/json",

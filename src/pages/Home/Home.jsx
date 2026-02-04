@@ -48,12 +48,13 @@ export default function Home() {
       );
       console.log(res.data.data.today_bills.total)
       setTotal(res.data.data.today_bills.total);
-      setOffset(res.data.data.today_bills.offset);
     } catch (e) {
       // 🔹 إذا انتهت الجلسة
       if (e.response?.status === 401) {
+          localStorage.removeItem("remember")
         toast.error("انتهت الجلسة");
-        navigate("/log_in");
+        navigate("/");
+      
         return; // ما بدنا نرمي error بهالحالة
       }
 

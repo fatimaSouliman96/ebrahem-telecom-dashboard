@@ -24,7 +24,6 @@ import { baseUrl } from "../../constants/baseUrl";
 import Cookies from 'js-cookie';
 import EditSpecialPrice from "../forms/EditSpecialPrice";
 import { useNavigate } from "react-router-dom";
-import ActionProvider from "../actionProviders/ActionProvider.jsx";
 import DeleteApp from "../forms/DeleteApp.jsx";
 import AppPrices from "../appPrices/AppPrices.jsx";
 import ModalDetails from "../Modals/ModalDetails";
@@ -32,6 +31,7 @@ import DetalisFinancial from "../Modals/DetalisFinancial.jsx";
 import ModalDetailsInquries from "../Modals/ModalDetailsInquries.jsx";
 import AgentTrancferReDiricte from "../forms/AgentTrancferReDiricte.jsx";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import { useTableColumns } from "./useTableColumns.jsx";
 
 
 const DataTable = ({
@@ -62,8 +62,8 @@ const DataTable = ({
 
   const navigate = useNavigate()
   const rows = useContext(OrdersContext)
-  const [offset, setOffset] = useState(0);
-  console.log(offset)
+
+
   const [submit, setSubmit] = useState(false)
   const [app, setApp] = useState()
   const [actionPopup, setActionsPopup] = useState(false);
@@ -125,7 +125,7 @@ const DataTable = ({
     if (newPage < 1 || newPage > total) return;
 
     setPage(newPage);
-    setOffset(newPage - 1);
+
     fetchData(newPage - 1);
   };
 
@@ -189,7 +189,7 @@ const DataTable = ({
   };
 
   const showDetailsOrder = (value) => {
-
+    console.log("jjj")
     setOpenModalOrder(true);
     setUserId(value);
   };
@@ -208,354 +208,8 @@ const DataTable = ({
   const closeDetailsfinincal = () => {
     setOpenDetailsfinincal(false)
   }
-  const extendedColumns = useMemo(() => {
+ 
 
-    const newColumns = [...columns];
-
-    if (ordersPage || Account) {
-
-      rows?.map(ele => {
-        return ele.details = "عرض التفاصيل"
-      }
-      )
-
-      newColumns.push({
-        field: "details",
-        type: "string",
-        headerName: "",
-        width: 120,
-        renderCell: (params) => (
-          <button
-            onClick={() => showDetailsOrder(params.row.id)}
-            className="underline text-[#4880FF] details"
-          >
-            {params.row.details}
-          </button>
-        ),
-      });
-    }
-    if (agentPage) {
-      rows?.map(ele => {
-        return ele.details = "عرض التفاصيل"
-      }
-      )
-
-      newColumns.push({
-        field: "details",
-        type: "string",
-        headerName: "",
-        width: 120,
-        renderCell: (params) => (
-          <button
-            onClick={() => handleOpenTrancferAgent(params.row.customer_name ? params.row.customer_name : params.row.employee_name ? params.row.employee_name : null, params.row.id, params.row.amount, params.row.billable)}
-            className="underline text-[#4880FF] details"
-          >
-            {params.row.details}
-          </button>
-        ),
-      });
-
-    }
-    if (inquiresPage) {
-
-      rows?.map(ele => {
-        return ele.details = "عرض التفاصيل"
-      }
-      )
-
-      newColumns.push({
-        field: "details",
-        type: "string",
-        headerName: "",
-        width: 120,
-        renderCell: (params) => (
-          <button
-            onClick={() => showDetailsInquires(params.row.id)}
-            className="underline text-[#4880FF] details"
-          >
-            {params.row.details}
-          </button>
-        ),
-      });
-    }
-    if (finincalPage) {
-
-      rows?.map(ele => {
-        return ele.details = "عرض التفاصيل"
-      }
-      )
-
-      newColumns.push({
-        field: "details",
-        type: "string",
-        headerName: "",
-        width: 120,
-        renderCell: (params) => (
-          <button
-            onClick={() => showDetailsfinincal(params.row)}
-            className="underline text-[#4880FF] details"
-          >
-            {params.row.details}
-          </button>
-        ),
-      });
-    }
-    if (transferPage) {
-
-      rows?.map(ele => {
-        return ele.details = "عرض التفاصيل"
-      }
-      )
-
-      newColumns.push({
-        field: "details",
-        type: "string",
-        headerName: "",
-        width: 120,
-        renderCell: (params) => (
-          <button
-            onClick={() => handleOpenTrancfer(params.row.customer_name ? params.row.customer_name : params.row.employee_name ? params.row.employee_name : null, params.row.id, params.row.amount, params.row.billable)}
-            className="underline text-[#4880FF] details"
-          >
-            {params.row.details}
-          </button>
-        ),
-      });
-    }
-
-    if (accountsPage) {
-      newColumns.push(
-        {
-          field: "agent_id",
-          headerName: "تابع لوكيل",
-          width: 195,
-          renderCell: (params) => (
-            <p className="flex gap-5">
-              {
-                params.row.agent_id ? agents.map(ele => {
-                  if (params.row.agent_id == ele.id) {
-                    return ele.username
-                  }
-
-                })
-                  :
-                  "_"
-              }
-            </p>
-          ),
-        },
-        {
-          field: "is_disabled",
-          type: "string",
-          headerName: "حظر | فك الحظر",
-          width: 150,
-          renderCell: (params) => (
-            params.row.is_disabled == 0 ?
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <IOSSwitch title={"تعطيل الحساب"} sx={{ m: 1 }} onChange={e => handelStateUser(e, params.row.id)} />
-                  }
-                />
-
-              </FormGroup>
-              :
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <IOSSwitch title={"تفعيل الحساب"} sx={{ m: 1 }} defaultChecked onChange={e => handelStateUser(e, params.row.id)} />
-                  }
-                />
-
-              </FormGroup>
-
-
-          ),
-        },
-        {
-          field: "is_agent",
-          type: "string",
-          headerName: "تحديد وكيل | الغاء التحديد",
-          width: 220,
-          renderCell: (params) => (
-            params.row.agent_id == null ?
-              params.row.is_agent == 0 ?
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <IOSSwitch title={"تحديد كوكيل"} sx={{ m: 1 }} onChange={e => handelAgentUser(e, params.row.id, params.row.is_agent)} />
-                    }
-                  />
-
-                </FormGroup>
-                :
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <IOSSwitch title={"الغاء التحديد كوكيل"} sx={{ m: 1 }} defaultChecked onChange={e => handelAgentUser(e, params.row.id, params.row.is_agent)} />
-                    }
-                  />
-
-                </FormGroup>
-              :
-              `عميل تابع لوكيل معتمد `
-
-          ),
-        },
-        {
-          field: "actions",
-          headerName: "",
-          width: 195,
-          renderCell: (params) => (
-            <div className="flex gap-5">
-              {[{
-                id: 1,
-                title: "تعديل"
-              }, {
-                id: 2,
-                title: " الصلاحيات"
-              }, {
-                id: 3,
-                title: "الاسعار"
-              }, {
-                id: 4,
-                title: "حذف"
-              },
-              {
-                id: 5,
-                title: "العمليات"
-              }
-              ].map((num) => {
-                if (num.id == 3) {
-                  if (params.row.rank == "private") {
-                    return <img
-                      key={num.id}
-                      src={`/assets/icons/icon${num.id}.svg`}
-                      alt=""
-                      width={22}
-                      height={22}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setActionsPopup(true);
-                        setStepNum(num.id);
-                        setUser(params.row)
-                        setName(params.row.username)
-                      }}
-                      title={num.title}
-                    />
-                  } else {
-                    null
-                  }
-                } else {
-                  return <img
-                    key={num.id}
-                    src={`/assets/icons/icon${num.id}.svg`}
-                    alt=""
-                    width={22}
-                    height={22}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      setActionsPopup(true);
-                      setStepNum(num.id);
-                      setUser(params.row)
-                    }}
-                    title={num.title}
-                  />
-                }
-
-              })}
-            </div>
-          ),
-        },
-      );
-    }
-
-    if (pricesPage) {
-      newColumns.push(
-        {
-          field: "action",
-          headerName: "",
-          width: 195,
-          renderCell: (params) => (
-            <img
-              className="cursor-pointer"
-              id="basic-button"
-              aria-controls={open ? 'basic-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              onClick={(e) => handleClick(e, params.row)} src={lisIcon} />
-          ),
-        },
-      );
-    }
-    if (providersPage) {
-      newColumns.push(
-        {
-          field: "action",
-          headerName: "",
-          width: 195,
-          renderCell: (params) => (
-            <ActionProvider fetchData={fetchData} data={params.row} />
-          ),
-        },
-      );
-    }
-    if (appsPage) {
-      newColumns.push(
-        {
-          field: "actions",
-          headerName: "",
-          width: 195,
-          renderCell: (params) => (
-            <div className="flex gap-5">
-              <img
-                src={`/assets/icons/icon4.svg`}
-                alt=""
-                width={22}
-                height={22}
-                onClick={() => {
-                  handleOpenApp()
-                  setUserId(params.row.id);
-                  setApp(1)
-                }}
-                className="cursor-pointer"
-                title={"حذف"}
-              />
-              <img
-                src={`/assets/icons/icon3.svg`}
-                alt=""
-                width={22}
-                height={22}
-                onClick={() => {
-                  handleOpenApp()
-                  setUserId(params.row.id);
-                  setAppName(params.row.name)
-                  setApp(2)
-                }}
-                className="cursor-pointer"
-                title={"الأسعار"}
-              />
-
-            </div>
-          ),
-        },
-      );
-    }
-    // if (pricesProviderPage) {
-    //  newColumns.push(
-    //     {
-    //       field: "action",
-    //       headerName: "",
-    //       width: 195,
-    //       renderCell: (params) => (
-    //         <ActionProviderPrices fetchData={fetchData} data={params.row.name} />
-    //       ),
-    //     },
-    //   );
-    // }
-    return newColumns;
-
-  }, [columns, accountsPage, transferPage, mainPage, finincalPage, ordersPage, pricesPage, rows]);
 
   const handelStateUser = async (e, id) => {
     e.preventDefault()
@@ -717,6 +371,41 @@ const DataTable = ({
     }
 
   }
+
+   const extendedColumns = useTableColumns({
+    columns,
+    accountsPage,
+    transferPage,
+    inquiresPage,
+    mainPage,
+    finincalPage,
+    ordersPage,
+    pricesPage,
+    agentPage,
+    providersPage,
+    appsPage,
+    rows,
+    agents,
+    Account,
+    fetchData,
+    handleOpenTrancferAgent,
+    showDetailsOrder,
+    showDetailsInquires,
+    showDetailsfinincal,
+    handleOpenTrancfer,
+    handelStateUser,
+    handelAgentUser,
+    setActionsPopup,
+    setStepNum,
+    setUser,
+    setName,
+    handleClick,
+    handleOpenApp,
+    setUserId,
+    setApp,
+    setAppName,
+    fixed,
+  });
   return (
 
     <div className="table-data">
@@ -807,7 +496,7 @@ const DataTable = ({
           name={name}
         />
       )}
-      {ordersPage || Account ?
+      {ordersPage || Account || mainPage ?
         <ModalDetails
           handleClose={setOpenModalOrder}
           open={openModalOrder}
@@ -858,17 +547,17 @@ const DataTable = ({
         <CircularProgress />
       </div>
 
-      <div className="flex" >
+      {total&&<div className="flex" >
         <p>
           عدد الصفحات :
         </p>
         {total}
-      </div>
-      <div className="flex" >
+      </div>}
+      {total&&<div className="flex" >
         الصفحة {page} من  {total}
-      </div>
+      </div>}
 
-      <div className="flex items-center justify-center gap-2 mt-6">
+      {total && <div className="flex items-center justify-center gap-2 mt-6">
 
         {/* السابق */}
         <ArrowBackIos
@@ -901,7 +590,7 @@ const DataTable = ({
           className={`cursor-pointer ${page === total && "opacity-50 pointer-events-none"}`}
           onClick={() => handlePageChange(page + 1)}
         />
-      </div>
+      </div>}
 
 
     </div>

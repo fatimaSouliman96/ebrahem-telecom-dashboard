@@ -60,8 +60,7 @@ export default function AppsForm({ application }) {
 
     const handleChangeBouguet = (e) => {
         setProductId(e.target.value)
-        console.log("change ==========")
-        console.log(e.target.value)
+
         const id = e.target.value
         const bouqet = allApps.filter(e => e.id == id)
         setErrorsQyt("")
@@ -78,37 +77,20 @@ export default function AppsForm({ application }) {
 
 
         setType(bouqet[0].type)
-        if (isDecimal(bouqet[0].price)) {
 
-            let roundPrice = roundNumber(bouqet[0].price)
-            setAppPrice(roundPrice)
-            if (bouqet[0].min == 1 && bouqet[0].max == 1) {
-
-                if (isFixed == 0) {
-                    isFixed0AndMin1(roundPrice)
-                } else if (isFixed == 1) {
-
-                    isFixed1AndMin1(roundPrice)
-                } else {
-                    null
-                }
+        setAppPrice(bouqet[0].price)
+        if (bouqet[0].min == 1 && bouqet[0].max == 1) {
+            if (isFixed == 0) {
+                isFixed0AndMin1(bouqet[0].price)
+            } else if (isFixed == 1) {
+                isFixed1AndMin1(bouqet[0].price)
             } else {
                 null
             }
         } else {
-            setAppPrice(bouqet[0].price)
-            if (bouqet[0].min == 1 && bouqet[0].max == 1) {
-                if (isFixed == 0) {
-                    isFixed0AndMin1(bouqet[0].price)
-                } else if (isFixed == 1) {
-                    isFixed1AndMin1(bouqet[0].price)
-                } else {
-                    null
-                }
-            } else {
-                null
-            }
+            null
         }
+
         setMin(bouqet[0].min)
         setMax(bouqet[0].max)
     }
@@ -136,8 +118,16 @@ export default function AppsForm({ application }) {
         setQyt("1")
         const value = ((price * valuePrice) / 100) + parseInt(valuePrice)
         setSendAmount(valuePrice)
-        setAmount(value)
-        valdutionAmount(value)
+
+        if (isDecimal(value)) {
+            let newValue = roundNumber(value)
+
+            setAmount(newValue +1)
+            valdutionAmount(newValue +1)
+        } else {
+            setAmount(value)
+            valdutionAmount(value)
+        }
     }
 
     const isFixed0AndMinNot1 = (valueQyt) => {
@@ -145,8 +135,16 @@ export default function AppsForm({ application }) {
             if (min !== 1 || max !== 1) {
                 const value = (((valueQyt * appPrice) * price) / 100) + parseInt((valueQyt * appPrice))
                 setSendAmount(appPrice * valueQyt)
-                valdutionAmount(value)
-                setAmount(value)
+                if (isDecimal(appPrice * valueQyt)) {
+                    let newValue = roundNumber(value)
+                    
+              
+                    setAmount(newValue + 1)
+                    valdutionAmount(newValue +1)
+                } else {
+                    setAmount(value)
+                    valdutionAmount(value)
+                }
             }
         }
     }
@@ -157,8 +155,15 @@ export default function AppsForm({ application }) {
             if (min == 1 && max == 1) {
                 const value = parseInt(price) + parseInt(valuePrice)
                 setSendAmount(valuePrice)
-                valdutionAmount(value)
-                setAmount(value)
+                if (isDecimal(value)) {
+                    let newValue = roundNumber(value)
+   
+                    setAmount(newValue+1)
+                    valdutionAmount(newValue+1)
+                } else {
+                    setAmount(value)
+                    valdutionAmount(value)
+                }
             }
         }
     }
@@ -167,8 +172,15 @@ export default function AppsForm({ application }) {
             if (min !== 1 || max !== 1) {
                 const value = (appPrice * qyt) + price
                 setSendAmount(appPrice * qyt)
-                valdutionAmount(value)
-                setAmount(value)
+                if (isDecimal(value)) {
+                    let newValue = roundNumber(value)
+
+                    setAmount(newValue+1)
+                    valdutionAmount(newValue+1)
+                } else {
+                    setAmount(value)
+                    valdutionAmount(value)
+                }
             }
         }
     }
@@ -227,43 +239,43 @@ export default function AppsForm({ application }) {
         e.preventDefault()
 
 
-        await axios.request(
-            {
-                url: `${baseUrl}pay-application-pay`,
-                method: "post",
-                headers: {
-                    "Accept": "application/json",
-                    Authorization: `Bearer ${Cookies.get('token')}`,
-                },
-                data: {
-                    customer_name: user.name,
-                    amount: sendAmount,
-                    action: "payment",
-                    product_id: productId,
-                    player_id: id,
-                    qty: qyt,
-                    type: type,
-                    bundle: bundellName
-                }
-            }
-        )
-            .then(res => {
-                setSubmit(false)
-                setApp("")
-                setQyt("")
-                setAmount('')
-                setSendAmount("")
-                setProductId("")
-                setId("")
-                setMax(1)
+        // await axios.request(
+        //     {
+        //         url: `${baseUrl}pay-application-pay`,
+        //         method: "post",
+        //         headers: {
+        //             "Accept": "application/json",
+        //             Authorization: `Bearer ${Cookies.get('token')}`,
+        //         },
+        //         data: {
+        //             customer_name: user.name,
+        //             amount: sendAmount,
+        //             action: "payment",
+        //             product_id: productId,
+        //             player_id: id,
+        //             qty: qyt,
+        //             type: type,
+        //             bundle: bundellName
+        //         }
+        //     }
+        // )
+        //     .then(res => {
+        //         setSubmit(false)
+        //         setApp("")
+        //         setQyt("")
+        //         setAmount('')
+        //         setSendAmount("")
+        //         setProductId("")
+        //         setId("")
+        //         setMax(1)
 
-                toast.success("تمت العملية بنجاح سوف يتم مراجعة الطلب")
+        //         toast.success("تمت العملية بنجاح سوف يتم مراجعة الطلب")
 
-            })
-            .catch(e => {
-                toast.error("فشلت العملية")
-                setSubmit(false)
-            })
+        //     })
+        //     .catch(e => {
+        //         toast.error("فشلت العملية")
+        //         setSubmit(false)
+        //     })
 
     }
 

@@ -282,7 +282,7 @@ export default function KaziehForm({ fetchData, kazieh }) {
         .then((res) => {
           toast.success("تمت العملية بنجاح");
           getBalanses();
-          fetchData();
+          fetchData(1);
           setErrors({
             quantity: "",
             phone: "",

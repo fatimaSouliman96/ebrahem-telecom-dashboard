@@ -52,7 +52,7 @@ export default function AddBalanceForm({ fetchData }) {
 
   const handleChangeAmount = (e) => {
     const value = e.target.value;
-    if (value > 0) {
+  
       if (value > state.balance) {
         dispatch({ type: "SET_ERRORS", payload: { amount: `لا يوجد رصيد كافي رصيدك ${state.balance}` } });
         dispatch({ type: "SET_AMOUNT", payload: "" });
@@ -60,9 +60,7 @@ export default function AddBalanceForm({ fetchData }) {
         dispatch({ type: "SET_ERRORS", payload: { amount: "" } });
         dispatch({ type: "SET_AMOUNT", payload: value });
       }
-    } else {
-      dispatch({ type: "SET_AMOUNT", payload: "" });
-    }
+
   };
 
   const handleChangeAmountConf = (e) => {
@@ -83,7 +81,7 @@ export default function AddBalanceForm({ fetchData }) {
 
   const handleChangeCridet = (e) => {
     const value = e.target.value;
-    if (value > 0) {
+   
       if (value > state.cridetbalance) {
         dispatch({ type: "SET_ERRORS", payload: { cridet: `لا يوجد رصيد كافي رصيدك ${state.cridetbalance}` } });
         dispatch({ type: "SET_CRIDET", payload: "" });
@@ -91,9 +89,7 @@ export default function AddBalanceForm({ fetchData }) {
         dispatch({ type: "SET_ERRORS", payload: { cridet: "" } });
         dispatch({ type: "SET_CRIDET", payload: value });
       }
-    } else {
-      dispatch({ type: "SET_CRIDET", payload: "" });
-    }
+ 
   };
 
   const handleChangeCridetConf = (e) => {
@@ -159,7 +155,7 @@ export default function AddBalanceForm({ fetchData }) {
       });
 
       toast.success("تمت اضافة الرصيد بنجاح");
-      fetchData();
+      fetchData(0);
       getBalances();
 
       // reset fields
@@ -201,10 +197,10 @@ export default function AddBalanceForm({ fetchData }) {
           </select>
         </div>
         <div className="flex flex-col gap-3 w-1/2">
-          <label htmlFor="point" className="text-xs font-medium">كمية الرصيد  <span className="text-red-600">*</span>
+          <label htmlFor="point" className="text-xs font-medium">كمية الرصيد  
           </label>
           <input
-            required
+            
             type="number"
             name="point"
             id="point"
@@ -217,10 +213,10 @@ export default function AddBalanceForm({ fetchData }) {
         </div>
 
         <div className="flex flex-col gap-3 w-1/2">
-          <label htmlFor="ammount" className="text-xs font-medium">تأكيد كمية الرصيد  <span className="text-red-600">*</span>
+          <label htmlFor="ammount" className="text-xs font-medium">تأكيد كمية الرصيد 
           </label>
           <input
-            required
+            
             type="number"
             name="ammount"
             id="ammount"
@@ -236,10 +232,10 @@ export default function AddBalanceForm({ fetchData }) {
 
       <div className="flex w-full justify-between gap-4">
         <div className="flex flex-col gap-3 w-1/2">
-          <label htmlFor="cridet" className="text-xs font-medium">رصيد ائتماني <span className="text-red-600">*</span>
+          <label htmlFor="cridet" className="text-xs font-medium">رصيد ائتماني 
           </label>
           <input
-            required
+            
             type="number"
             name="cridet"
             id="cridet"
@@ -252,10 +248,10 @@ export default function AddBalanceForm({ fetchData }) {
         </div>
 
         <div className="flex flex-col gap-3 w-1/2">
-          <label htmlFor="cridetConf" className="text-xs font-medium">تأكيد رصيد ائتماني <span className="text-red-600">*</span>
+          <label htmlFor="cridetConf" className="text-xs font-medium">تأكيد رصيد ائتماني 
           </label>
           <input
-            required
+            
             type="number"
             name="cridetConf"
             id="cridetConf"

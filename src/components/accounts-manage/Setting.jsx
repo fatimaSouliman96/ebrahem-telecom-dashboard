@@ -48,7 +48,7 @@ export default function Setting({ id }) {
             setSetting(res.data);
             setSubmit(false)
         } catch (e) {
-            console.log(e);
+         
             setSubmit(false)
             toast.error("فشل في جلب البيانات");
         }

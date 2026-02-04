@@ -18,9 +18,9 @@ export default function Permitions() {
       const response = await axios.post(`${baseUrl}`, userPermissions, {
         headers: {},
       });
-      console.log(response);
+    
     } catch (error) {
-      console.log(error);
+     
     }
   };
   return (

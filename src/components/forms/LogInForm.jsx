@@ -17,7 +17,9 @@ export default function LogInForm({ setSubmit }) {
 
   const handleRememberMe = (e) => {
     if (e.target.checked) {
-      localStorage.setItem("name", name);
+      localStorage.setItem("remember", true);
+    } else {
+      localStorage.setItem("remember", false);
     }
   };
 
@@ -57,7 +59,7 @@ export default function LogInForm({ setSubmit }) {
       const token = response.data.data.token;
       Cookies.set("token", token, { expires: 90, secure: true });
       localStorage.setItem("user", JSON.stringify(response.data.data.user));
-      navigate("/", { state: { remember: true } });
+      navigate("/dashboard", { state: { remember: true } });
     } catch (error) {
       toast.error("فشل تسجيل الدخول");
       if (error.response?.status === 404) {

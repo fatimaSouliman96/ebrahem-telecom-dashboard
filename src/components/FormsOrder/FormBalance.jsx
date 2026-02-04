@@ -16,7 +16,7 @@ export default function FormBalance({ fetchData, mobile }) {
   const [pricesData, setPricesData] = useState()
   const [topUpType, setTopUpType] = useState("")
   const [company, setCompany] = useState("")
-  const [orderType, setOrderType] = useState("")
+  // const [orderType, setOrderType] = useState("")
   const [amount, setAmount] = useState()
   const [quantity, setQuantity] = useState()
   const [code, setCode] = useState()
@@ -181,15 +181,15 @@ export default function FormBalance({ fetchData, mobile }) {
     setCompany(e.target.value)
   }
 
-  const handleChangeOrderType = (e) => {
-    setPrices(false)
-    setErrors({
-      quantity: "",
-      phone: "",
-      amount: ""
-    })
-    setOrderType(e.target.value)
-  }
+  // const handleChangeOrderType = (e) => {
+  //   setPrices(false)
+  //   setErrors({
+  //     quantity: "",
+  //     phone: "",
+  //     amount: ""
+  //   })
+  //   setOrderType(e.target.value)
+  // }
 
   const fetchPrices = async (e) => {
     setPricesData()
@@ -200,7 +200,7 @@ export default function FormBalance({ fetchData, mobile }) {
     setAmount("")
 
     if (user.roles[0].name !== "pointOfSale") {
-      if (topUpType !== "" && company !== "" && orderType !== "") {
+      if (topUpType !== "" && company !== "" ) {
         getPrices()
       }
     } else {
@@ -216,7 +216,7 @@ export default function FormBalance({ fetchData, mobile }) {
     setPrices(true)
 
     const formData = new FormData()
-    user.roles[0].name !== "pointOfSale" && formData.append("order_type", orderType)
+
     formData.append("_method", "get")
     await axios.request({
       url: `${baseUrl}${user.roles[0].name == "pointOfSale" ? "" : "NewOutdoorOrder/"}getRetailPrices`,
@@ -232,7 +232,7 @@ export default function FormBalance({ fetchData, mobile }) {
         if (topUpType !== "prepaid") {
 
           const selectedPrice = res.data.prices.find(ele => ele.company === company && ele.top_up_type === topUpType);
-          console.log(selectedPrice)
+   
           localStorage.setItem("minimum", selectedPrice.minimum)
           setPrice(selectedPrice.price);
           setIsFixed(selectedPrice.is_fixed);
@@ -257,7 +257,6 @@ export default function FormBalance({ fetchData, mobile }) {
 
   const handleSubmit = async (e) => {
 
-    console.log(errors)
     e.preventDefault();
 
 
@@ -292,7 +291,7 @@ export default function FormBalance({ fetchData, mobile }) {
         .then(res => {
           toast.success("تمت العملية بنجاح")
           getBalanses()
-          fetchData()
+          fetchData(1)
           setErrors({
             quantity: "",
             phone: "",
@@ -364,7 +363,7 @@ export default function FormBalance({ fetchData, mobile }) {
               </select>
             </div>
             {/* نوع الطلب */}
-            {user.roles[0].name !== "pointOfSale" &&
+            {/* {user.roles[0].name !== "pointOfSale" &&
               <div className="flex flex-col gap-3 col-span-1 h-[110px]">
                 <label htmlFor="point" className="text-xs font-medium">
                   نوع الطلب
@@ -383,7 +382,7 @@ export default function FormBalance({ fetchData, mobile }) {
                   <option value={"retail"}>مفرق</option>
                   <option value={"wholesale"}>جملة</option>
                 </select>
-              </div>}
+              </div>} */}
 
             <div
               onClick={e => fetchPrices(e)}

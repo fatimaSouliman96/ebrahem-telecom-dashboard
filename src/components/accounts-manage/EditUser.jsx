@@ -40,7 +40,7 @@ export default function EditUser({ handleClose, user, rollesName, fetchData }) {
         then(res => {
           toast.success("تم تعديل المستخدم بنجاح")
           setSubmit(false)
-          fetchData()
+          fetchData(0)
           handleClose()
         })
       console.log(response);

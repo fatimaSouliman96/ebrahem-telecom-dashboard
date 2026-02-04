@@ -40,7 +40,7 @@ export default function RejectProcess({ setState, fetchData, data, close, setRej
 
     )
       .then((res) => {
-        fetchData()
+        fetchData(1)
         close(false)
       }).catch(e => {
         setSubmit(false)

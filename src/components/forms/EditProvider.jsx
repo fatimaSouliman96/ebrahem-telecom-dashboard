@@ -2,7 +2,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { IOSSwitch } from '../elements/SwitchItem'
 import axios from 'axios'
 import { baseUrl } from '../../constants/baseUrl'
@@ -11,14 +11,16 @@ import toast from 'react-hot-toast'
 
 export default function EditProvider({ data, fetchData, close }) {
 
+
   const id = data?.id
   const [submit, setSubmit] = useState(false)
   const [name, setName] = useState(data.name)
 
   const [fixedValue, setFixedValue] = useState(data.is_active)
- 
- 
- 
+
+
+
+
   const handleCahngeName = (e) => {
     setName(e.target.value)
   }
@@ -29,32 +31,34 @@ export default function EditProvider({ data, fetchData, close }) {
     } else {
       setFixedValue(0)
     }
-    SetSendBillType()
+
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmit(true)
-     let data = {
-        name: name,
-        is_active: fixedValue,
-  
+    let data = {
+      name: name,
+      is_active: fixedValue,
+
     }
-   
+
     await axios.request({
       url: `${baseUrl}isp/edit/${id}`,
       method: "POST",
-        data: data,
-        headers: {
-          "Accept": "application/json",
-          Authorization: `Bearer ${Cookies.get('token')}`,
+      data: data,
+      headers: {
+        "Accept": "application/json",
+        Authorization: `Bearer ${Cookies.get('token')}`,
       }
     })
       .then(res => {
+        
         setSubmit(false)
         toast.success("تم التعديل بنجاح")
-        fetchData()
         close()
+        fetchData()
+
       })
       .catch(e => {
         e && toast.error("فشلت العملية")
@@ -81,7 +85,7 @@ export default function EditProvider({ data, fetchData, close }) {
 
       <div className="flex items-center  w-full text-right">
         <label htmlFor="amount" className="text-xs font-medium">
-           مفعل
+          مفعل
         </label>
         {
           fixedValue == 0 ?

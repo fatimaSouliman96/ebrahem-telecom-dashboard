@@ -42,10 +42,11 @@ export default function Processing({ setState, fetchData, data, setReject, chang
         )
             .then((res) => {
                 close(false)
-                fetchData()
+                fetchData(1)
                 changeStatus("completed")
                 setState("completed")
                 setSubmit(false)
+
 
                 toast.success("تمت العملية بنجاح")
             }).catch(e => {

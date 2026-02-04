@@ -31,7 +31,7 @@ export default function WatingPay({ fetchData, data, changeStatus }) {
 
     )
       .then((res) => {
-        fetchData()
+        fetchData(1)
         changeStatus("processing")
       }).catch(e => {
         setSubmit(false)

@@ -46,7 +46,7 @@ export default function Transfer() {
 
     })
       .catch(e => {
-          setLoading(false)
+        setLoading(false)
         toast.error("Faild to load data")
         setError(true)
       })

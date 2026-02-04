@@ -85,7 +85,7 @@ export default function CreditForm({ users, fetchData }) {
       fetchBalances();
       toast.success('تمت اضافة الرصيد بنجاح');
       getBalanses();
-      fetchData();
+      fetchData(0);
       dispatch({ type: 'RESET_FORM' });
     } catch (e) {
       toast.error('فشل في الإرسال');

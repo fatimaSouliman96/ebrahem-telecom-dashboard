@@ -28,13 +28,13 @@ export default function LogOut(props) {
     )
       .then((res) => {
         localStorage.removeItem("token")
-        localStorage.removeItem("name")
-        navigate("/log_in")
+        localStorage.removeItem("remember")
+        navigate("/")
 
       })
       .catch(e => {
         setLogOut(false)
-        navigate("/log_in")
+        navigate("/")
       })
 
 

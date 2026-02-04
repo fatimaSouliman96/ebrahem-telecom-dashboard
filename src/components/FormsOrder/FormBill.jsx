@@ -20,7 +20,7 @@ export default function FormBill({ fetchData, setting }) {
   const [errors, setErrors] = useState({
     amount: ""
   })
-  const [orderType, setOrderType] = useState()
+  // const [orderType, setOrderType] = useState()
   const [barCode, setBarCode] = useState()
   const [subscription, setSubscription] = useState()
   const [number, setNumber] = useState()
@@ -88,9 +88,9 @@ export default function FormBill({ fetchData, setting }) {
   const handleChangeNumber = (e) => {
     setNumber(e.target.value)
   }
-  const handleChangeOrderType = (e) => {
-    setOrderType(e.target.value)
-  }
+  // const handleChangeOrderType = (e) => {
+  //   setOrderType(e.target.value)
+  // }
   const handleChangeBillType = (e) => {
     setBillType(e.target.value)
   }
@@ -152,7 +152,6 @@ export default function FormBill({ fetchData, setting }) {
             barcode_number: barCode,
             customer_name: name,
             amount: amount,
-            order_type: orderType,
             action: "payment"
           })
         break;
@@ -173,7 +172,6 @@ export default function FormBill({ fetchData, setting }) {
             subscription_number: subscription,
             customer_name: name,
             amount: amount,
-            order_type: orderType,
             action: "payment"
           })
         break;
@@ -195,7 +193,6 @@ export default function FormBill({ fetchData, setting }) {
             static_IP: staticId,
             customer_name: name,
             amount: amount,
-            order_type: orderType,
             bundle: Id,
             action: "payment"
           })
@@ -213,7 +210,6 @@ export default function FormBill({ fetchData, setting }) {
             number: number,
             customer_name: name,
             amount: amount,
-            order_type: orderType,
             action: "payment"
           })
         break;
@@ -238,7 +234,7 @@ export default function FormBill({ fetchData, setting }) {
     ).then((res) => {
       toast.success("تمت  العملية بنجاح")
       getBalanses()
-      user.roles[0].name !== "pointOfSale" && fetchData()
+      user.roles[0].name !== "pointOfSale" && fetchData(1)
       setAmount("")
       setBarCode("")
       setCity("")
@@ -491,7 +487,7 @@ export default function FormBill({ fetchData, setting }) {
           {errors.amount !== "" && <p className='text-red-600'>{errors.amount}</p>}
         </div> : null}
         {/* order type */}
-        {user.roles[0].name !== "pointOfSale" ||
+        {/* {user.roles[0].name !== "pointOfSale" ||
           user.roles[0].name !== "pointOfSale" ?
           <div className="flex flex-col gap-3 ">
             <label htmlFor="city" className="text-xs font-medium">
@@ -511,7 +507,7 @@ export default function FormBill({ fetchData, setting }) {
               <option value={"wholesale"}>جملة</option>
               <option value={"private"}>خاص</option>
             </select>
-          </div> : null}
+          </div> : null} */}
       </div>
 
       <button

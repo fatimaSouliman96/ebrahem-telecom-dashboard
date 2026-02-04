@@ -1,5 +1,5 @@
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { Navbar, ModalPob, LogOut, SideBar } from "./components";
 import Results from "./components/results/Results";
@@ -25,9 +25,7 @@ function BuggyComponent() {
 }
 
 function App() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const name = localStorage.getItem("name");
+  
 
   const [searchResults, setSearchResults] = useState([]);
   const [openResults, setOpenResults] = useState(false);
@@ -55,15 +53,7 @@ function App() {
   const handleOpenLogOut = () => setOpenLogOut(true);
   const handleCloseLogOut = () => setOpenLogOut(false);
 
-  useEffect(() => {
-    if (name == null) {
-      if (location?.state?.remember == false || location?.state?.remember == true) {
-        return;
-      } else {
-        navigate("/log_in");
-      }
-    }
-  }, []);
+ 
 
   return (
     <ErrorBoundary

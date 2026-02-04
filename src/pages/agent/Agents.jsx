@@ -15,10 +15,7 @@ export default function Agents() {
 
   const [orders, setOrders] = useState(false)
   const [dataOparation, setDataOparation] = useState()
-  const [dataOrders, setDataOrders] = useState()
   const [users, setUsers] = useState([])
-  const [balance, setBalance] = useState()
-  const [cirdet, setCirdet] = useState()
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -27,7 +24,7 @@ export default function Agents() {
     axios.request(
       {
         method: "get",
-        url: `${baseUrl}agent/view-cash`,
+        url: `${baseUrl}agent/view-cash?page=1`,
         headers: {
           "Accept": "application/json",
           Authorization: `Bearer ${Cookies.get('token')}`,
@@ -35,8 +32,8 @@ export default function Agents() {
       }
     ).then((res) => {
       setLoading(false)
-      setDataOparation(res.data.cashRequestBills.filter(ele => ele.status == "pending"))
-      setDataOrders(res.data.cashRequestBills.filter(ele => ele.status == "rejected" || ele.status == "processing" || ele.status == "completed"))
+      setDataOparation(res.data.data.filter(ele => ele.status == "pending"))
+      // setDataOrders(res.data.cashRequestBills.filter(ele => ele.status == "rejected" || ele.status == "processing" || ele.status == "completed"))
       setUsers(res.data.users)
 
     })

@@ -20,6 +20,7 @@ export default function Providers() {
 
 
   const fetchData = async () => {
+    console.log("kk")
     setLoading(true)
     await axios.request(
       {
