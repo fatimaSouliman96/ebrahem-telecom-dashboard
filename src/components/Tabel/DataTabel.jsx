@@ -90,17 +90,18 @@ const DataTable = ({
   const [billName, setBillName] = useState()
   const [stutas, setStutas] = useState()
   const [page, setPage] = useState(1)
+  const all = Math.ceil(total / 10);
 
-  const getPaginationRange = (current, total) => {
+  const getPaginationRange = (current, all) => {
     const delta = 2;
     const range = [];
     const rangeWithDots = [];
     let last;
 
-    for (let i = 1; i <= total; i++) {
+    for (let i = 1; i <= all; i++) {
       if (
         i === 1 ||
-        i === total ||
+        i === all ||
         (i >= current - delta && i <= current + delta)
       ) {
         range.push(i);
@@ -122,7 +123,7 @@ const DataTable = ({
     return rangeWithDots;
   };
   const handlePageChange = (newPage) => {
-    if (newPage < 1 || newPage > total) return;
+    if (newPage < 1 || newPage > all) return;
 
     setPage(newPage);
 
@@ -208,7 +209,7 @@ const DataTable = ({
   const closeDetailsfinincal = () => {
     setOpenDetailsfinincal(false)
   }
- 
+
 
 
   const handelStateUser = async (e, id) => {
@@ -231,14 +232,14 @@ const DataTable = ({
 
       )
         .then(res => {
-          fetchData()
+          fetchData(0)
           toast.success("تم  تعطيل الحساب بنجاح")
           setSubmit(false)
         })
         .catch(e => {
           toast.error("فشلت العملية")
           setSubmit(false)
-          navigate(0)
+
         })
 
     } else {
@@ -288,7 +289,7 @@ const DataTable = ({
 
       )
         .then(res => {
-          fetchData()
+          fetchData(0)
           toast.success("تمت العملية بنجاح")
           setSubmit(false)
         })
@@ -372,7 +373,7 @@ const DataTable = ({
 
   }
 
-   const extendedColumns = useTableColumns({
+  const extendedColumns = useTableColumns({
     columns,
     accountsPage,
     transferPage,
@@ -547,26 +548,25 @@ const DataTable = ({
         <CircularProgress />
       </div>
 
-      {total&&<div className="flex" >
+      {all ? <div className="flex" >
         <p>
           عدد الصفحات :
         </p>
-        {total}
-      </div>}
-      {total&&<div className="flex" >
-        الصفحة {page} من  {total}
-      </div>}
+        {all}
+      </div> : null}
+      {all ? <div className="flex" >
+        الصفحة {page} من  {all}
+      </div> : null}
+      {all ? <div className="flex items-center justify-center gap-2 mt-6">
 
-      {total && <div className="flex items-center justify-center gap-2 mt-6">
-
-        {/* السابق */}
+       
         <ArrowBackIos
           className={`cursor-pointer ${page === 1 && "opacity-50 pointer-events-none"}`}
           onClick={() => handlePageChange(page - 1)}
         />
 
-        {/* أرقام الصفحات */}
-        {getPaginationRange(page, total).map((item, index) =>
+       
+        {getPaginationRange(page, all).map((item, index) =>
           item === "..." ? (
             <span key={index} className="px-2">...</span>
           ) : (
@@ -585,13 +585,12 @@ const DataTable = ({
           )
         )}
 
-        {/* التالي */}
+      
         <ArrowForwardIos
-          className={`cursor-pointer ${page === total && "opacity-50 pointer-events-none"}`}
+          className={`cursor-pointer ${page === all && "opacity-50 pointer-events-none"}`}
           onClick={() => handlePageChange(page + 1)}
         />
-      </div>}
-
+      </div> : null}
 
     </div>
 

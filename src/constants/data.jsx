@@ -62,7 +62,7 @@ export const billStatus = [
   },
   {
     en: "rejected",
-  
+
     ar: "مرفوضة"
   },
   {
@@ -145,7 +145,7 @@ export const permissions = [
     ar: "كشف حساب",
     roles: ["generalManager", "employee"]
   },
-  
+
   {
     en: "mangSerAndPriceBalance",
     ar: "ادارة خدمات و اسعار",
@@ -164,7 +164,7 @@ export const permissions = [
   {
     en: "permissionsAssignment",
     ar: "تعيين الأذونات",
-    roles: [ "generalManager" ]
+    roles: ["generalManager"]
   },
   {
     en: "enableAgents",
@@ -247,7 +247,7 @@ export const OperationsColumns = [
     width: 100,
     renderCell: (params) => {
       return (
-         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
+        <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
       );
     },
   },
@@ -610,7 +610,7 @@ export const finincialColumns = [
     width: 100,
     renderCell: (params) => {
       return (
-         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.base_amount))} L.S</p>
+        <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.base_amount))} L.S</p>
       );
     },
   },
@@ -621,7 +621,7 @@ export const finincialColumns = [
     width: 100,
     renderCell: (params) => {
       return (
-         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
+        <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
       );
     },
   },
@@ -633,9 +633,9 @@ export const finincialColumns = [
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">
-          {params.row.unit_price ? params.row.unit_price + "" + "Unit" 
-          : params.row.special_client_unit_prices ? params.row.special_client_unit_prices + "" + "Unit"
-          : "_"}
+          {params.row.unit_price ? params.row.unit_price + "" + "Unit"
+            : params.row.special_client_unit_prices ? params.row.special_client_unit_prices + "" + "Unit"
+              : "_"}
         </p>
       );
     },
@@ -936,7 +936,7 @@ export const OrdersColumns = [
     width: 100,
     renderCell: (params) => {
       return (
-         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
+        <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
       );
     },
   },
@@ -947,7 +947,7 @@ export const OrdersColumns = [
     width: 100,
     renderCell: (params) => {
       return (
-         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.base_amount))} L.S</p>
+        <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.base_amount))} L.S</p>
       );
     },
   },
@@ -1001,7 +1001,7 @@ export const OrdersColumns = [
       );
     },
   },
-   {
+  {
     field: "source",
     type: "string",
     headerName: " مصدر الطلب",
@@ -1010,12 +1010,12 @@ export const OrdersColumns = [
     renderCell: (params) => {
       return (
         <p>
-          {params.row.billable?.source ?  
-          params.row?.billable?.source == "mobile" ?
-          "موبايل"
-          :
-          "كازية"
-           :  "_"  }
+          {params.row.billable?.source ?
+            params.row?.billable?.source == "mobile" ?
+              "موبايل"
+              :
+              "كازية"
+            : "_"}
         </p>
       );
     },
@@ -1137,7 +1137,7 @@ export const inquriesColumns = [
     width: 100,
     renderCell: (params) => {
       return (
-         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
+        <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
       );
     },
   },
@@ -1191,7 +1191,7 @@ export const inquriesColumns = [
       );
     },
   },
-   {
+  {
     field: "source",
     type: "string",
     headerName: " مصدر الطلب",
@@ -1200,12 +1200,12 @@ export const inquriesColumns = [
     renderCell: (params) => {
       return (
         <p>
-          {params.row.billable?.source ?  
-          params.row?.billable?.source == "mobile" ?
-          "موبايل"
-          :
-          "كازية"
-           :  "_"  }
+          {params.row.billable?.source ?
+            params.row?.billable?.source == "mobile" ?
+              "موبايل"
+              :
+              "كازية"
+            : "_"}
         </p>
       );
     },
@@ -1245,7 +1245,7 @@ export const addBalanceColumns = [
       return (
         <p className="font-extrabold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>{
           params.row.creditAmount !== null ?
-          NumberDisplay(parseInt(params.row.creditAmount)) + "" + "L.S"
+            NumberDisplay(parseInt(params.row.creditAmount)) + "" + "L.S"
             : "_"
         }</p>
       );
@@ -1410,7 +1410,7 @@ export const listColumns = [
       );
     },
   },
-  
+
 ]
 export const pricesListBillsColumns = [
   {
@@ -1561,6 +1561,19 @@ export const pricesSpecialColumns = [
       );
     },
   },
+   {
+    field: "minimum",
+    type: "string",
+    headerName: "الحد الادنى",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
+          {NumberDisplay(parseInt(params.row.minimum))} L.S</p>
+      );
+    },
+  },
+
 
 ];
 
@@ -1612,6 +1625,18 @@ export const pricesBillsSpecialColumns = [
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
           {NumberDisplay(parseInt(params.row.price))} L.S</p>
+      );
+    },
+  },
+  {
+    field: "minimum",
+    type: "string",
+    headerName: "الحد الادنى",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
+          {NumberDisplay(parseInt(params.row.minimum))} L.S</p>
       );
     },
   },
@@ -1686,7 +1711,7 @@ export const AccountColumns = [
     width: 100,
     renderCell: (params) => {
       return (
-         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
+        <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
       );
     },
   },
@@ -1777,13 +1802,13 @@ export const providersPricesColumns = [
       return (
         <p className="font-semibold text-[#202224]/80 ">
           {
-            params.row.price 
+            params.row.price
           }
         </p>
       );
     },
   }
- 
+
 ];
 
 export const providersColumns = [
@@ -1820,22 +1845,22 @@ export const providersColumns = [
         <p className="font-semibold text-[#202224]/80 ">
           {
             params.row.is_active == 1 ?
-            <div className="flex items-center gap-1" >
-               <div className="w-2 h-2 rounded bg-green-500" ></div>
-              <p>مفعل</p>
-             
-            </div>
-            :
-             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded bg-red-500" ></div>
-              <p>غير مفعل</p>
-              
-            </div>
+              <div className="flex items-center gap-1" >
+                <div className="w-2 h-2 rounded bg-green-500" ></div>
+                <p>مفعل</p>
+
+              </div>
+              :
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded bg-red-500" ></div>
+                <p>غير مفعل</p>
+
+              </div>
           }
         </p>
       );
     },
-  } 
+  }
 ];
 export const appsColumns = [
 
@@ -1885,7 +1910,7 @@ export const appsPricesColumns = [
         </p>
       );
     },
-  }, 
+  },
   {
     field: "name",
     headerName: "الباقة",
@@ -1897,7 +1922,7 @@ export const appsPricesColumns = [
         </p>
       );
     },
-  }, 
+  },
   {
     field: "price",
     headerName: "السعر",

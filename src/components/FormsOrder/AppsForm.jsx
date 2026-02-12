@@ -5,9 +5,12 @@ import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
 import CircularProgress from "@mui/material/CircularProgress";;
 import { fetchBalances } from '../../services/getBalances';
+import ModalPob from '../Modals/Modal';
+import DiscountedAmount from '../elements/DiscountedAmount';
 
 export default function AppsForm({ application }) {
 
+    const [open, setOpen] = useState(false)
     const [submit, setSubmit] = useState(false)
     const [app, setApp] = useState("")
     const [id, setId] = useState()
@@ -22,7 +25,7 @@ export default function AppsForm({ application }) {
     const [allApps, setAllApps] = useState([])
     const [bouquets, setBouquets] = useState([])
     const [bundellName, setBundellName] = useState()
-
+    const [data, setData] = useState()
     const [min, setMin] = useState(1)
     const [max, setMax] = useState(1)
     const [type, setType] = useState()
@@ -32,11 +35,13 @@ export default function AppsForm({ application }) {
 
     const [balance, setBalance] = useState();
 
+    const handleStateOpen = () => {
+        setOpen(!open)
+    }
     const getBalanses = async () => {
         const res = await fetchBalances();
         setBalance(res.main_balance);
     };
-
 
     const user = JSON.parse(localStorage.getItem("user"))
 
@@ -121,26 +126,25 @@ export default function AppsForm({ application }) {
 
         if (isDecimal(value)) {
             let newValue = roundNumber(value)
-
-            setAmount(newValue +1)
-            valdutionAmount(newValue +1)
+            setAmount(newValue + 1)
+            valdutionAmount(newValue + 1)
         } else {
             setAmount(value)
             valdutionAmount(value)
         }
     }
-
     const isFixed0AndMinNot1 = (valueQyt) => {
         if (isFixed == 0) {
             if (min !== 1 || max !== 1) {
-                const value = (((valueQyt * appPrice) * price) / 100) + parseInt((valueQyt * appPrice))
+                let bundleValue = valueQyt * appPrice
+                let x = bundleValue * price
+                let y =  (x / 100)
+                const value = y + bundleValue
                 setSendAmount(appPrice * valueQyt)
                 if (isDecimal(appPrice * valueQyt)) {
                     let newValue = roundNumber(value)
-                    
-              
-                    setAmount(newValue + 1)
-                    valdutionAmount(newValue +1)
+                    setAmount(newValue)
+                    valdutionAmount(newValue)
                 } else {
                     setAmount(value)
                     valdutionAmount(value)
@@ -148,7 +152,6 @@ export default function AppsForm({ application }) {
             }
         }
     }
-
     const isFixed1AndMin1 = (valuePrice) => {
         setQyt("1")
         if (isFixed == 1) {
@@ -157,9 +160,9 @@ export default function AppsForm({ application }) {
                 setSendAmount(valuePrice)
                 if (isDecimal(value)) {
                     let newValue = roundNumber(value)
-   
-                    setAmount(newValue+1)
-                    valdutionAmount(newValue+1)
+
+                    setAmount(newValue + 1)
+                    valdutionAmount(newValue + 1)
                 } else {
                     setAmount(value)
                     valdutionAmount(value)
@@ -170,13 +173,13 @@ export default function AppsForm({ application }) {
     const isFixed1AndMinNot1 = () => {
         if (isFixed == 1) {
             if (min !== 1 || max !== 1) {
-                const value = (appPrice * qyt) + price
+                let x = (appPrice * qyt)
+                const value = x + price
                 setSendAmount(appPrice * qyt)
                 if (isDecimal(value)) {
                     let newValue = roundNumber(value)
-
-                    setAmount(newValue+1)
-                    valdutionAmount(newValue+1)
+                    setAmount(newValue + 1)
+                    valdutionAmount(newValue + 1)
                 } else {
                     setAmount(value)
                     valdutionAmount(value)
@@ -186,7 +189,6 @@ export default function AppsForm({ application }) {
     }
 
 
-
     const valdutionAmount = (value) => {
         if (value > parseInt(balance)) {
             setErrorsAmount(`لا يوجد رصيد كافي رصيدك ${balance}`)
@@ -194,6 +196,8 @@ export default function AppsForm({ application }) {
             setErrorsAmount("")
         }
     }
+
+
     const fetchApps = async () => {
         await axios.request(
             {
@@ -231,51 +235,32 @@ export default function AppsForm({ application }) {
 
     }, [])
 
+    const removeValues = () => {
+        setApp("")
+        setQyt("")
+        setAmount('')
+        setSendAmount("")
+        setProductId("")
+        setId("")
+        setMax(1)
+    }
     const onSubmit = async (e) => {
-        console.log("submit ==========")
-        console.log(productId)
-        setSubmit(true)
+        setData({
+            customer_name: user.name,
+            amount: sendAmount,
+            action: "payment",
+            product_id: productId,
+            player_id: id,
+            qty: qyt,
+            type: type,
+            bundle: bundellName
+        })
+
 
         e.preventDefault()
 
+        handleStateOpen()
 
-        // await axios.request(
-        //     {
-        //         url: `${baseUrl}pay-application-pay`,
-        //         method: "post",
-        //         headers: {
-        //             "Accept": "application/json",
-        //             Authorization: `Bearer ${Cookies.get('token')}`,
-        //         },
-        //         data: {
-        //             customer_name: user.name,
-        //             amount: sendAmount,
-        //             action: "payment",
-        //             product_id: productId,
-        //             player_id: id,
-        //             qty: qyt,
-        //             type: type,
-        //             bundle: bundellName
-        //         }
-        //     }
-        // )
-        //     .then(res => {
-        //         setSubmit(false)
-        //         setApp("")
-        //         setQyt("")
-        //         setAmount('')
-        //         setSendAmount("")
-        //         setProductId("")
-        //         setId("")
-        //         setMax(1)
-
-        //         toast.success("تمت العملية بنجاح سوف يتم مراجعة الطلب")
-
-        //     })
-        //     .catch(e => {
-        //         toast.error("فشلت العملية")
-        //         setSubmit(false)
-        //     })
 
     }
 
@@ -410,6 +395,9 @@ export default function AppsForm({ application }) {
                         يمكنك مراجعة المسؤولين
                     </p>
             }
+            <ModalPob open={open} handleClose={handleStateOpen}>
+                <DiscountedAmount removeValues={removeValues} app={true} data={data} amount={amount} handelClose={handleStateOpen} setSubmit={setSubmit} />
+            </ModalPob>
         </>
     )
 }

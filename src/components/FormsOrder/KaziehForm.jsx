@@ -6,50 +6,63 @@ import Cookies from 'js-cookie';
 import { baseUrl } from "../../constants/baseUrl";
 import axios from 'axios'
 import { fetchBalances } from '../../services/getBalances';
+import ModalPob from '../Modals/Modal';
+import DiscountedAmount from '../elements/DiscountedAmount';
 
 
 
 export default function KaziehForm({ fetchData, kazieh }) {
 
   const [submit, setSubmit] = useState(false)
-
-  const [prices, setPrices] = useState(false)
-  const [pricesData, setPricesData] = useState()
+  const [open, setOpen] = useState(false)
+  const [prices, setPrices] = useState(0)
   const [topUpType, setTopUpType] = useState("")
   const [company, setCompany] = useState("")
-  const [orderType, setOrderType] = useState("")
   const [amount, setAmount] = useState()
   const [quantity, setQuantity] = useState()
   const [code, setCode] = useState()
   const [number, setNumber] = useState()
-  const [options, setOptions] = useState([])
   const [price, setPrice] = useState()
-  const [isFixed, setIsFixed] = useState(0)
-  const [partPrice, setPartPrice] = useState()
-  const [newPartPrice, setNewPartPrice] = useState("")
+  const [isFixed, setIsFixed] = useState()
   const [errorsQuantity, setErrorsQuantity] = useState('')
-
+  const [balanceTypes, setBalanceTypes] = useState([
+    {
+      value: "lastpaid",
+      text: "لاحق الدفع"
+    },
+    {
+      value: "prepaid",
+      text: "مسبق الدفع"
+    },
+    {
+      value: "cash",
+      text: "كاش"
+    }
+  ])
   const [errors, setErrors] = useState({
     quantity: errorsQuantity,
     phone: "",
     amount: ""
   })
-
-  const [errorQuantity, setErrorQuantity] = useState("")
-
   const [balance, setBalance] = useState();
+  const [data, setData] = useState()
 
+
+  const isDecimal = (num) => num % 1 !== 0;
+  const roundNumber = num => Math.ceil(num);
+
+  const handleStateOpen = () => {
+    setOpen(!open)
+  }
   const getBalanses = async () => {
     const res = await fetchBalances();
     setBalance(res.main_balance);
   };
-
   useEffect(() => {
     getBalanses();
   }, []);
 
   const user = JSON.parse(localStorage.getItem("user"))
-
 
   const handleChangeQuantity = (e) => {
     setErrors({
@@ -57,33 +70,33 @@ export default function KaziehForm({ fetchData, kazieh }) {
       phone: "",
       amount: ""
     })
-
-    setOptions(e.target.children)
-    if (topUpType == "prepaid") {
-      setAmount(e.target.value)
-      console.log(e.target.value)
-      valueBalance(e.target.value)
-      setQuantity(e.target.value)
-      options?.map(ele => {
-        if (ele.value == e.target.value) {
-          setQuantity(ele.textContent)
-        }
-      })
+    if (e.target.value == "") {
+      setAmount("")
+      setQuantity()
     } else {
-      if (e.target.value == "") {
-        setAmount("")
-        setQuantity()
-      } else {
-        setQuantity(e.target.value)
-        if (!quantityValdate(e.target.value)) {
-          if (isFixed == 0) {
-
-            let x = (e.target.value * parseInt(price)) / 100
-            let amountValue = x + parseInt(e.target.value)
+      setQuantity(e.target.value)
+      if (!quantityValdate(e.target.value)) {
+        if (isFixed == 0) {
+          console.log(e.target.value)
+          let x = (e.target.value * parseInt(price)) / 100
+          console.log(price)
+          let amountValue = x + parseInt(e.target.value)
+          if (isDecimal(amountValue)) {
+            const newValue = roundNumber(amountValue)
+            setAmount(newValue)
+            valueBalance(newValue)
+          } else {
             setAmount(amountValue)
             valueBalance(amountValue)
+          }
+
+        } else {
+          let amountValue = parseInt(e.target.value) + parseInt(price)
+          if (isDecimal(amountValue)) {
+            const newValue = roundNumber(amountValue)
+            setAmount(newValue)
+            valueBalance(newValue)
           } else {
-            let amountValue = parseInt(e.target.value) + parseInt(price)
             setAmount(amountValue)
             valueBalance(amountValue)
           }
@@ -149,7 +162,7 @@ export default function KaziehForm({ fetchData, kazieh }) {
 
 
   const handleChangeTopUpType = (e) => {
-    setPrices(false)
+
     setErrors({
       quantity: "",
       phone: "",
@@ -161,7 +174,6 @@ export default function KaziehForm({ fetchData, kazieh }) {
   }
 
   const handleChangeCompany = (e) => {
-    setPrices(false)
     setErrors({
       quantity: "",
       phone: "",
@@ -170,48 +182,45 @@ export default function KaziehForm({ fetchData, kazieh }) {
     localStorage.setItem("company", e.target.value)
     localStorage.setItem("minimum", "")
     setCompany(e.target.value)
+    if (e.target.value == "MTN") {
+      setBalanceTypes([
+        {
+          value: "lastpaid",
+          text: "لاحق الدفع"
+        },
+        {
+          value: "prepaid",
+          text: "مسبق الدفع"
+        }
+      ])
+    }
   }
 
-  const handleChangeOrderType = (e) => {
-    setPrices(false)
-    setErrors({
-      quantity: "",
-      phone: "",
-      amount: ""
-    })
-    setOrderType(e.target.value)
-  }
+
 
   const fetchPrices = async (e) => {
-    setPricesData()
-    e.preventDefault();
-    setErrorQuantity("")
-    setCode("")
-    setNumber("")
-    setQuantity()
-    setAmount("")
-    setPartPrice("")
-    if (user.roles[0].name !== "pointOfSale") {
-      if (topUpType !== "" && company !== "" && orderType !== "") {
-        getPrices()
-      }
+
+    if (company !== "" & topUpType !== "") {
+      setPrices(2)
+      e.preventDefault();
+      setCode("")
+      setNumber("")
+      setQuantity()
+      setAmount("")
+      getPrices()
     } else {
-      if (topUpType !== "" && company !== "") {
-        getPrices()
-      }
+      toast.error("الرجاء ملئ الحقول اولا")
     }
+
   }
 
   const getPrices = async (e) => {
 
-
-    setPrices(true)
-
     const formData = new FormData()
-    user.roles[0].name !== "pointOfSale" && formData.append("order_type", orderType)
+    // user.roles[0].name !== "pointOfSale" && formData.append("order_type", orderType)
     formData.append("_method", "get")
     await axios.request({
-      url: `${baseUrl}${user.roles[0].name == "pointOfSale" ? "" : "NewOutdoorOrder/"}getRetailPrices`,
+      url: `${baseUrl}${user.roles[0].name == "pointOfSale" ? "" : "NewOutdoorOrder/"}getRetailPricesKazieh`,
       data: formData,
       method: "post",
       headers: {
@@ -221,20 +230,18 @@ export default function KaziehForm({ fetchData, kazieh }) {
     }
     )
       .then(res => {
-        if (topUpType !== "prepaid") {
 
-          const selectedPrice = res.data.prices.find(ele => ele.company === company && ele.top_up_type === topUpType);
-          console.log(selectedPrice)
-          localStorage.setItem("minimum", selectedPrice.minimum)
-          setPrice(selectedPrice.price);
-          setIsFixed(selectedPrice.is_fixed);
-          setNewPartPrice(selectedPrice.minimum)
-        }
-        setPricesData(res.data.prices);
+
+        const selectedPrice = res.data.prices.find(ele => ele.company === company && ele.top_up_type === topUpType);
+        localStorage.setItem("minimum", selectedPrice.minimum)
+        setPrice(selectedPrice.price);
+        setIsFixed(selectedPrice.is_fixed);
+        setPrices(1)
+
       })
       .catch(e => {
         if (e) {
-          setPrices(false)
+          setPrices(0)
           toast.error("لم ينجح طلب الاسعار الرجاء المحاولة لاحقا")
         }
 
@@ -256,7 +263,7 @@ export default function KaziehForm({ fetchData, kazieh }) {
     }
 
     if (isErrorsEmpty()) {
-      setSubmit(true);
+      handleStateOpen()
       const formData = new FormData();
 
       formData.append("top_up_type", topUpType);
@@ -268,71 +275,34 @@ export default function KaziehForm({ fetchData, kazieh }) {
       // user.roles[0].name !== "pointOfSale" && formData.append("order_type", orderType);
       formData.append("unit_price", amount);
       formData.append("source", "kazieh");
+      setData(formData)
 
-      await axios
-        .request({
-          url: `${baseUrl}${user.roles[0].name == "pointOfSale" ? "" : "NewOutdoorOrder/"}top-up-request`,
-          method: "post",
-          data: formData,
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        })
-        .then((res) => {
-          toast.success("تمت العملية بنجاح");
-          getBalanses();
-          fetchData(1);
-          setErrors({
-            quantity: "",
-            phone: "",
-            amount: "",
-          });
-          setSubmit(false);
-          setTopUpType("");
-          setCompany("");
-          setCode("");
-          setNumber("");
-          setQuantity();
-          setAmount("");
-          setPrices(false)
-        })
-        .catch((e) => {
-          if (e) {
-            setSubmit(false);
-            toast.error(e.response.data.data);
-          }
-        });
+
     }
   };
 
-
+  const removeValues = () => {
+    setTopUpType("");
+    setCompany("");
+    setCode("");
+    setNumber("");
+    setQuantity();
+    setAmount("");
+    setPrices(false)
+  }
+  const setNewBalnces = () => {
+    getBalanses();
+    setErrors({
+      quantity: "",
+      phone: "",
+      amount: "",
+    });
+  }
   return (
     <>
       {kazieh == true ?
         <form className="flex flex-col gap-4 " onSubmit={e => handleSubmit(e)}>
           <div className="grid grid-cols-2  w-full justify-between items-center gap-4">
-            {/* نوع الرصيد */}
-            <div className="flex flex-col gap-3 h-[110px]">
-              <label htmlFor="point" className="text-xs font-medium">
-                نوع الرصيد
-                <span className='text-red-600 text-xs font-medium' >*</span>
-              </label>
-              <select
-                required
-                value={topUpType}
-                onChange={e => handleChangeTopUpType(e)}
-                type="text"
-                name="order"
-                id="point"
-                className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-              >
-                <option > </option>
-                <option value={"lastpaid"}>لاحق الدفع</option>
-                <option value={"prepaid"}>مسبق الدفع</option>
-                <option value={"cash"}>كاش</option>
-              </select>
-            </div>
             {/* الشركة */}
             <div className="flex flex-col gap-3 h-[110px]">
               <label htmlFor="point" className="text-xs font-medium">
@@ -351,10 +321,34 @@ export default function KaziehForm({ fetchData, kazieh }) {
                 <option > </option>
                 <option value={"Syriatel"}>سيرياتيل</option>
                 <option value={"MTN"}>MTN</option>
-                <option value={"Wafaa"}>وفا</option>
+                <option value={"Wafa"}>وفا</option>
               </select>
             </div>
-            {/* نوع الطلب */}
+            {/* نوع الرصيد */}
+            <div className="flex flex-col gap-3 h-[110px]">
+              <label htmlFor="point" className="text-xs font-medium">
+                نوع الرصيد
+                <span className='text-red-600 text-xs font-medium' >*</span>
+              </label>
+              <select
+                required
+                value={topUpType}
+                onChange={e => handleChangeTopUpType(e)}
+                type="text"
+                name="order"
+                id="point"
+                className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+              >
+                <option value={""} ></option>
+                {
+                  balanceTypes?.map((ele, index) => {
+                    return <option key={index} value={ele.value} >{ele.text}</option>
+                  })
+                }
+              </select>
+            </div>
+
+            {/* نوع الطلب
             {user.roles[0].name !== "pointOfSale" && <div className="flex flex-col gap-3 col-span-1 h-[110px]">
               <label htmlFor="point" className="text-xs font-medium">
                 نوع الطلب
@@ -373,7 +367,7 @@ export default function KaziehForm({ fetchData, kazieh }) {
                 <option value={"retail"}>مفرق</option>
                 <option value={"wholesale"}>جملة</option>
               </select>
-            </div>}
+            </div>} */}
 
             <div
               onClick={e => fetchPrices(e)}
@@ -387,136 +381,108 @@ export default function KaziehForm({ fetchData, kazieh }) {
             </div>
 
 
-            {prices == true ?
-              pricesData ? pricesData.length !== 0 ?
-                <>
-                  {/* الكمية */}
-                  {
-                    topUpType == "prepaid" ?
-                      <div className="flex flex-col gap-3 h-[110px] ">
-                        <label htmlFor="name" className="text-xs font-medium">
-                          الكمية
-                          <span className='text-red-600 text-xs font-medium'>*</span>
-                        </label>
-                        <select
-                          type="number"
-                          name="quantity"
-                          placeholder=""
-                          id="quantity"
+            {prices == 1 ?
+              <>
+                {/* الكمية */}
+                {
 
-                          onChange={e => handleChangeQuantity(e)}
-                          className="selection appearance-none rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                        >
-                          <option></option>
-                          {pricesData?.map(ele => {
-                            if (topUpType == ele.top_up_type && company == ele.company) {
-                              return <option key={ele.id} value={ele.price} >{ele.minimum}</option>
-                            }
-
-                          })
-
-                          }
-                        </select>
-                      </div>
-                      :
-                      <div className="flex flex-col gap-3 h-[110px] ">
-                        <label htmlFor="name" className="text-xs font-medium">
-                          الكمية
-                          <span className='text-red-600 text-xs font-medium'>*</span>
-                        </label>
-                        <input
-                          required
-                          type="number"
-                          name="quantity"
-                          id="quantity"
-                          value={quantity}
-                          onChange={e => handleChangeQuantity(e)}
-                          className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                        />
-                        {errorsQuantity !== "" && <p className='text-red-600 text-base'>{errorsQuantity}</p>}
-                      </div>
-                  }
-                  {/* المبلغ */}
-                  <div className="flex flex-col gap-3 h-[110px]">
+                  <div className="flex flex-col gap-3 h-[110px] ">
                     <label htmlFor="name" className="text-xs font-medium">
-                      المبلغ
-
-                    </label>
-                    <p
-                      id="amount"
-                      className="rounded-xl border-black/10 border px-5 h-[58px] py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                    >{amount}</p>
-                    {errors.amount && <p className='text-red-600 text-base'>{errors.amount}</p>}
-                  </div>
-                  {/* كود المستلم */}
-                  {company == "Syriatel" ? number == "" && <div className="flex flex-col gap-3 h-[110px]">
-                    <label htmlFor="code" className="text-xs font-medium">
-                      كود المستلم
-                       <span className='text-red-600 text-xs font-medium'>*</span>
-                      
+                      الكمية
+                      <span className='text-red-600 text-xs font-medium'>*</span>
                     </label>
                     <input
                       required
                       type="number"
-                      name="code"
-                      placeholder="*****"
-                      id="code"
-                      value={code}
-                      onChange={e => handleChangeCode(e)}
+                      name="quantity"
+                      id="quantity"
+                      value={quantity}
+                      onChange={e => handleChangeQuantity(e)}
                       className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
                     />
-                  </div> : <div className="flex flex-col gap-3 h-[110px]">
-                    <label htmlFor="code" className="text-xs font-medium">
-                      كود المستلم
-                      <span className='text-red-600 text-xs font-medium'>*</span>
-                    </label>
-                    <input
+                    {errorsQuantity !== "" && <p className='text-red-600 text-base'>{errorsQuantity}</p>}
+                  </div>
+                }
+                {/* المبلغ */}
+                <div className="flex flex-col gap-3 h-[110px]">
+                  <label htmlFor="name" className="text-xs font-medium">
+                    المبلغ
 
-                      type="number"
-                      name="code"
-                      placeholder="*****"
-                      id="code"
-                      value={code}
-                      onChange={e => handleChangeCode(e)}
-                      className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                    />
-                  </div>}
-                  {/* رقم المستلم */}
-                  {company == "MTN" ? <div className="flex flex-col gap-3 h-[110px]">
-                      <label htmlFor="number" className="text-xs font-medium">
-                        رقم المستلم
-                        <span className='text-red-600 text-xs font-medium'>*</span>
-                      </label>
-                      <input
-                        required
-                        type="tel"
-                        name="number"
-                        placeholder="09********"
-                        id="number"
-                        value={number}
-                        onChange={e => handleChangeNumber(e)}
-                        className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-                      />
-                      {errors.phone && <p className='text-red-600 text-xs font-medium'>{errors.phone}</p>}
-                    </div> : null}
+                  </label>
+                  <p
+                    id="amount"
+                    className="rounded-xl border-black/10 border px-5 h-[58px] py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                  >{amount}</p>
+                  {errors.amount && <p className='text-red-600 text-base'>{errors.amount}</p>}
+                </div>
+                {/* كود المستلم */}
+                {company == "Syriatel" ? number == "" && <div className="flex flex-col gap-3 h-[110px]">
+                  <label htmlFor="code" className="text-xs font-medium">
+                    كود المستلم
+                    <span className='text-red-600 text-xs font-medium'>*</span>
 
-                  <button
-                    type='submit'
-                    style={{
-                      width: "274px",
-                      height: "44px",
-                    }}
-                    className={`col-span-2 bg-main-color text-white rounded-lg flex-center main-button`}
-                  >
-                    ارسل الآن
-                  </button>
-                </>
-                :
-                <p>لا يوجد اسعار</p>
-                :
-                <CircularProgress />
+                  </label>
+                  <input
+                    required
+                    type="number"
+                    name="code"
+                    placeholder="*****"
+                    id="code"
+                    value={code}
+                    onChange={e => handleChangeCode(e)}
+                    className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                  />
+                </div> : <div className="flex flex-col gap-3 h-[110px]">
+                  <label htmlFor="code" className="text-xs font-medium">
+                    كود المستلم
+                    <span className='text-red-600 text-xs font-medium'>*</span>
+                  </label>
+                  <input
+
+                    type="number"
+                    name="code"
+                    placeholder="*****"
+                    id="code"
+                    value={code}
+                    onChange={e => handleChangeCode(e)}
+                    className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                  />
+                </div>}
+                {/* رقم المستلم */}
+                {company == "MTN" ? <div className="flex flex-col gap-3 h-[110px]">
+                  <label htmlFor="number" className="text-xs font-medium">
+                    رقم المستلم
+                    <span className='text-red-600 text-xs font-medium'>*</span>
+                  </label>
+                  <input
+                    required
+                    type="tel"
+                    name="number"
+                    placeholder="09********"
+                    id="number"
+                    value={number}
+                    onChange={e => handleChangeNumber(e)}
+                    className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                  />
+                  {errors.phone && <p className='text-red-600 text-xs font-medium'>{errors.phone}</p>}
+                </div> : null}
+
+                <button
+                  type='submit'
+                  style={{
+                    width: "274px",
+                    height: "44px",
+                  }}
+                  className={`col-span-2 bg-main-color text-white rounded-lg flex-center main-button`}
+                >
+                  ارسل الآن
+                </button>
+              </>
               :
-              null
+              prices == 2 ?
+                <CircularProgress />
+                :
+                null
             }
 
 
@@ -539,6 +505,10 @@ export default function KaziehForm({ fetchData, kazieh }) {
           يمكنك مراجعة المسؤولين
         </p>
       }
+
+      <ModalPob open={open} handleClose={handleStateOpen}>
+        <DiscountedAmount fetchData={fetchData} setNewBalnces={setNewBalnces} Kazieh={true} data={data} amount={amount} handelClose={handleStateOpen} removeValues={removeValues} setSubmit={setSubmit} />
+      </ModalPob>
     </>
   )
 }

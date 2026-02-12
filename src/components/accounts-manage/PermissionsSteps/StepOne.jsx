@@ -55,9 +55,6 @@ export default function StepOne({
             className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
           />
 
-
-
-
         </div>
         <button
         onClick={(e) => handleSubmit(e) }

@@ -77,8 +77,8 @@ export const useTableColumns = ({
                 params.row.customer_name
                   ? params.row.customer_name
                   : params.row.employee_name
-                  ? params.row.employee_name
-                  : null,
+                    ? params.row.employee_name
+                    : null,
                 params.row.id,
                 params.row.amount,
                 params.row.billable
@@ -148,8 +148,8 @@ export const useTableColumns = ({
                 params.row.customer_name
                   ? params.row.customer_name
                   : params.row.employee_name
-                  ? params.row.employee_name
-                  : null,
+                    ? params.row.employee_name
+                    : null,
                 params.row.id,
                 params.row.amount,
                 params.row.billable
@@ -174,8 +174,8 @@ export const useTableColumns = ({
             <p className="flex gap-5">
               {params.row.agent_id
                 ? agents?.map(ele =>
-                    params.row.agent_id === ele.id ? ele.username : null
-                  )
+                  params.row.agent_id === ele.id ? ele.username : null
+                )
                 : "_"}
             </p>
           ),
@@ -225,7 +225,7 @@ export const useTableColumns = ({
               `عميل تابع لوكيل معتمد`
             ),
         },
-            {
+        {
           field: "actions",
           headerName: "",
           width: 195,

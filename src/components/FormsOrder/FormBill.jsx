@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import clsx from 'clsx'
-import toast from 'react-hot-toast'
 import Cookies from 'js-cookie';
 import { baseUrl } from '../../constants/baseUrl'
 import axios from 'axios';
 import CircularProgress from "@mui/material/CircularProgress";;
 import { fetchBalances } from '../../services/getBalances';
+import ModalPob from '../Modals/Modal';
+import DiscountedAmount from '../elements/DiscountedAmount';
 
 
 
 export default function FormBill({ fetchData, setting }) {
 
+  const [open, setOpen] = useState(false)
   const [submit, setSubmit] = useState(false)
-  const [billType, setBillType] = useState("water")
+  const [billType, setBillType] = useState("")
   const [counter, setCounter] = useState("")
   const [city, setCity] = useState("")
   const [name, setName] = useState("")
@@ -27,12 +29,23 @@ export default function FormBill({ fetchData, setting }) {
   const [providerId, setProviderId] = useState()
   const [Id, setId] = useState()
   const [staticId, setStaticId] = useState()
-
+  const [confirm, setConfirm] = useState(false)
+  const [data, setData] = useState()
+  const [url, setUrl] = useState()
+  const [isFixed, setIsFixed] = useState()
+  const [price, setPrice] = useState()
   const [balance, setBalance] = useState();
 
   const [serviceProvider, setServiceProvider] = useState([])
   const [s, sets] = useState()
+  const [discountAmount, setDiscountAmount] = useState()
 
+  const isDecimal = (num) => num % 1 !== 0;
+  const roundNumber = num => Math.ceil(num);
+
+  const handleStateOpen = () => {
+    setOpen(!open)
+  }
   const getBalanses = async () => {
     const res = await fetchBalances();
     setBalance(res.main_balance);
@@ -63,14 +76,14 @@ export default function FormBill({ fetchData, setting }) {
           "Authorization": `Bearer ${Cookies.get('token')}`,
         }
       })
-      .then(res  => {
-         sets(res.data)
+      .then(res => {
+        sets(res.data)
       })
-    
+
   }
   useEffect(() => {
     getBalanses();
-    
+
     setting.electricity == true && getServiceProvider()
 
   }, []);
@@ -93,6 +106,23 @@ export default function FormBill({ fetchData, setting }) {
   // }
   const handleChangeBillType = (e) => {
     setBillType(e.target.value)
+    switch (e.target.value) {
+      case "water":
+        fetchPrices("water")
+        break;
+      case "elec":
+        fetchPrices("electricity")
+        break;
+      case "net":
+        fetchPrices("internet")
+        break;
+      case "line":
+        fetchPrices("fixed-line")
+        break;
+
+      default:
+        break;
+    }
   }
   const handleChangeCounter = (e) => {
     setCounter(e.target.value)
@@ -132,53 +162,83 @@ export default function FormBill({ fetchData, setting }) {
 
   }
 
+  const discountAmountFun = () => {
+    if (isFixed == true) {
+      let newAmount = parseInt(price) + parseInt(amount)
+      if (isDecimal(newAmount)) {
+        let roundedValue = roundNumber(newAmount)
+        setDiscountAmount(roundedValue)
+      } else {
+        setDiscountAmount(newAmount)
+      }
+    } else {
+      let x = parseInt(price) * parseInt(amount)
+      let y = x / 100
+      let value = y + parseInt(amount)
+      if (isDecimal) {
+        let roundedValue = roundNumber(value)
+        setDiscountAmount(roundedValue)
+      } else {
+        setDiscountAmount(value)
+      }
+    }
+  }
   const handleSubmit = (e) => {
     e.preventDefault()
-    setSubmit(true)
+    discountAmountFun()
     switch (billType) {
       case "water":
-        user.roles[0].name === "pointOfSale" ? sendData("water-bill", {
+        setUrl("water-bill")
+        user.roles[0].name === "pointOfSale" ? setData({
           counter_number: counter,
           governorate: city,
           barcode_number: barCode,
           customer_name: name,
           amount: amount,
+          order_type: "wholesale",
           action: "payment"
         })
+
           :
-          sendData("water-bill", {
+          setData({
             counter_number: counter,
             governorate: city,
             barcode_number: barCode,
             customer_name: name,
             amount: amount,
+            order_type: "wholesale",
             action: "payment"
           })
         break;
       case "elec":
+        setUrl("electricity-bill")
         user.roles[0].name === "pointOfSale" ?
-          sendData("electricity-bill", {
+          setData({
             counter_number: counter,
             governorate: city,
             subscription_number: subscription,
             customer_name: name,
             amount: amount,
+            order_type: "wholesale",
             action: "payment"
           })
           :
-          sendData("electricity-bill", {
+          setData({
             counter_number: counter,
             governorate: city,
             subscription_number: subscription,
             customer_name: name,
             amount: amount,
+            order_type: "wholesale",
             action: "payment"
           })
         break;
       case "net":
+        setUrl("internet-bill")
         user.roles[0].name === "pointOfSale" ?
-          sendData("internet-bill", {
+          setData({
             number: number,
+            order_type: "wholesale",
             internet_service_provider_id: providerId,
             static_IP: staticId,
             customer_name: name,
@@ -187,10 +247,11 @@ export default function FormBill({ fetchData, setting }) {
             action: "payment"
           })
           :
-          sendData("internet-bill", {
+          setData({
             number: number,
             internet_service_provider_id: providerId,
             static_IP: staticId,
+            order_type: "wholesale",
             customer_name: name,
             amount: amount,
             bundle: Id,
@@ -198,16 +259,19 @@ export default function FormBill({ fetchData, setting }) {
           })
         break;
       case "line":
+        setUrl("fixed-line-bill")
         user.roles[0].name === "pointOfSale" ?
-          sendData("fixed-line-bill", {
+          setData({
             number: number,
+            order_type: "wholesale",
             customer_name: name,
             amount: amount,
             action: "payment"
           })
           :
-          sendData("fixed-line-bill", {
+          setData({
             number: number,
+            order_type: "wholesale",
             customer_name: name,
             amount: amount,
             action: "payment"
@@ -215,16 +279,18 @@ export default function FormBill({ fetchData, setting }) {
         break;
       default:
         break;
+
     }
+    handleStateOpen()
+
 
   }
 
-  const sendData = async (url, data) => {
+  const fetchPrices = async (billName) => {
     await axios.request(
       {
-        url: `${baseUrl}${user.roles[0].name === "pointOfSale" ? "" : "NewOutdoorOrder/"}${url}`,
-        method: "post",
-        data: data,
+        url: `${baseUrl}prices/${billName}`,
+        method: "get",
         headers: {
           "Accept": "application/json",
           Authorization: `Bearer ${Cookies.get('token')}`,
@@ -232,27 +298,31 @@ export default function FormBill({ fetchData, setting }) {
       }
 
     ).then((res) => {
-      toast.success("تمت  العملية بنجاح")
-      getBalanses()
-      user.roles[0].name !== "pointOfSale" && fetchData(1)
-      setAmount("")
-      setBarCode("")
-      setCity("")
-      setName("")
-      setCounter("")
-      setSubscription("")
-      setProviderId("")
-      setStaticId("")
-      setNumber("")
-      setId("")
-      setSubmit(false)
+      setIsFixed(res.data.is_fixed)
+      setPrice(res.data.price)
     })
       .catch(e => {
         console.log(e)
-        e && toast.error(e.response.data.data)
-        setSubmit(false)
+
       })
   }
+
+  const removeValues = () => {
+    getBalanses()
+    user.roles[0].name !== "pointOfSale" && fetchData(1)
+    setAmount("")
+    setBarCode("")
+    setCity("")
+    setName("")
+    setCounter("")
+    setSubscription("")
+    setProviderId("")
+    setStaticId("")
+    setNumber("")
+    setBillType("")
+    setId("")
+  }
+
 
   return (
     <form className="flex flex-col gap-4" onSubmit={e => handleSubmit(e)}>
@@ -272,6 +342,7 @@ export default function FormBill({ fetchData, setting }) {
             id="point"
             className="selection appearance-none  rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
           >
+            <option value={""}></option>
             {setting.water == true && <option value={"water"}>مياه</option>}
             {setting.electricity == true && <option value={"elec"}>كهرباء</option>}
             {setting.adsl == true && <option value={"net"}>انترنت</option>}
@@ -436,13 +507,13 @@ export default function FormBill({ fetchData, setting }) {
             >
               <option value={""}></option>
               {
-                serviceProvider? serviceProvider?.length !== 0 ? serviceProvider?.map(ele => {
+                serviceProvider ? serviceProvider?.length !== 0 ? serviceProvider?.map(ele => {
                   return <option value={ele.id}>{ele.name}</option>
                 })
-                :
-                <option>لا يوجد مزودات</option>
-                :
-                <option>يوجد خطأ ما الرجاء المحاولة لاحقا</option>
+                  :
+                  <option>لا يوجد مزودات</option>
+                  :
+                  <option>يوجد خطأ ما الرجاء المحاولة لاحقا</option>
               }
             </select>
             {errors.amount !== "" && <p className='text-red-600'>{errors.amount}</p>}
@@ -450,7 +521,7 @@ export default function FormBill({ fetchData, setting }) {
         {billType == "net" ?
           <div className="flex flex-col gap-3 ">
             <label htmlFor="city" className="text-xs font-medium">
-             الباقة
+              الباقة
               <span className='text-red-600 text-xs font-medium'>*</span>
             </label>
             <select
@@ -531,6 +602,10 @@ export default function FormBill({ fetchData, setting }) {
       }>
         <CircularProgress />
       </div>
+
+      <ModalPob open={open} handleClose={handleStateOpen}>
+        <DiscountedAmount url={url} data={data} setConfirm={setConfirm} amount={discountAmount} handelClose={handleStateOpen} removeValues={removeValues} setSubmit={setSubmit} />
+      </ModalPob>
     </form>
 
   )

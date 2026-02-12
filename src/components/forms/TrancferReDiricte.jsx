@@ -10,7 +10,7 @@ import { fetchBalances } from '../../services/getBalances';
 const token = Cookies.get('token');
 
 export default function TrancferReDiricte({ fetchData, userIdPoint, userId, close, amountValue, num, method, note }) {
-    console.log(method)
+  
     const [submit, setSubmit] = useState(false)
     const [userName, setUserName] = useState(userIdPoint ? userIdPoint : "-")
     const [amount, setAmount] = useState(amountValue)
@@ -75,9 +75,9 @@ export default function TrancferReDiricte({ fetchData, userIdPoint, userId, clos
             fetchBalances()
             close()
             setSubmit(false)
-            fetchData()
+            fetchData(0)
         }).catch((e) => {
-            console.log(e)
+        
             if (e) {
                 toast.error("فشلت العملية")
                 setSubmit(false)

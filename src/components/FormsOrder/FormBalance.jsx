@@ -6,12 +6,15 @@ import Cookies from 'js-cookie';
 import { baseUrl } from "../../constants/baseUrl";
 import axios from 'axios'
 import { fetchBalances } from '../../services/getBalances';
+import ModalPob from '../Modals/Modal';
+import DiscountedAmount from '../elements/DiscountedAmount';
 
 
 
 export default function FormBalance({ fetchData, mobile }) {
 
   const [submit, setSubmit] = useState(false)
+  const [open, setOpen] = useState(false)
   const [prices, setPrices] = useState(false)
   const [pricesData, setPricesData] = useState()
   const [topUpType, setTopUpType] = useState("")
@@ -26,6 +29,8 @@ export default function FormBalance({ fetchData, mobile }) {
   const [isFixed, setIsFixed] = useState(0)
   const [errorsQuantity, setErrorsQuantity] = useState('')
 
+  const [data, setData] = useState()
+
   const [errors, setErrors] = useState({
     quantity: errorsQuantity,
     phone: "",
@@ -33,6 +38,12 @@ export default function FormBalance({ fetchData, mobile }) {
   })
 
   const [balance, setBalance] = useState();
+  const isDecimal = (num) => num % 1 !== 0;
+  const roundNumber = num => Math.ceil(num);
+
+   const handleStateOpen = () => {
+    setOpen(!open)
+  }
 
   const getBalanses = async () => {
     const res = await fetchBalances();
@@ -45,7 +56,6 @@ export default function FormBalance({ fetchData, mobile }) {
 
   const user = JSON.parse(localStorage.getItem("user"))
 
-
   const handleChangeQuantity = (e) => {
     setErrors({
       quantity: "",
@@ -56,7 +66,7 @@ export default function FormBalance({ fetchData, mobile }) {
     setOptions(e.target.children)
     if (topUpType == "prepaid") {
       setAmount(e.target.value)
-      console.log(e.target.value)
+
       valueBalance(e.target.value)
       setQuantity(e.target.value)
       options?.map(ele => {
@@ -75,12 +85,25 @@ export default function FormBalance({ fetchData, mobile }) {
 
             let x = (e.target.value * parseInt(price)) / 100
             let amountValue = x + parseInt(e.target.value)
-            setAmount(amountValue)
-            valueBalance(amountValue)
+            if (isDecimal(amountValue)) {
+              let newValue = roundNumber(amountValue)
+              setAmount(newValue)
+              valueBalance(newValue)
+            } else {
+              setAmount(amountValue)
+              valueBalance(amountValue)
+            }
+
           } else {
             let amountValue = parseInt(e.target.value) + parseInt(price)
-            setAmount(amountValue)
-            valueBalance(amountValue)
+            if (isDecimal(amountValue)) {
+              let newValue = roundNumber(amountValue)
+              setAmount(newValue)
+              valueBalance(newValue)
+            } else {
+              setAmount(amountValue)
+              valueBalance(amountValue)
+            }
           }
         }
       }
@@ -104,16 +127,13 @@ export default function FormBalance({ fetchData, mobile }) {
 
 
     if (parseInt(value) < parseInt(balance)) {
-      console.log(value)
       setErrors({ ...errors, amount: `` })
     }
     else if (parseInt(value) > parseInt(balance)) {
-      console.log(value)
       setErrors({ ...errors, amount: `لا يوجد رصيد كافي رصيدك ${balance}` })
 
     }
   }
-
 
   const handleChangeNumber = (e) => {
     let value = e.target.value.replace(/\D/g, ""); // فقط أرقام
@@ -135,9 +155,9 @@ export default function FormBalance({ fetchData, mobile }) {
       } else if (value.length > 10) {
         error = "الرقم طويل جدًا، يجب أن يكون 10 أرقام";
       }
-    
+
     } else if (company == "Syriatel") {
-        // Syriatel
+      // Syriatel
       if (!value.startsWith("093") &&
         !value.startsWith("098") &&
         !value.startsWith("099")) {
@@ -154,8 +174,6 @@ export default function FormBalance({ fetchData, mobile }) {
 
     setErrors({ ...errors, phone: error });
   };
-
-
 
   const handleChangeTopUpType = (e) => {
     setPrices(false)
@@ -200,7 +218,7 @@ export default function FormBalance({ fetchData, mobile }) {
     setAmount("")
 
     if (user.roles[0].name !== "pointOfSale") {
-      if (topUpType !== "" && company !== "" ) {
+      if (topUpType !== "" && company !== "") {
         getPrices()
       }
     } else {
@@ -232,7 +250,7 @@ export default function FormBalance({ fetchData, mobile }) {
         if (topUpType !== "prepaid") {
 
           const selectedPrice = res.data.prices.find(ele => ele.company === company && ele.top_up_type === topUpType);
-   
+
           localStorage.setItem("minimum", selectedPrice.minimum)
           setPrice(selectedPrice.price);
           setIsFixed(selectedPrice.is_fixed);
@@ -254,7 +272,6 @@ export default function FormBalance({ fetchData, mobile }) {
     return Object.values(errors).every((error) => error === "");
   };
 
-
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -262,7 +279,7 @@ export default function FormBalance({ fetchData, mobile }) {
 
     if (isErrorsEmpty()) {
 
-      setSubmit(true)
+      handleStateOpen()
       const formData = new FormData()
 
       formData.append("top_up_type", topUpType.toString())
@@ -272,54 +289,58 @@ export default function FormBalance({ fetchData, mobile }) {
       formData.append("quantity", quantity.toString())
       formData.append("amount", amount.toString())
       // user.roles[0].name !== "pointOfSale" && formData.append("order_type", orderType.toString())
-      formData.append("unit_price", amount.toString())
+      user.rank == "private" ? formData.append("special_client_unit_price", amount.toString()) : formData.append("unit_price", amount.toString())
       formData.append("source", "mobile")
+      setData(formData)
 
-      await axios.request(
-        {
-          url: `${baseUrl}${user.roles[0].name == "pointOfSale" ? "" : "NewOutdoorOrder/"}top-up-request`,
-          method: "post",
-          data: formData,
 
-          headers: {
-            "Accept": "application/json",
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          }
-        }
-
-      )
-        .then(res => {
-          toast.success("تمت العملية بنجاح")
-          getBalanses()
-          fetchData(1)
-          setErrors({
-            quantity: "",
-            phone: "",
-            amount: ""
-          })
-          setSubmit(false)
-          setTopUpType("")
-          setCompany("")
-          setCode("")
-          setNumber("")
-          setQuantity()
-          setAmount("")
-        })
-        .catch(e => {
-          if (e) {
-            setSubmit(false)
-            toast.error(e.response.data.data)
-          }
-        })
     }
   }
 
+  const removeValues = () => {
+    getBalanses()
+
+    setErrors({
+      quantity: "",
+      phone: "",
+      amount: ""
+    })
+    setSubmit(false)
+    setTopUpType("")
+    setCompany("")
+    setCode("")
+    setNumber("")
+    setQuantity()
+    setAmount("")
+  }
 
   return (
+
     <>
       {mobile == true ?
         <form className="flex flex-col gap-4 " onSubmit={e => handleSubmit(e)}>
           <div className="grid grid-cols-2  w-full justify-between items-center gap-4">
+               {/* الشركة */}
+            <div className="flex flex-col gap-3 h-[110px]">
+              <label htmlFor="point" className="text-xs font-medium">
+                الشركة
+                <span className='text-red-600 text-xs font-medium' >*</span>
+              </label>
+              <select
+                required
+                value={company}
+                onChange={e => handleChangeCompany(e)}
+                type="text"
+                name="order"
+                id="point"
+                className="selection appearance-none  rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+              >
+                <option > </option>
+                <option value={"Syriatel"}>سيرياتيل</option>
+                <option value={"MTN"}>MTN</option>
+                <option value={"Wafaa"}>وفا</option>
+              </select>
+            </div>
             {/* نوع الرصيد */}
             <div className="flex flex-col gap-3 h-[110px]">
               <label htmlFor="point" className="text-xs font-medium">
@@ -341,27 +362,7 @@ export default function FormBalance({ fetchData, mobile }) {
                 <option value={"cash"}>كاش</option>
               </select>
             </div>
-            {/* الشركة */}
-            <div className="flex flex-col gap-3 h-[110px]">
-              <label htmlFor="point" className="text-xs font-medium">
-                الشركة
-                <span className='text-red-600 text-xs font-medium' >*</span>
-              </label>
-              <select
-                required
-                value={company}
-                onChange={e => handleChangeCompany(e)}
-                type="text"
-                name="order"
-                id="point"
-                className="selection appearance-none  rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-              >
-                <option > </option>
-                <option value={"Syriatel"}>سيرياتيل</option>
-                <option value={"MTN"}>MTN</option>
-                <option value={"Wafaa"}>وفا</option>
-              </select>
-            </div>
+         
             {/* نوع الطلب */}
             {/* {user.roles[0].name !== "pointOfSale" &&
               <div className="flex flex-col gap-3 col-span-1 h-[110px]">
@@ -516,6 +517,10 @@ export default function FormBalance({ fetchData, mobile }) {
           يمكنك مراجعة المسؤولين
         </p>
       }
+      <ModalPob open={open} handleClose={handleStateOpen}>
+        <DiscountedAmount mobail={true} fetchData={fetchData}  data={data} amount={amount} handelClose={handleStateOpen} removeValues={removeValues} setSubmit={setSubmit} />
+      </ModalPob>
+      
     </>
   )
 }
