@@ -66,7 +66,7 @@ export default function AddBalanceForm({ fetchData }) {
   const handleChangeAmountConf = (e) => {
     const value = e.target.value;
     dispatch({ type: "SET_AMOUNT_CONF", payload: value });
-    if (value > 0) {
+
       if (value !== state.amount) {
         dispatch({ type: "SET_ERRORS", payload: { amountConf: "غير مطابق" } });
         dispatch({ type: "SET_MATCH", payload: { amount: "" } });
@@ -74,9 +74,7 @@ export default function AddBalanceForm({ fetchData }) {
         dispatch({ type: "SET_ERRORS", payload: { amountConf: "" } });
         dispatch({ type: "SET_MATCH", payload: { amount: "مطابق" } });
       }
-    } else {
-      dispatch({ type: "SET_AMOUNT_CONF", payload: "" });
-    }
+  
   };
 
   const handleChangeCridet = (e) => {
@@ -95,7 +93,7 @@ export default function AddBalanceForm({ fetchData }) {
   const handleChangeCridetConf = (e) => {
     const value = e.target.value;
     dispatch({ type: "SET_CRIDET_CONF", payload: value });
-    if (value > 0) {
+   
       if (value !== state.cridet) {
         dispatch({ type: "SET_ERRORS", payload: { cridetConf: "غير مطابق" } });
         dispatch({ type: "SET_MATCH", payload: { cridet: "" } });
@@ -103,9 +101,7 @@ export default function AddBalanceForm({ fetchData }) {
         dispatch({ type: "SET_ERRORS", payload: { cridetConf: "" } });
         dispatch({ type: "SET_MATCH", payload: { cridet: "مطابق" } });
       }
-    } else {
-      dispatch({ type: "SET_CRIDET_CONF", payload: "" });
-    }
+    
   };
 
   const handleChangeNote = (e) => {

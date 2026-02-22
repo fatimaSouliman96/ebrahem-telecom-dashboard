@@ -17,12 +17,13 @@ export default function AddBalance() {
   const [cirdet, setCirdet] = useState()
    const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+    const [total, setTotal] = useState(0);
 
-  const fetchData = async () => {
+  const fetchData = async (offset, limitValue = 10) => {
     setLoading(true)
     await axios.request(
       {
-        url: `${baseUrl}view_add_public_balance`,
+        url: `${baseUrl}view_add_public_balance?limit=${limitValue}&page=${offset}`,
         method: "get",
         headers: {
           "Accept": "application/json",
@@ -33,7 +34,9 @@ export default function AddBalance() {
     )
       .then(res => {
          setLoading(false)
-        setData(res.data.data)
+         console.log(res)
+        setData(res.data.data.data)
+        setTotal(res.data.data.total)
       })
       .catch(() => {
         toast.error("Faild to fetch data")
@@ -60,7 +63,7 @@ export default function AddBalance() {
       </div>
       <OrdersContext.Provider value={data}>
         <Tabel.LayoutTable title={"عمليات التعبئة"}>
-          <Tabel.DataTable loading={loading} error={error} columns={addBalanceColumns} fetchData={fetchData} notFound={"لا يوجد عمليات"} />
+          <Tabel.DataTable total={total} loading={loading} error={error} columns={addBalanceColumns} fetchData={fetchData} notFound={"لا يوجد عمليات"} />
         </Tabel.LayoutTable>
       </OrdersContext.Provider>
 

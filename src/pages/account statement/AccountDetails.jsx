@@ -41,7 +41,7 @@ export default function AccountDetails() {
           setLoading(false)
           setUser(res.data.data.user)
           setData(res.data.data.operations.data)
-          setTotal(res.data.data.operations.total_size)
+          setTotal(res.data.data.operations.total)
         })
         .catch(e => {
           setLoading(false)

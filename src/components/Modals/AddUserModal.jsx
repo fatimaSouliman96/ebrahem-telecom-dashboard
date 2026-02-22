@@ -12,7 +12,6 @@ import Cookies from "js-cookie";
 import { CircularProgress } from "@mui/material";
 import { initialState, reducer } from "../reducers/addUserReducer";
 
-const token = Cookies.get("token");
 
 
 export default function AddUserModal({
@@ -96,7 +95,12 @@ export default function AddUserModal({
     }
 
     dispatch({ type: "SET_SUBMIT", payload: true });
+    const token = Cookies.get("token");
 
+    if (!token) {
+      toast.error("انتهت الجلسة، أعد تسجيل الدخول");
+      return;
+    }
     try {
       await axios.request({
         url: `${baseUrl}users`,

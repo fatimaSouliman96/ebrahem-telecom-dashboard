@@ -42,7 +42,7 @@ export const useTableColumns = ({
     const newColumns = [...columns];
 
     // ================= Orders & Account =================
-    if (ordersPage || mainPage || Account) {
+    if (ordersPage || Account) {
       rows?.forEach(ele => (ele.details = "عرض التفاصيل"));
 
       newColumns.push({
