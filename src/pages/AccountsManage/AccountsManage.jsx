@@ -19,17 +19,40 @@ export default function AccountsManage() {
   const [error, setError] = useState(false)
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false)
+  const [limit, setLimit] = useState(10)
 
   const handleClose = () => {
     setAddModal(false)
   }
 
+  const getDecimalDigit = (num) => Math.floor((num % 1) * 10)
 
-  const fetchData = async (offset) => {
+  const getData = async (offset) => {
     setLoading(true)
+
+    let x = total / 10
+    let digit = getDecimalDigit(x)
+    let pages = Math.ceil(x)
+
+   
+
+    if (offset + 1 === pages && digit !== 0) {
+
+      fetchData(offset, digit)
+    } else {
+      fetchData(offset)
+    }
+
+    
+  }
+
+
+  const fetchData = async (offset, limitValue = 10) => {
+    setLoading(true)
+
     await axios.request(
       {
-        url: `${baseUrl}allusers?limit=10&offset=${offset}`,
+        url: `${baseUrl}allusers?limit=${limitValue}&page=${offset}`,
         method: "get",
         headers: {
           "Accept": "application/json",
@@ -46,13 +69,13 @@ export default function AccountsManage() {
       .catch(() => {
         toast.error("Faild to fetch data")
         setError(true)
-         setLoading(false)
+        setLoading(false)
       })
   }
 
 
   useEffect(() => {
-    fetchData(0)
+    getData(0)
   }, [])
 
   return (

@@ -32,7 +32,7 @@ export default function Home() {
   const fetchData = async (offset) => {
   setLoading(true)
     try {
-      const res = await axios.get(`${baseUrl}home-Page?limit=10&offset=${offset}`,
+      const res = await axios.get(`${baseUrl}home-Page?limit=10&page=${offset}`,
         {
           headers: {
             "Accept": "application/json",

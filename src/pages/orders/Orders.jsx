@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { OrdersAccordion } from "../../components";
 import { Tabel } from "../../components/Tabel";
 import { OrdersColumns } from "../../constants/data";
-
 import { OrdersContext } from "../../hooks/UseContext";
 import axios from "axios";
 import { baseUrl } from "../../constants/baseUrl";
@@ -10,7 +9,6 @@ import Cookies from 'js-cookie';
 import toast from "react-hot-toast";
 import Agents from "../agent/Agents";
 
-const token = Cookies.get('token');
 
 export default function Orders() {
   const [orders, setOrders] = useState()
@@ -21,26 +19,23 @@ export default function Orders() {
 
   const user = JSON.parse(localStorage.getItem("user"))
 
-
   const fetchData = async (offset) => {
     console.log(offset)
     setLoading(true)
     await axios.request(
       {
-        url: `${baseUrl}operations-payment?limit=10&offset=${parseInt(offset)}`,
+        url: `${baseUrl}operations-payment?limit=10&page=${parseInt(offset)}`,
         method: "get",
         headers: {
           "Accept": "application/json",
           "Authorization": `Bearer ${Cookies.get('token')}`,
         }
       }
-
-
     )
       .then(res => {
         setLoading(false)
         setOrders(res.data.data.data)
-        setTotal(res.data.data.total_size)
+        setTotal(res.data.data.total)
       })
       .catch(() => {
          setLoading(false)

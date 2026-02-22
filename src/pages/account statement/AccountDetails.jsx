@@ -27,7 +27,7 @@ export default function AccountDetails() {
     if (location.state.data !== "") {
       await axios.request(
         {
-          url: `${baseUrl}account_statement_view/${location.state.data}?limit=10&offset=${offset}`,
+          url: `${baseUrl}account_statement_view/${location.state.data}?limit=10&page=${offset}`,
           method: "get",
           headers: {
             "Accept": "application/json",

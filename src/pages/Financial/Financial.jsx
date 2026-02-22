@@ -20,7 +20,7 @@ export default function Financial() {
     setData([])
     await axios.request(
       {
-        url: `${baseUrl}get_Financial_Statements?limit=10&offset=${offset}`,
+        url: `${baseUrl}get_Financial_Statements?limit=10&page=${offset}`,
         method: "get",
         headers: {
           "Accept": "application/json",

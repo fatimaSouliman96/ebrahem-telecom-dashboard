@@ -60,6 +60,7 @@ const DataTable = ({
 }) => {
 
 
+
   const navigate = useNavigate()
   const rows = useContext(OrdersContext)
 
@@ -90,9 +91,11 @@ const DataTable = ({
   const [billName, setBillName] = useState()
   const [stutas, setStutas] = useState()
   const [page, setPage] = useState(1)
-  const all = Math.ceil(total / 10);
 
+  const all = Math.ceil(total / 10);
+  console.log(total)
   const getPaginationRange = (current, all) => {
+    
     const delta = 2;
     const range = [];
     const rangeWithDots = [];
@@ -122,12 +125,12 @@ const DataTable = ({
 
     return rangeWithDots;
   };
+  let limit = 10
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > all) return;
 
     setPage(newPage);
-
-    fetchData(newPage - 1);
+    fetchData(newPage);
   };
 
   const handleOpenApp = () => {
@@ -559,13 +562,13 @@ const DataTable = ({
       </div> : null}
       {all ? <div className="flex items-center justify-center gap-2 mt-6">
 
-       
+
         <ArrowBackIos
           className={`cursor-pointer ${page === 1 && "opacity-50 pointer-events-none"}`}
           onClick={() => handlePageChange(page - 1)}
         />
 
-       
+
         {getPaginationRange(page, all).map((item, index) =>
           item === "..." ? (
             <span key={index} className="px-2">...</span>
@@ -585,7 +588,7 @@ const DataTable = ({
           )
         )}
 
-      
+
         <ArrowForwardIos
           className={`cursor-pointer ${page === all && "opacity-50 pointer-events-none"}`}
           onClick={() => handlePageChange(page + 1)}

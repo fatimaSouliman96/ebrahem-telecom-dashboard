@@ -30,7 +30,7 @@ export default function Transfer() {
     axios.request(
       {
         method: "get",
-        url: `${baseUrl}view_cash?limit=10&offset=${offset}`,
+        url: `${baseUrl}view_cash?limit=10&page=${offset}`,
         headers: {
           "Accept": "application/json",
           Authorization: `Bearer ${Cookies.get('token')}`,

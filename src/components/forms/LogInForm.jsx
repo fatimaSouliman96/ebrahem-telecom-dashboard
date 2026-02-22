@@ -28,7 +28,7 @@ export default function LogInForm({ setSubmit }) {
 
     const validationRules = {
       name: { required: true, minLength: 3, label: "Username" },
-      password: { required: true, minLength: 8, label: "Password" },
+
     };
 
     const validationErrors = validateFields({ name, password }, validationRules);
@@ -67,6 +67,7 @@ export default function LogInForm({ setSubmit }) {
       }
       setSubmit(false);
     }
+    
   };
 
   return (
