@@ -1395,7 +1395,7 @@ export const listColumns = [
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
-          {NumberDisplay(parseInt(params.row.retail))} L.S</p>
+          {params.row.retail} L.S</p>
       );
     },
   },
@@ -1406,7 +1406,7 @@ export const listColumns = [
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
-          {NumberDisplay(parseInt(params.row.wholesale))} L.S</p>
+          {params.row.wholesale} L.S</p>
       );
     },
   },
@@ -1451,7 +1451,7 @@ export const pricesListBillsColumns = [
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
-          {NumberDisplay(parseInt(params.row.retail))} L.S</p>
+          {params.row.retail} L.S</p>
       );
     },
   },
@@ -1462,7 +1462,7 @@ export const pricesListBillsColumns = [
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
-          {NumberDisplay(parseInt(params.row.wholesale))} L.S</p>
+          {params.row.wholesale} L.S</p>
       );
     },
   },
@@ -1557,7 +1557,7 @@ export const pricesSpecialColumns = [
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
-          {NumberDisplay(parseInt(params.row.price))} L.S</p>
+          {params.row.price} L.S</p>
       );
     },
   },
@@ -1624,7 +1624,7 @@ export const pricesBillsSpecialColumns = [
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
-          {NumberDisplay(parseInt(params.row.price))} L.S</p>
+          {params.row.price} L.S</p>
       );
     },
   },

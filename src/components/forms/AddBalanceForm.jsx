@@ -7,7 +7,7 @@ import { CircularProgress } from "@mui/material";
 import { fetchBalances } from "../../services/getBalances";
 import { initialState, reducer } from "../reducers/addBalanceReducer";
 
-const token = Cookies.get('token');
+
 
 
 
@@ -15,6 +15,7 @@ export default function AddBalanceForm({ fetchData }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const fetchUsers = async () => {
+    const token = Cookies.get('token');
     try {
       const res = await axios.get(`${baseUrl}getEmployees`, {
         headers: {
