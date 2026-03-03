@@ -63,6 +63,7 @@ export default function TransferForm({ users, fetchData }) {
   };
 
   const handleSubmit = async (e) => {
+    const token = Cookies.get('token');
     e.preventDefault();
     if (state.errors.amount) {
       toast.error("يوجد خطأ في المدخلات، يرجى التحقق قبل الإرسال.");
@@ -86,7 +87,7 @@ export default function TransferForm({ users, fetchData }) {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${Cookies.get('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

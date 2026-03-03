@@ -35,6 +35,7 @@ export default function AppPrices({ id, name }) {
 
 
   const fetchData = async () => {
+     const token = Cookies.get('token');
      setLoading(true)
     await axios.request(
       {
@@ -42,7 +43,7 @@ export default function AppPrices({ id, name }) {
         method: "get",
         headers: {
           "Accept": "application/json",
-          Authorization: `Bearer ${Cookies.get('token')}`,
+          Authorization: `Bearer ${token}`,
         }
       }
     ).then((res) => {
@@ -57,6 +58,7 @@ export default function AppPrices({ id, name }) {
   }
 
   const handleUpadteProviders = async (e) => {
+     const token = Cookies.get('token');
     e.preventDefault()
     setSubmit(true)
     const data = new FormData()
@@ -68,7 +70,7 @@ export default function AppPrices({ id, name }) {
       method: "post",
       headers: {
         "Accept": "application/json",
-        Authorization: `Bearer ${Cookies.get('token')}`,
+        Authorization: `Bearer ${token}`,
       },
       data: data
     })
@@ -93,13 +95,14 @@ export default function AppPrices({ id, name }) {
   }
 
   const handleDownload = async () => {
+     const token = Cookies.get('token');
     setSubmit(true)
 
     await fetch(`${baseUrl}apps/prices/export/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'Authorization': `Bearer ${Cookies.get('token')}`,
+        'Authorization': `Bearer ${token}`,
       }
     }).then(response => {
       if (!response.ok) {

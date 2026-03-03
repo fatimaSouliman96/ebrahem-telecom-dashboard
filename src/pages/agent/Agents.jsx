@@ -20,6 +20,7 @@ export default function Agents() {
   const [loading, setLoading] = useState(false)
 
   const fetchData = async () => {
+     const token = Cookies.get('token');
     setLoading(true)
     axios.request(
       {
@@ -27,7 +28,7 @@ export default function Agents() {
         url: `${baseUrl}agent/view-cash?page=1`,
         headers: {
           "Accept": "application/json",
-          Authorization: `Bearer ${Cookies.get('token')}`,
+          Authorization: `Bearer ${token}`,
         }
       }
     ).then((res) => {

@@ -18,6 +18,7 @@ export default function AddApp({fetchAllApps, handleClose}) {
     }
 
       const handleSubmit = async (e) => {
+          const token = Cookies.get('token');
         e.preventDefault();
       
         // Frontend validation
@@ -39,7 +40,7 @@ export default function AddApp({fetchAllApps, handleClose}) {
             },
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${Cookies.get('token')}`,
+              Authorization: `Bearer ${token}`,
             },
           });
       
@@ -53,13 +54,14 @@ export default function AddApp({fetchAllApps, handleClose}) {
         }
       };
     const fetchData = async () => {
+          const token = Cookies.get('token');
         await axios.request(
             {
                 url: `${baseUrl}apps/products/names`,
                 method: "get",
                 headers: {
                     "Accept": "application/json",
-                    Authorization: `Bearer ${Cookies.get('token')}`,
+                    Authorization: `Bearer ${token}`,
                 }
             }
         ).then((res) => {

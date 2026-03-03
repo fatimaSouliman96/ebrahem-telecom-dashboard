@@ -78,7 +78,8 @@ export default function KaziehForm({ fetchData, kazieh }) {
       if (!quantityValdate(e.target.value)) {
         if (isFixed == 0) {
           console.log(e.target.value)
-          let x = (e.target.value * parseInt(price)) / 100
+          let amountx = e.target.value * price
+          let x = (amountx) / 100
           console.log(price)
           let amountValue = x + parseInt(e.target.value)
           if (isDecimal(amountValue)) {
@@ -91,7 +92,7 @@ export default function KaziehForm({ fetchData, kazieh }) {
           }
 
         } else {
-          let amountValue = parseInt(e.target.value) + parseInt(price)
+          let amountValue = parseInt(e.target.value) + price
           if (isDecimal(amountValue)) {
             const newValue = roundNumber(amountValue)
             setAmount(newValue)

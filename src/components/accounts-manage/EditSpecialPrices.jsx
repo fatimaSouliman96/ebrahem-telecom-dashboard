@@ -41,6 +41,7 @@ export default function SpecialPrices({ id, name }) {
   }
 
   const fetchDataBills = async () => {
+    const token = Cookies.get('token');
        setLoading(true)
     await axios.request(
       {
@@ -48,7 +49,7 @@ export default function SpecialPrices({ id, name }) {
         method: "get",
         headers: {
           "Accept": "application/json",
-          Authorization: `Bearer ${Cookies.get('token')}`,
+          Authorization: `Bearer ${token}`,
         }
       }
     ).then((res) => {
@@ -63,6 +64,7 @@ export default function SpecialPrices({ id, name }) {
   }
 
   const handleUpadteUntis = async (e) => {
+     const token = Cookies.get('token');
     e.preventDefault()
     setSubmit(true)
     const data = new FormData()
@@ -74,7 +76,7 @@ export default function SpecialPrices({ id, name }) {
       method: "post",
       headers: {
         "Accept": "application/json",
-        Authorization: `Bearer ${Cookies.get('token')}`,
+        Authorization: `Bearer ${token}`,
       },
       data: data
     })
@@ -98,6 +100,7 @@ export default function SpecialPrices({ id, name }) {
 
   }
   const fetchDataUnits = async () => {
+     const token = Cookies.get('token');
      setLoading(true)
     await axios.request(
       {
@@ -105,7 +108,7 @@ export default function SpecialPrices({ id, name }) {
         method: "get",
         headers: {
           "Accept": "application/json",
-          Authorization: `Bearer ${Cookies.get('token')}`,
+          Authorization: `Bearer ${token}`,
         }
       }
     ).then((res) => {
@@ -122,6 +125,7 @@ export default function SpecialPrices({ id, name }) {
   }
 
   const handleDownload = async () => {
+     const token = Cookies.get('token');
     setSubmit(true)
     let unitUrl = `special-unit-prices/${id}/export`
     let billUrl = `special-bill-prices/${id}/export`
@@ -129,7 +133,7 @@ export default function SpecialPrices({ id, name }) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'Authorization': `Bearer ${Cookies.get('token')}`,
+        'Authorization': `Bearer ${token}`,
       }
     }).then(response => {
       if (!response.ok) {

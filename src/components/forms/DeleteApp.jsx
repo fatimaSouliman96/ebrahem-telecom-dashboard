@@ -15,6 +15,7 @@ export default function DeleteApp({ handelClose, fetchData, id }) {
     const [submit, setSubmit] = useState(false)
 
     const deleteProvider = async (e) => {
+         const token = Cookies.get('token');
         e.preventDefault()
         setSubmit(true)
 
@@ -24,7 +25,7 @@ export default function DeleteApp({ handelClose, fetchData, id }) {
                 method: "delete",
                 headers: {
                     "Accept": "application/json",
-                    Authorization: `Bearer ${Cookies.get('token')}`,
+                    Authorization: `Bearer ${token}`,
                 }
             }
 

@@ -48,6 +48,7 @@ export default function AccountsManage() {
 
 
   const fetchData = async (offset, limitValue = 10) => {
+     const token = Cookies.get('token');
     setLoading(true)
 
     await axios.request(
@@ -56,7 +57,7 @@ export default function AccountsManage() {
         method: "get",
         headers: {
           "Accept": "application/json",
-          Authorization: `Bearer ${Cookies.get('token')}`,
+          Authorization: `Bearer ${token}`,
         }
       }
     ).then((res) => {

@@ -8,7 +8,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie';
 import { baseUrl } from '../../constants/baseUrl'
 
-const token = Cookies.get('token');
+
 
 export default function AccountStatement() {
     const navigate = useNavigate()
@@ -18,13 +18,14 @@ export default function AccountStatement() {
     const [userDetails, setUserDetails] = useState()
 
     const fetchData = async () => {
+        const token = Cookies.get('token');
         axios.request(
             {
                 url: `${baseUrl}view_cash`,
                 method: "get",
                 headers: {
                     "Accept": "application/json",
-                    Authorization: `Bearer ${Cookies.get('token')}`,
+                    Authorization: `Bearer ${token}`,
                 }
             }
 

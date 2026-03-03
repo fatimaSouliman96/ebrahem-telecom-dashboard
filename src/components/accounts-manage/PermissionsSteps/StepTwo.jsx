@@ -66,6 +66,7 @@ export default function StepTwo({ id }) {
   const [sendData, setSendData] = useState([])
 
   const fetchPremation = async () => {
+    const token = Cookies.get('token');
     setCheckedPermission([])
     setPermission([])
     await axios.request(
@@ -74,7 +75,7 @@ export default function StepTwo({ id }) {
         method: "get",
         headers: {
           "Accept": "application/json",
-          Authorization: `Bearer ${Cookies.get('token')}`,
+          Authorization: `Bearer ${token}`,
         }
       }
 
@@ -104,6 +105,7 @@ export default function StepTwo({ id }) {
 
   }
   const handleSave = async (e) => {
+    const token = Cookies.get('token');
     console.log(sendData)
     setSubmit(true)
     e.preventDefault()
@@ -117,7 +119,7 @@ export default function StepTwo({ id }) {
 
         headers: {
           "Accept": "application/json",
-          Authorization: `Bearer ${Cookies.get('token')}`,
+          Authorization: `Bearer ${token}`,
         }
       }
 

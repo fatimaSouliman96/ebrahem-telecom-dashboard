@@ -216,6 +216,7 @@ const DataTable = ({
 
 
   const handelStateUser = async (e, id) => {
+     const token = Cookies.get('token');
     e.preventDefault()
     setSubmit(true)
     if (e.target.checked == true) {
@@ -229,7 +230,7 @@ const DataTable = ({
 
           headers: {
             "Accept": "application/json",
-            Authorization: `Bearer ${Cookies.get('token')}`,
+            Authorization: `Bearer ${token}`,
           }
         }
 
@@ -273,6 +274,7 @@ const DataTable = ({
   }
 
   const handelAgentUser = async (e, id, agent) => {
+     const token = Cookies.get('token');
     e.preventDefault()
     setSubmit(true)
     console.log(e.target.checked)
@@ -286,7 +288,7 @@ const DataTable = ({
           },
           headers: {
             "Accept": "application/json",
-            Authorization: `Bearer ${Cookies.get('token')}`,
+            Authorization: `Bearer ${token}`,
           }
         }
 
@@ -307,7 +309,7 @@ const DataTable = ({
           method: "get",
           headers: {
             "Accept": "application/json",
-            Authorization: `Bearer ${Cookies.get('token')}`,
+            Authorization: `Bearer ${token}`,
           },
           data: {
             is_agent: 0
@@ -329,6 +331,7 @@ const DataTable = ({
   }
 
   const handleFixed = async (e) => {
+     const token = Cookies.get('token');
     e.preventDefault()
     setSubmit(true)
 
@@ -360,7 +363,7 @@ const DataTable = ({
         method: "PATCH",
         headers: {
           "Accept": "application/json",
-          Authorization: `Bearer ${Cookies.get('token')}`,
+          Authorization: `Bearer ${token}`,
         }
       })
         .then(res => {
@@ -535,9 +538,7 @@ const DataTable = ({
         {app == 2 && <AppPrices id={useId} name={appName} />}
       </ModalPob>
       <ModalPob open={openDetailsfinincal} handleClose={closeDetailsfinincal} handleOpen={showDetailsfinincal} >
-
         <DetalisFinancial close={closeDetailsfinincal} stutas={stutas} bill={billName} id={useId} />
-
       </ModalPob>
       <div className={
         clsx(

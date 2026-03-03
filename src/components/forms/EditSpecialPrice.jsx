@@ -91,6 +91,7 @@ export default function EditSpecialPrice({ data, fetchData, close, bills }) {
     }
 
     const handleSubmit = async (e) => {
+         const token = Cookies.get('token');
         e.preventDefault()
         setSubmit(true)
         const urlUnits = `special-unit-prices/${data.id}/update-manually`
@@ -119,7 +120,7 @@ export default function EditSpecialPrice({ data, fetchData, close, bills }) {
             data: bills == true ? dataBills : dataUnits,
             headers: {
                 "Accept": "application/json",
-                Authorization: `Bearer ${Cookies.get('token')}`,
+                Authorization: `Bearer ${token}`,
             }
         })
             .then(res => {

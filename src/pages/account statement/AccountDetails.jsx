@@ -22,7 +22,7 @@ export default function AccountDetails() {
     setOpen(false)
   }
   const fetchUser = async (offset) => {
-
+    const token = Cookies.get('token');
     setLoading(true)
     if (location.state.data !== "") {
       await axios.request(
@@ -31,13 +31,13 @@ export default function AccountDetails() {
           method: "get",
           headers: {
             "Accept": "application/json",
-            Authorization: `Bearer ${Cookies.get('token')}`,
+            Authorization: `Bearer ${token}`,
           }
         }
 
       )
         .then(res => {
-    
+
           setLoading(false)
           setUser(res.data.data.user)
           setData(res.data.data.operations.data)

@@ -112,6 +112,8 @@ export default function AddBalanceForm({ fetchData }) {
 // handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const token = Cookies.get('token');
 
     const isAmountValid = state.amount && state.amountConf && state.amount === state.amountConf;
     const isCridetValid = state.cridet && state.cridetConf && state.cridet === state.cridetConf;
@@ -154,7 +156,6 @@ export default function AddBalanceForm({ fetchData }) {
       toast.success("تمت اضافة الرصيد بنجاح");
       fetchData(0);
       getBalances();
-
       // reset fields
       dispatch({ type: "RESET_FIELDS" });
     } catch (e) {

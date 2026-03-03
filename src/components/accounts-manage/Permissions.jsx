@@ -9,7 +9,7 @@ import StepTwo from "./PermissionsSteps/StepTwo";
 import useStep from "../../hooks/useStep";
 import Cookies from 'js-cookie';
 
-const token = Cookies.get('token');
+
 
 export default function Permissions({ balance, id,  fetchData, cridet }) {
   const { stepNum, incrementStep, decrementStep, setStepNum } = useStep(
@@ -26,13 +26,14 @@ export default function Permissions({ balance, id,  fetchData, cridet }) {
   const [role, setRole] = useState()
 
   const fetchPremation = async () => {
+    const token = Cookies.get('token');
     await axios.request(
       {
         url: `${baseUrl}users/${id}/permissions`,
         method: "get",
         headers: {
           "Accept": "application/json",
-          Authorization: `Bearer ${Cookies.get('token')}`,
+          Authorization: `Bearer ${token}`,
         }
       }
     )
@@ -71,12 +72,7 @@ export default function Permissions({ balance, id,  fetchData, cridet }) {
         )}
 
         <div className="flex items-end justify-between">
-          {/* <MainButton
-            title="حفظ التغييرات"
-            w="266px"
-            h="44px"
-            className="mt-8"
-          /> */}
+
           <div className="flex">
             <div
               className="w-10 flex items-center justify-center rounded-tr-lg rounded-br-lg border border-[#D5D5D5] bg-[#FAFBFD] cursor-pointer h-[30px]"

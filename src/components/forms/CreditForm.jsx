@@ -8,7 +8,7 @@ import { baseUrl } from '../../constants/baseUrl';
 import { fetchBalances } from '../../services/getBalances';
 import { reducer, initialState } from '../reducers/creditFormReducer'; 
 
-const token = Cookies.get('token');
+
 
 export default function CreditForm({ users, fetchData }) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -51,10 +51,12 @@ export default function CreditForm({ users, fetchData }) {
   };
 
   const handleChangeNotes = (e) => {
+
     dispatch({ type: 'SET_NOTES', payload: e.target.value });
   };
 
   const handleSubmit = async (e) => {
+    const token = Cookies.get('token');
     e.preventDefault();
 
     if (state.errors.amount !== '') {

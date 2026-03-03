@@ -19,6 +19,7 @@ export default function StepOne({
   const [submit, setSubmit] = useState(false)
 
   const handleSubmit = async (e) => {
+    const token = Cookies.get('token');
     e.preventDefault()
     setSubmit(true)
     await axios.request({
@@ -29,7 +30,7 @@ export default function StepOne({
       },
       headers: {
         "Accept": "application/json",
-        Authorization: `Bearer ${Cookies.get('token')}`,
+        Authorization: `Bearer ${token}`,
       }
     })
       .then(res => {

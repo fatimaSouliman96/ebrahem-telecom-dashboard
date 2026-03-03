@@ -22,6 +22,7 @@ export default function EditUser({ handleClose, user, rollesName, fetchData }) {
   });
 
   const handleEditUser = async (e) => {
+     const token = Cookies.get('token');
     e.preventDefault()
     console.log(userData)
     setSubmit(true)
@@ -33,7 +34,7 @@ export default function EditUser({ handleClose, user, rollesName, fetchData }) {
           method: "put",
           headers: {
             "Accept": "application/json",
-            Authorization: `Bearer ${Cookies.get('token')}`,
+            Authorization: `Bearer ${token}`,
           }
         }
       ).

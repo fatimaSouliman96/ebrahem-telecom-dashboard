@@ -21,6 +21,7 @@ export default function Apps() {
     }
 
     const fetchAllApps = async () => {
+         const token = Cookies.get('token');
         setLoading(true)
         await axios.request(
             {
@@ -28,7 +29,7 @@ export default function Apps() {
                 method: "get",
                 headers: {
                     "Accept": "application/json",
-                    Authorization: `Bearer ${Cookies.get('token')}`,
+                    Authorization: `Bearer ${token}`,
                 }
             }
         ).then((res) => {

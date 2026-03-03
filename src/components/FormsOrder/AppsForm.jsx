@@ -79,10 +79,7 @@ export default function AppsForm({ application }) {
                 setBundellName(o.text)
             }
         });
-
-
         setType(bouqet[0].type)
-
         setAppPrice(bouqet[0].price)
         if (bouqet[0].min == 1 && bouqet[0].max == 1) {
             if (isFixed == 0) {
@@ -121,7 +118,7 @@ export default function AppsForm({ application }) {
 
     const isFixed0AndMin1 = (valuePrice) => {
         setQyt("1")
-        const value = ((price * valuePrice) / 100) + parseInt(valuePrice)
+        const value = ((price * valuePrice) / 100) + valuePrice
         setSendAmount(valuePrice)
 
         if (isDecimal(value)) {
@@ -156,7 +153,7 @@ export default function AppsForm({ application }) {
         setQyt("1")
         if (isFixed == 1) {
             if (min == 1 && max == 1) {
-                const value = parseInt(price) + parseInt(valuePrice)
+                const value = parseInt(price) + valuePrice
                 setSendAmount(valuePrice)
                 if (isDecimal(value)) {
                     let newValue = roundNumber(value)

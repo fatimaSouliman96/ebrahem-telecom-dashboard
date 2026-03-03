@@ -63,15 +63,16 @@ export default function FormBalance({ fetchData, mobile }) {
       amount: ""
     })
 
-    setOptions(e.target.children)
     if (topUpType == "prepaid") {
       setAmount(e.target.value)
-
       valueBalance(e.target.value)
-      setQuantity(e.target.value)
+      console.log(options)
       options?.map(ele => {
-        if (ele.value == e.target.value) {
-          setQuantity(ele.textContent)
+        if (ele.price == e.target.value) {
+            setPrice(ele.price);
+          setIsFixed(ele.is_fixed);
+          console.log(ele.minimum )
+          setQuantity(ele.minimum)
         }
       })
     } else {
@@ -82,8 +83,8 @@ export default function FormBalance({ fetchData, mobile }) {
         setQuantity(e.target.value)
         if (!quantityValdate(e.target.value)) {
           if (isFixed == 0) {
-
-            let x = (e.target.value * parseInt(price)) / 100
+            let amountx = e.target.value * price 
+            let x = ( amountx / 100 )
             let amountValue = x + parseInt(e.target.value)
             if (isDecimal(amountValue)) {
               let newValue = roundNumber(amountValue)
@@ -93,9 +94,8 @@ export default function FormBalance({ fetchData, mobile }) {
               setAmount(amountValue)
               valueBalance(amountValue)
             }
-
           } else {
-            let amountValue = parseInt(e.target.value) + parseInt(price)
+            let amountValue = parseInt(e.target.value) + price
             if (isDecimal(amountValue)) {
               let newValue = roundNumber(amountValue)
               setAmount(newValue)
@@ -252,9 +252,19 @@ export default function FormBalance({ fetchData, mobile }) {
           const selectedPrice = res.data.prices.find(ele => ele.company === company && ele.top_up_type === topUpType);
 
           localStorage.setItem("minimum", selectedPrice.minimum)
+          console.log(topUpType)
+          setOptions(selectedPrice)
           setPrice(selectedPrice.price);
           setIsFixed(selectedPrice.is_fixed);
 
+        }
+        else {
+          const selectedPrice = res.data.prices.filter(ele => ele.company === company && ele.top_up_type === topUpType);
+
+          localStorage.setItem("minimum", selectedPrice.minimum)
+          console.log(selectedPrice)
+          setOptions(selectedPrice)
+        
         }
         setPricesData(res.data.prices);
       })

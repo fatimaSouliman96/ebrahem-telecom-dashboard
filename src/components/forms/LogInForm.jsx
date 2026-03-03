@@ -24,6 +24,7 @@ export default function LogInForm({ setSubmit }) {
   };
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
 
     const validationRules = {

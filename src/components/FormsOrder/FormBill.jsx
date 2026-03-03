@@ -164,7 +164,7 @@ export default function FormBill({ fetchData, setting }) {
 
   const discountAmountFun = () => {
     if (isFixed == true) {
-      let newAmount = parseInt(price) + parseInt(amount)
+      let newAmount = price + parseInt(amount)
       if (isDecimal(newAmount)) {
         let roundedValue = roundNumber(newAmount)
         setDiscountAmount(roundedValue)
@@ -172,7 +172,7 @@ export default function FormBill({ fetchData, setting }) {
         setDiscountAmount(newAmount)
       }
     } else {
-      let x = parseInt(price) * parseInt(amount)
+      let x = price * parseInt(amount)
       let y = x / 100
       let value = y + parseInt(amount)
       if (isDecimal) {
