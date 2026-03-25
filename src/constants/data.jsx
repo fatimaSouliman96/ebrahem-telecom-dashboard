@@ -1130,17 +1130,7 @@ export const inquriesColumns = [
       );
     },
   },
-  {
-    field: "amount",
-    type: "string",
-    headerName: "المبلغ",
-    minWidth: 100,
-    renderCell: (params) => {
-      return (
-        <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
-      );
-    },
-  },
+ 
   {
     field: "quantity",
     type: "string",

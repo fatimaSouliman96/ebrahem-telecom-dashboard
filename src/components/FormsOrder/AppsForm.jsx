@@ -80,12 +80,13 @@ export default function AppsForm({ application, fetchData }) {
             }
         });
         setType(bouqet[0].type)
-        setAppPrice(bouqet[0].price)
+        let floatValue = parseFloat(bouqet[0].price)
+        setAppPrice(floatValue)
         if (bouqet[0].min == 1 && bouqet[0].max == 1) {
             if (isFixed == 0) {
-                isFixed0AndMin1(bouqet[0].price)
+                isFixed0AndMin1(floatValue)
             } else if (isFixed == 1) {
-                isFixed1AndMin1(bouqet[0].price)
+                isFixed1AndMin1(floatValue)
             } else {
                 null
             }
@@ -119,16 +120,21 @@ export default function AppsForm({ application, fetchData }) {
     const isFixed0AndMin1 = (valuePrice) => {
         
         setQyt("1")
-        const value = ((price * valuePrice) / 100) + valuePrice
-        setSendAmount(valuePrice)
+        let x = (price * valuePrice)
+        console.log(x)
+        let tt = x / 100
+        console.log(tt)
+        const value = tt + valuePrice
+          console.log(tt)  
+          console.log(tt + valuePrice)  
+        setSendAmount(tt + valuePrice)
         if (isDecimal(value)) {
             let decimleValue = parseFloat(value)
             let newValue = roundNumber(decimleValue)
-            console.log(value)
-             console.log(newValue)
             setAmount(newValue)
             valdutionAmount(newValue)
         } else {
+           
             setAmount(value)
             valdutionAmount(value)
         }
@@ -142,7 +148,7 @@ export default function AppsForm({ application, fetchData }) {
                 const value = y + bundleValue
                 setSendAmount(appPrice * valueQyt)
                 if (isDecimal(appPrice * valueQyt)) {
-                         let decimleValue = parseFloat(value)
+                    let decimleValue = parseFloat(value)
                     let newValue = roundNumber(decimleValue)
                     setAmount(newValue)
                     valdutionAmount(newValue)

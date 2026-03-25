@@ -64,7 +64,7 @@ export default function AccountDetails() {
 
       </div>
       <div className='flex justify-center gap-2 pt-8'>
-        <CounterCard count={data?.length} icon={icons.orderIcon} title={"عدد الطلبات"} />
+        <CounterCard count={total??total} icon={icons.orderIcon} title={"عدد الطلبات"} />
         <CounterCard count={user?.creditBalance} icon={icons.dolarRed} title={"الرصيد الائتماني"} />
         <CounterCard count={user?.main_balance} icon={icons.dolar} title={" الرصيد الموجود"} />
         <CounterCard count={user?.username} icon={icons.userIcon} title={"اسم المستخدم"} />
