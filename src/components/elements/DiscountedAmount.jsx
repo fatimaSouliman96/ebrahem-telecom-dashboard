@@ -7,11 +7,12 @@ import { baseUrl } from "../../constants/baseUrl";
 import Cookies from 'js-cookie';
 import { useState } from "react";
 
-
+Cookies.get('tokxczxcen')
 export default function DiscountedAmount({ amount, handelClose, removeValues, url, data, app, Kazieh, fetchData, setNewBalnces, mobail }) {
   const user = JSON.parse(localStorage.getItem("user"))
   const [submit, setSubmit] = useState(false)
   const sendData = async () => {
+    let token = Cookies.get('token')
     setSubmit(true)
     app ?
       await axios.request(
@@ -20,7 +21,7 @@ export default function DiscountedAmount({ amount, handelClose, removeValues, ur
           method: "post",
           headers: {
             "Accept": "application/json",
-            Authorization: `Bearer ${Cookies.get('token')}`,
+            Authorization: `Bearer ${token}`,
           },
           data: data
         }
@@ -29,6 +30,7 @@ export default function DiscountedAmount({ amount, handelClose, removeValues, ur
           setSubmit(false)
           removeValues()
           fetchData(1)
+          handelClose()
           toast.success("تمت العملية بنجاح سوف يتم مراجعة الطلب")
 
         })
@@ -72,18 +74,18 @@ export default function DiscountedAmount({ amount, handelClose, removeValues, ur
               data: data,
               headers: {
                 "Accept": "application/json",
-                Authorization: `Bearer ${Cookies.get('token')}`,
+                Authorization: `Bearer ${token}`,
               }
             }
 
           )
             .then(res => {
               toast.success("تمت العملية بنجاح")
-               fetchData(1)
-               setSubmit(false)
-               removeValues()
-               handelClose()
-              
+              fetchData(1)
+              setSubmit(false)
+              removeValues()
+              handelClose()
+
             })
             .catch(e => {
               if (e) {
@@ -92,6 +94,7 @@ export default function DiscountedAmount({ amount, handelClose, removeValues, ur
               }
             })
           :
+          // form bill
           await axios.request(
             {
               url: `${baseUrl}${user.roles[0].name === "pointOfSale" ? "" : "NewOutdoorOrder/"}${url}`,
@@ -99,7 +102,7 @@ export default function DiscountedAmount({ amount, handelClose, removeValues, ur
               data: data,
               headers: {
                 "Accept": "application/json",
-                Authorization: `Bearer ${Cookies.get('token')}`,
+                Authorization: `Bearer ${token}`,
               }
             }
 

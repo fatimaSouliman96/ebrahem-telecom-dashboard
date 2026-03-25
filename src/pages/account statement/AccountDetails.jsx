@@ -76,6 +76,7 @@ export default function AccountDetails() {
             Account={true}
             total={total}
             loading={loading}
+            fetchData={fetchUser}
             notFound={"لا يوجد عمليات"}
           />
         </Tabel.LayoutTable>

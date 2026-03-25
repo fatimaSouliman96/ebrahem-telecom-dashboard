@@ -185,7 +185,7 @@ export const OperationsColumns = [
   {
     field: "id",
     headerName: "رقم العملية",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -195,7 +195,7 @@ export const OperationsColumns = [
   {
     field: "billable_type",
     headerName: "اسم العملية",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
 
@@ -214,7 +214,7 @@ export const OperationsColumns = [
   {
     field: "order_type",
     headerName: "نوع الطلب",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -233,7 +233,7 @@ export const OperationsColumns = [
     field: "created_at",
     type: "string",
     headerName: "الوقت - التاريخ",
-    width: 210,
+    minWidth: 210,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{new Date(params.row.created_at).toLocaleString()}</p>
@@ -244,7 +244,7 @@ export const OperationsColumns = [
     field: "amount",
     type: "string",
     headerName: "المبلغ",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
@@ -255,7 +255,7 @@ export const OperationsColumns = [
     field: "quantity",
     type: "string",
     headerName: "الكمية",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">
@@ -268,7 +268,7 @@ export const OperationsColumns = [
     field: "employee_name",
     type: "string",
     headerName: "الموظف",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <Link to="#" className="underline text-[#4880FF]">
@@ -281,7 +281,7 @@ export const OperationsColumns = [
     field: "status",
     type: "string",
     headerName: "حالة الطلب",
-    width: 100,
+    minWidth: 100,
 
     renderCell: (params) => {
       return (
@@ -383,7 +383,7 @@ export const RechargColumns = [
   {
     field: "billable_id",
     headerName: "رقم العملية",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.billable_id}</p>
@@ -394,7 +394,7 @@ export const RechargColumns = [
     field: "customer_name",
     type: "string",
     headerName: "اسم المستخدم",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <Link to="#" className="underline text-[#4880FF]">
@@ -407,7 +407,7 @@ export const RechargColumns = [
     field: "id",
     type: "string",
     headerName: "كود العملية",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -418,7 +418,7 @@ export const RechargColumns = [
     field: "amount",
     type: "string",
     headerName: "المبلغ",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
@@ -429,7 +429,7 @@ export const RechargColumns = [
     field: "quantity",
     type: "string",
     headerName: "الكمية",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">
@@ -442,7 +442,7 @@ export const RechargColumns = [
     field: "created_at",
     type: "string",
     headerName: "الوقت - التاريخ",
-    width: 210,
+    minWidth: 210,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{new Date(params.row.created_at).toLocaleString()}</p>
@@ -453,7 +453,7 @@ export const RechargColumns = [
     field: "status",
     type: "string",
     headerName: "حالة الطلب",
-    width: 100,
+    minWidth: 100,
 
     renderCell: (params) => {
       return (
@@ -549,7 +549,7 @@ export const finincialColumns = [
   {
     field: "id",
     headerName: "رقم العملية",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -559,7 +559,7 @@ export const finincialColumns = [
   {
     field: "billable_type",
     headerName: "اسم العملية",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -577,7 +577,7 @@ export const finincialColumns = [
   {
     field: "order_type",
     headerName: "نوع الطلب",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -596,7 +596,7 @@ export const finincialColumns = [
     field: "created_at",
     type: "string",
     headerName: "الوقت - التاريخ",
-    width: 210,
+    minWidth: 210,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{new Date(params.row.created_at).toLocaleString()}</p>
@@ -607,7 +607,7 @@ export const finincialColumns = [
     field: "base_amount",
     type: "string",
     headerName: "المبلغ الاساسي",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.base_amount))} L.S</p>
@@ -618,7 +618,7 @@ export const finincialColumns = [
     field: "amount",
     type: "string",
     headerName: "المبلغ المقطوع",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
@@ -629,7 +629,7 @@ export const finincialColumns = [
     field: "unit_price",
     type: "string",
     headerName: "الكمية",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">
@@ -644,7 +644,7 @@ export const finincialColumns = [
     field: "customer_name",
     type: "string",
     headerName: "الزبون",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <Link to="#" className="underline text-[#4880FF]">
@@ -657,7 +657,7 @@ export const finincialColumns = [
     field: "employee_name",
     type: "string",
     headerName: "الموظف",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <Link to="#" className="underline text-[#4880FF]">
@@ -670,7 +670,7 @@ export const finincialColumns = [
     field: "status",
     type: "string",
     headerName: "حالة الطلب",
-    width: 100,
+    minWidth: 100,
 
     renderCell: (params) => {
       return (
@@ -768,7 +768,7 @@ export const accountManageColumns = [
   {
     field: "id",
     headerName: "الرقم",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -778,7 +778,7 @@ export const accountManageColumns = [
   {
     field: "username",
     headerName: "اسم المستخدم",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -791,7 +791,7 @@ export const accountManageColumns = [
     field: "rank",
     type: "string",
     headerName: "نوع الحساب",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -810,7 +810,7 @@ export const accountManageColumns = [
     field: "name",
     type: "string",
     headerName: "الاسم",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return <p className=" text-[#202224]/80 ">{params.row.name}</p>;
     },
@@ -819,7 +819,7 @@ export const accountManageColumns = [
     field: "roles[0].name",
     type: "string",
     headerName: "المجموعة",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return <p className="text-[#202224]/80 ">{
         rolles.map(ele => {
@@ -882,7 +882,7 @@ export const OrdersColumns = [
   {
     field: "id",
     headerName: "الرقم",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -892,7 +892,7 @@ export const OrdersColumns = [
   {
     field: "billable_id",
     headerName: "رقم العملية",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.billable_id}</p>
@@ -902,7 +902,7 @@ export const OrdersColumns = [
   {
     field: "billable_type",
     headerName: "اسم العملية",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
 
@@ -922,7 +922,7 @@ export const OrdersColumns = [
     field: "created_at",
     type: "string",
     headerName: "الوقت - التاريخ",
-    width: 210,
+    minWidth: 210,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{new Date(params.row.created_at).toLocaleString()}</p>
@@ -933,7 +933,7 @@ export const OrdersColumns = [
     field: "amount",
     type: "string",
     headerName: "المبلغ",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
@@ -944,7 +944,7 @@ export const OrdersColumns = [
     field: "base_amount",
     type: "string",
     headerName: "المبلغ الاساسي",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.base_amount))} L.S</p>
@@ -955,7 +955,7 @@ export const OrdersColumns = [
     field: "quantity",
     type: "string",
     headerName: "الكمية",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">
@@ -968,7 +968,7 @@ export const OrdersColumns = [
     field: "status",
     type: "string",
     headerName: "حالة الطلب",
-    width: 100,
+    minWidth: 100,
 
     renderCell: (params) => {
       return (
@@ -1005,7 +1005,7 @@ export const OrdersColumns = [
     field: "source",
     type: "string",
     headerName: " مصدر الطلب",
-    width: 100,
+    minWidth: 100,
 
     renderCell: (params) => {
       return (
@@ -1083,7 +1083,7 @@ export const inquriesColumns = [
   {
     field: "id",
     headerName: "الرقم",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1093,7 +1093,7 @@ export const inquriesColumns = [
   {
     field: "billable_id",
     headerName: "رقم العملية",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.billable_id}</p>
@@ -1103,7 +1103,7 @@ export const inquriesColumns = [
   {
     field: "billable_type",
     headerName: "اسم العملية",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
 
@@ -1123,7 +1123,7 @@ export const inquriesColumns = [
     field: "created_at",
     type: "string",
     headerName: "الوقت - التاريخ",
-    width: 210,
+    minWidth: 210,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{new Date(params.row.created_at).toLocaleString()}</p>
@@ -1134,7 +1134,7 @@ export const inquriesColumns = [
     field: "amount",
     type: "string",
     headerName: "المبلغ",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
@@ -1145,7 +1145,7 @@ export const inquriesColumns = [
     field: "quantity",
     type: "string",
     headerName: "الكمية",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">
@@ -1158,7 +1158,7 @@ export const inquriesColumns = [
     field: "status",
     type: "string",
     headerName: "حالة الطلب",
-    width: 100,
+    minWidth: 100,
 
     renderCell: (params) => {
       return (
@@ -1195,7 +1195,7 @@ export const inquriesColumns = [
     field: "source",
     type: "string",
     headerName: " مصدر الطلب",
-    width: 100,
+    minWidth: 100,
 
     renderCell: (params) => {
       return (
@@ -1220,7 +1220,7 @@ export const addBalanceColumns = [
   {
     field: "id",
     headerName: "رقم العملية",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1230,7 +1230,7 @@ export const addBalanceColumns = [
   {
     field: "amount",
     headerName: "الرصيد",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
@@ -1240,7 +1240,7 @@ export const addBalanceColumns = [
   {
     field: "creditAmount",
     headerName: "الرصيد الائتماني",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>{
@@ -1255,7 +1255,7 @@ export const addBalanceColumns = [
     field: "created_at",
     type: "string",
     headerName: "الوقت - التاريخ",
-    width: 210,
+    minWidth: 210,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80">{new Date(params.row.created_at).toLocaleString()}</p>
@@ -1265,7 +1265,7 @@ export const addBalanceColumns = [
   {
     field: "notes",
     headerName: "ملاحظات",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="text-[#202224]/80">{params.row.notes !== null ? params.row.notes : "_"}</p>
@@ -1331,7 +1331,7 @@ export const listColumns = [
   {
     field: "id",
     headerName: "id",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1341,7 +1341,7 @@ export const listColumns = [
   {
     field: "description",
     headerName: "الوصف",
-    width: 120,
+    minWidth: 120,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.description}</p>
@@ -1351,7 +1351,7 @@ export const listColumns = [
   {
     field: "company",
     headerName: "الشركة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">
@@ -1363,7 +1363,7 @@ export const listColumns = [
   {
     field: "top_up_type",
     headerName: "نوع التعبئة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">{
@@ -1381,7 +1381,7 @@ export const listColumns = [
     field: "minimum",
     type: "string",
     headerName: "الحد الادنى",
-    width: 210,
+    minWidth: 210,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80">{params.row.minimum} Unit</p>
@@ -1391,7 +1391,7 @@ export const listColumns = [
   {
     field: "retail",
     headerName: "سعر المفرق",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
@@ -1402,7 +1402,7 @@ export const listColumns = [
   {
     field: "wholesale",
     headerName: "سعر الجملة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
@@ -1416,7 +1416,7 @@ export const pricesListBillsColumns = [
   {
     field: "id",
     headerName: "id",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1426,7 +1426,7 @@ export const pricesListBillsColumns = [
   {
     field: "description",
     headerName: "الوصف",
-    width: 120,
+    minWidth: 120,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.description}</p>
@@ -1437,7 +1437,7 @@ export const pricesListBillsColumns = [
     field: "minimum",
     type: "string",
     headerName: "الحد الادنى",
-    width: 210,
+    minWidth: 210,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80">{params.row.minimum} Unit</p>
@@ -1447,7 +1447,7 @@ export const pricesListBillsColumns = [
   {
     field: "retail",
     headerName: "سعر المفرق",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
@@ -1458,7 +1458,7 @@ export const pricesListBillsColumns = [
   {
     field: "wholesale",
     headerName: "سعر الجملة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
@@ -1469,7 +1469,7 @@ export const pricesListBillsColumns = [
   {
     field: "is_fixed",
     headerName: "القيمة الثابتة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.is_fixed == 0 ? "ليست قيمة ثابتة" : "قيمة تابثة"}</p>
@@ -1503,7 +1503,7 @@ export const pricesSpecialColumns = [
   {
     field: "id",
     headerName: "id",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1513,7 +1513,7 @@ export const pricesSpecialColumns = [
   {
     field: "description",
     headerName: "الوصف",
-    width: 120,
+    minWidth: 120,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.description}</p>
@@ -1523,7 +1523,7 @@ export const pricesSpecialColumns = [
   {
     field: "company",
     headerName: "الشركة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">
@@ -1535,7 +1535,7 @@ export const pricesSpecialColumns = [
   {
     field: "top_up_type",
     headerName: "نوع التعبئة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">{
@@ -1553,7 +1553,7 @@ export const pricesSpecialColumns = [
     field: "price",
     type: "string",
     headerName: "السعر",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
@@ -1565,7 +1565,7 @@ export const pricesSpecialColumns = [
     field: "minimum",
     type: "string",
     headerName: "الحد الادنى",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
@@ -1581,7 +1581,7 @@ export const pricesBillsSpecialColumns = [
   {
     field: "id",
     headerName: "id",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1591,7 +1591,7 @@ export const pricesBillsSpecialColumns = [
   {
     field: "description",
     headerName: "الوصف",
-    width: 120,
+    minWidth: 120,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.description}</p>
@@ -1601,7 +1601,7 @@ export const pricesBillsSpecialColumns = [
   {
     field: "billable_type",
     headerName: "نوع الفاتورة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">
@@ -1620,7 +1620,7 @@ export const pricesBillsSpecialColumns = [
     field: "price",
     type: "string",
     headerName: "السعر",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
@@ -1632,7 +1632,7 @@ export const pricesBillsSpecialColumns = [
     field: "minimum",
     type: "string",
     headerName: "الحد الادنى",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 " style={{ direction: 'ltr', unicodeBidi: 'plaintext' }}>
@@ -1650,7 +1650,7 @@ export const AccountColumns = [
   {
     field: "id",
     headerName: "رقم العملية",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1660,7 +1660,7 @@ export const AccountColumns = [
   {
     field: "billable_type",
     headerName: "الطلب",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1678,7 +1678,7 @@ export const AccountColumns = [
   {
     field: "order_type",
     headerName: "نوع الطلب",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1697,7 +1697,7 @@ export const AccountColumns = [
     field: "created_at",
     type: "string",
     headerName: "الوقت - التاريخ",
-    width: 210,
+    minWidth: 210,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{new Date(params.row.created_at).toLocaleString()}</p>
@@ -1708,7 +1708,7 @@ export const AccountColumns = [
     field: "amount",
     type: "string",
     headerName: "المبلغ",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80" style={{ direction: 'ltr', unicodeBidi: 'plaintext' }} >{NumberDisplay(parseInt(params.row.amount))} L.S</p>
@@ -1719,7 +1719,7 @@ export const AccountColumns = [
     field: "quantity",
     type: "string",
     headerName: "الكمية",
-    width: 100,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <p className="font-extrabold text-[#202224]/80 ">
@@ -1732,7 +1732,7 @@ export const AccountColumns = [
     field: "status",
     type: "string",
     headerName: "حالة الطلب",
-    width: 100,
+    minWidth: 100,
 
     renderCell: (params) => {
       return (
@@ -1774,7 +1774,7 @@ export const providersPricesColumns = [
   {
     field: "id",
     headerName: "الرقم",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1784,7 +1784,7 @@ export const providersPricesColumns = [
   {
     field: "bundel",
     headerName: "اسم الباقة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1797,7 +1797,7 @@ export const providersPricesColumns = [
     field: "price",
     type: "string",
     headerName: "السعر",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1816,7 +1816,7 @@ export const providersColumns = [
   {
     field: "id",
     headerName: "الرقم",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1826,7 +1826,7 @@ export const providersColumns = [
   {
     field: "name",
     headerName: "اسم المزود",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1839,7 +1839,7 @@ export const providersColumns = [
     field: "is_active",
     type: "string",
     headerName: "حالة المزود",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1867,7 +1867,7 @@ export const appsColumns = [
   {
     field: "id",
     headerName: "الرقم",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1877,7 +1877,7 @@ export const appsColumns = [
   {
     field: "name",
     headerName: "اسم التطبيق",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1892,7 +1892,7 @@ export const appsPricesColumns = [
   {
     field: "id",
     headerName: "الرقم",
-    width: 90,
+    minWidth: 90,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">{params.row.id}</p>
@@ -1902,7 +1902,7 @@ export const appsPricesColumns = [
   {
     field: "game",
     headerName: "التطبيق \ اللعبة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1914,7 +1914,7 @@ export const appsPricesColumns = [
   {
     field: "name",
     headerName: "الباقة",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1926,7 +1926,7 @@ export const appsPricesColumns = [
   {
     field: "price",
     headerName: "السعر",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1938,7 +1938,7 @@ export const appsPricesColumns = [
   {
     field: "min",
     headerName: "الحد الادنى",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">
@@ -1950,7 +1950,7 @@ export const appsPricesColumns = [
   {
     field: "mx",
     headerName: "الحد الاعلى",
-    width: 150,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <p className="font-semibold text-[#202224]/80 ">

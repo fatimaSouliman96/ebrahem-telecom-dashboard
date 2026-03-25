@@ -53,8 +53,6 @@ function App() {
   const handleOpenLogOut = () => setOpenLogOut(true);
   const handleCloseLogOut = () => setOpenLogOut(false);
 
- 
-
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallback}
@@ -62,37 +60,41 @@ function App() {
         console.log("تمت إعادة المحاولة");
       }}
     >
-      <div className="flex bg-[#f7f8fa] w-full relative">
-        <SideBar openLogOut={handleOpenLogOut} open={open} setOpen={setOpen} />
-        <div
-          className={`${
-            open ? "w-[82%]" : "w-[100%]"
-          } transform transition-all duration-200 `}
-        >
-          <Navbar
-            valueResult={valueResult}
-            handelChangeSearch={handelChangeSearch}
-            open={open}
-            setOpen={setOpen}
-          />
-          <div className="px-8 pt-16">
-            {/* إذا بدك تجربي الأخطاء حطي المكون هون */}
-            {/* <BuggyComponent /> */}
-            <Outlet />
+      <>
+        <div className={`flex bg-[#f7f8fa] w-full relative transition-all duration-300 ${open ? 'overflow-hidden lg:overflow-visible' : ''}`}>
+          <SideBar openLogOut={handleOpenLogOut} open={open} setOpen={setOpen} />
+          <div className="w-full flex-1 min-w-0 transition-all duration-300">
+            <Navbar
+              valueResult={valueResult}
+              handelChangeSearch={handelChangeSearch}
+              open={open}
+              setOpen={setOpen}
+            />
+            <div className="px-8 pt-16 content">
+              <Outlet />
+            </div>
+            <Results
+              searchResults={searchResults}
+              openResults={openResults}
+              setOpenResults={setOpenResults}
+            />
           </div>
-          <Results
-            searchResults={searchResults}
-            openResults={openResults}
-            setOpenResults={setOpenResults}
-          />
         </div>
-      </div>
-      <Toaster />
-      <ModalPob open={openLogOut} handleClose={handleCloseLogOut}>
-        <LogOut close={handleCloseLogOut} />
-      </ModalPob>
+        {/* Mobile Sidebar Overlay */}
+        {open && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+          />
+        )}
+        <Toaster />
+        <ModalPob open={openLogOut} handleClose={handleCloseLogOut}>
+          <LogOut close={handleCloseLogOut} />
+        </ModalPob>
+      </>
     </ErrorBoundary>
   );
 }
 
 export default App;
+

@@ -122,7 +122,7 @@ export default function OrderTabs({ fetchData, balance }) {
           <FormBill setting={setting} balance={balance} fetchData={fetchData} />
         </TabPanel>
         <TabPanel value={value} index={2} dir="rtl">
-          <AppsForm application={setting?.application} />
+          <AppsForm fetchData={fetchData} application={setting?.application} />
         </TabPanel>
         <TabPanel value={value} index={3} dir="rtl">
           <KaziehForm kazieh={setting?.kazieh} fetchData={fetchData} balance={balance} />

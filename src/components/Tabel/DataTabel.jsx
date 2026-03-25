@@ -32,6 +32,8 @@ import ModalDetailsInquries from "../Modals/ModalDetailsInquries.jsx";
 import AgentTrancferReDiricte from "../forms/AgentTrancferReDiricte.jsx";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { useTableColumns } from "./useTableColumns.jsx";
+import MobileDataTable from "./MobileDataTable.jsx";
+import { useMediaQuery } from "@mui/material";
 
 
 const DataTable = ({
@@ -59,7 +61,7 @@ const DataTable = ({
   loading
 }) => {
 
-
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const navigate = useNavigate()
   const rows = useContext(OrdersContext)
@@ -431,7 +433,10 @@ const DataTable = ({
       )}
 
       {!loading && !error && rows && rows.length > 0 && (
-        <div className="dataTable" style={{ direction: "rtl" }}>
+        isMobile ? (
+          <MobileDataTable columns={extendedColumns} rows={rows} loading={loading} notFound={notFound} />
+        ) : (
+          <div className="dataTable" style={{ direction: "rtl" }}>
           <Menu
             id="basic-menu"
             anchorEl={anchorEl}
@@ -489,6 +494,7 @@ const DataTable = ({
             disableRowSelectionOnClick
           />
         </div>
+        )
       )}
 
 
@@ -564,7 +570,7 @@ const DataTable = ({
       {all ? <div className="flex items-center justify-center gap-2 mt-6">
 
 
-        <ArrowBackIos
+        <ArrowForwardIos
           className={`cursor-pointer ${page === 1 && "opacity-50 pointer-events-none"}`}
           onClick={() => handlePageChange(page - 1)}
         />
@@ -590,7 +596,7 @@ const DataTable = ({
         )}
 
 
-        <ArrowForwardIos
+        <ArrowBackIos
           className={`cursor-pointer ${page === all && "opacity-50 pointer-events-none"}`}
           onClick={() => handlePageChange(page + 1)}
         />

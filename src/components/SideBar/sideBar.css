@@ -4,6 +4,7 @@
 .css-h6yqnv {
   padding: 0 !important;
 }
+
 .css-i6s8oy{
   background-color: white!important;
 }
@@ -57,3 +58,20 @@
   background-color: #282561 !important;
   border-radius: 12px !important;
 }
+
+/* Sidebar overlay backdrop */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+  backdrop-filter: blur(4px);
+}
+
+@media (min-width: 1024px) {
+  .sidebar-backdrop {
+    display: none;
+  }
+}
+
+

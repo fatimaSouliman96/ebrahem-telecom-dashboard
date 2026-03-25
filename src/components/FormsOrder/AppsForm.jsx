@@ -8,7 +8,7 @@ import { fetchBalances } from '../../services/getBalances';
 import ModalPob from '../Modals/Modal';
 import DiscountedAmount from '../elements/DiscountedAmount';
 
-export default function AppsForm({ application }) {
+export default function AppsForm({ application, fetchData }) {
 
     const [open, setOpen] = useState(false)
     const [submit, setSubmit] = useState(false)
@@ -117,14 +117,17 @@ export default function AppsForm({ application }) {
     }
 
     const isFixed0AndMin1 = (valuePrice) => {
+        
         setQyt("1")
         const value = ((price * valuePrice) / 100) + valuePrice
         setSendAmount(valuePrice)
-
         if (isDecimal(value)) {
-            let newValue = roundNumber(value)
-            setAmount(newValue + 1)
-            valdutionAmount(newValue + 1)
+            let decimleValue = parseFloat(value)
+            let newValue = roundNumber(decimleValue)
+            console.log(value)
+             console.log(newValue)
+            setAmount(newValue)
+            valdutionAmount(newValue)
         } else {
             setAmount(value)
             valdutionAmount(value)
@@ -139,7 +142,8 @@ export default function AppsForm({ application }) {
                 const value = y + bundleValue
                 setSendAmount(appPrice * valueQyt)
                 if (isDecimal(appPrice * valueQyt)) {
-                    let newValue = roundNumber(value)
+                         let decimleValue = parseFloat(value)
+                    let newValue = roundNumber(decimleValue)
                     setAmount(newValue)
                     valdutionAmount(newValue)
                 } else {
@@ -156,10 +160,11 @@ export default function AppsForm({ application }) {
                 const value = parseInt(price) + valuePrice
                 setSendAmount(valuePrice)
                 if (isDecimal(value)) {
-                    let newValue = roundNumber(value)
+                     let decimleValue = parseFloat(value)
+                    let newValue = roundNumber(decimleValue)
 
-                    setAmount(newValue + 1)
-                    valdutionAmount(newValue + 1)
+                    setAmount(newValue)
+                    valdutionAmount(newValue)
                 } else {
                     setAmount(value)
                     valdutionAmount(value)
@@ -174,9 +179,10 @@ export default function AppsForm({ application }) {
                 const value = x + price
                 setSendAmount(appPrice * qyt)
                 if (isDecimal(value)) {
-                    let newValue = roundNumber(value)
-                    setAmount(newValue + 1)
-                    valdutionAmount(newValue + 1)
+                     let decimleValue = parseFloat(value)
+                    let newValue = roundNumber(decimleValue)
+                    setAmount(newValue)
+                    valdutionAmount(newValue)
                 } else {
                     setAmount(value)
                     valdutionAmount(value)
@@ -393,7 +399,7 @@ export default function AppsForm({ application }) {
                     </p>
             }
             <ModalPob open={open} handleClose={handleStateOpen}>
-                <DiscountedAmount removeValues={removeValues} app={true} data={data} amount={amount} handelClose={handleStateOpen} setSubmit={setSubmit} />
+                <DiscountedAmount fetchData={fetchData} removeValues={removeValues} app={true} data={data} amount={amount} handelClose={handleStateOpen} setSubmit={setSubmit} />
             </ModalPob>
         </>
     )

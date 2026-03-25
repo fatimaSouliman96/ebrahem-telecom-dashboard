@@ -528,7 +528,7 @@ export default function FormBalance({ fetchData, mobile }) {
         </p>
       }
       <ModalPob open={open} handleClose={handleStateOpen}>
-        <DiscountedAmount mobail={true} fetchData={fetchData}  data={data} amount={amount} handelClose={handleStateOpen} removeValues={removeValues} setSubmit={setSubmit} />
+        <DiscountedAmount mobail={true} fetchData={fetchData} data={data} amount={amount} handelClose={handleStateOpen} removeValues={removeValues} setSubmit={setSubmit} />
       </ModalPob>
       
     </>

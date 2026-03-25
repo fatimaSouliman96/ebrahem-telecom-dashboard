@@ -10,9 +10,9 @@ const SideBar = React.memo(({ open, openLogOut }) => {
 
 
   return (
-    <aside
-      className={`h-screen bg-white sticky top-0 ${open ? "w-[18%]" : "translate-x-[100%] w-0"
-        } transition-all duration-300 ease-in-out  flex flex-col relative z-50`}
+  <aside
+      className={`h-screen bg-white fixed inset-y-0 right-0 shadow-2xl z-50 ${open ? "translate-x-0" : "translate-x-full"
+        } lg:relative lg:translate-x-0 lg:shadow-none lg:w-[18%] lg:z-auto w-[280px] transition-transform duration-300 ease-in-out flex flex-col overflow-y-auto`}
     >
       <div className="flex items-center" >
 
@@ -84,6 +84,7 @@ const SideBar = React.memo(({ open, openLogOut }) => {
             }
           </li>
         ))}
+
         <hr className="mx-4 mt-2 text-[#E0E0E0]" />
         <p className="text-sm font-normal text-[#c0bfbf] text-right pr-4">
           ادارة موظف
