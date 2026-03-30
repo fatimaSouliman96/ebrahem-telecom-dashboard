@@ -12,28 +12,46 @@ import toast from 'react-hot-toast'
 export default function EditProvider({ data, fetchData, close }) {
 
 
+
   const id = data?.id
   const [submit, setSubmit] = useState(false)
   const [name, setName] = useState(data.name)
+  const [wholesale, setWholesale] = useState()
+  const [retail, setRetail] = useState()
+  const [fixedValue, setFixedValue] = useState(data.is_fixed)
+  const [isHand, setIsHand] = useState(data.is_hand)
+  const [privateValue, setPrivateValue] = useState()
+  const [active, setActive] = useState(data.is_active)
+  const [isFinal, setIsFinal] = useState(data.is_final)
 
-  const [fixedValue, setFixedValue] = useState(data.is_active)
-
-
+  const [edit, setEdit] = useState(0)
 
 
   const handleCahngeName = (e) => {
     setName(e.target.value)
   }
-  const handleFixed = (e) => {
-    e.preventDefault()
-    if (e.target.checked == true) {
-      setFixedValue(1)
+
+  const handleChangeWholesale = (e) => {
+    if (e.target.value > 0) {
+      setWholesale(e.target.value)
     } else {
-      setFixedValue(0)
+      null
     }
-
   }
-
+  const handleCahngeRetail = (e) => {
+    if (e.target.value > 0) {
+      setRetail(e.target.value)
+    } else {
+      null
+    }
+  }
+  const handleCahngeprivate = (e) => {
+    if (e.target.value > 0) {
+      setPrivateValue(e.target.value)
+    } else {
+      null
+    }
+  }
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmit(true)
@@ -53,7 +71,94 @@ export default function EditProvider({ data, fetchData, close }) {
       }
     })
       .then(res => {
-        
+
+        setSubmit(false)
+        toast.success("تم التعديل بنجاح")
+        close()
+        fetchData()
+
+      })
+      .catch(e => {
+        e && toast.error("فشلت العملية")
+        setSubmit(false)
+      })
+  }
+  const handleSubmitFixed = async (e) => {
+    e.preventDefault()
+    setSubmit(true)
+
+
+    await axios.request({
+      url: `${baseUrl}isp/toggle-fixed/${id}`,
+      method: "PATCH",
+      data: {
+        is_fixed: fixedValue
+      },
+      headers: {
+        "Accept": "application/json",
+        Authorization: `Bearer ${Cookies.get('token')}`,
+      }
+    })
+      .then(res => {
+
+        setSubmit(false)
+        toast.success("تم التعديل بنجاح")
+        close()
+        fetchData()
+
+      })
+      .catch(e => {
+        e && toast.error("فشلت العملية")
+        setSubmit(false)
+      })
+  }
+  const handleSubmitHand = async (e) => {
+    e.preventDefault()
+    setSubmit(true)
+
+
+    await axios.request({
+      url: `${baseUrl}isp/toggle-hand/${id}`,
+      method: "PATCH",
+      data: {
+        is_hand: isHand
+      },
+      headers: {
+        "Accept": "application/json",
+        Authorization: `Bearer ${Cookies.get('token')}`,
+      }
+    })
+      .then(res => {
+
+        setSubmit(false)
+        toast.success("تم التعديل بنجاح")
+        close()
+        fetchData()
+
+      })
+      .catch(e => {
+        e && toast.error("فشلت العملية")
+        setSubmit(false)
+      })
+  }
+  const handleSubmitFinal = async (e) => {
+    e.preventDefault()
+    setSubmit(true)
+
+
+    await axios.request({
+      url: `${baseUrl}isp/toggle-final/${id}`,
+      method: "PATCH",
+      data: {
+        is_final: isFinal
+      },
+      headers: {
+        "Accept": "application/json",
+        Authorization: `Bearer ${Cookies.get('token')}`,
+      }
+    })
+      .then(res => {
+
         setSubmit(false)
         toast.success("تم التعديل بنجاح")
         close()
@@ -66,70 +171,209 @@ export default function EditProvider({ data, fetchData, close }) {
       })
   }
   return (
-    <form className="flex flex-col gap-1 w-96 h-fit" onSubmit={e => handleSubmit(e)}>
-      <p className='text-xl font-semibold text-right'>تعديل الفئة</p>
-      <div className="flex flex-col gap-3 w-full text-right">
-        <label htmlFor="name" className="text-xs font-medium">
-          اسم المزود
-        </label>
-        <input
-          required
-          value={name}
-          onChange={e => handleCahngeName(e)}
-          type="text"
-          name="name"
-          id="name"
-          className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
-        />
+    <>
+      <div className='flex gap-2 items-center' >
+        <p onClick={() => setEdit(0)} className={`text-md font-semibold text-right cursor-pointer ${edit == 0 ? "text-blue-800" : "text-gray-400"} `}>تعديل الفئة</p>
+        <p onClick={() => setEdit(1)} className={`text-md font-semibold text-right cursor-pointer ${edit == 1 ? "text-blue-800" : "text-gray-400"} `}>تعديل نوع القيمة</p>
+        <p onClick={() => setEdit(2)} className={`text-md font-semibold text-right cursor-pointer ${edit == 2 ? "text-blue-800" : "text-gray-400"} `}>تعديل طريقة الادخال</p>
+        <p onClick={() => setEdit(3)} className={`text-md font-semibold text-right cursor-pointer ${edit == 3 ? "text-blue-800" : "text-gray-400"} `}>تعديل السعر النهائي</p>
       </div>
+      {edit == 0 && <form className="flex flex-col gap-1 w-96 h-fit" onSubmit={e => handleSubmit(e)}>
 
-      <div className="flex items-center  w-full text-right">
-        <label htmlFor="amount" className="text-xs font-medium">
-          مفعل
-        </label>
-        {
-          fixedValue == 0 ?
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <IOSSwitch sx={{ m: 1 }} onChange={(e) => handleFixed(e)} />
-                }
-              />
+        <div className="flex flex-col gap-3 w-full text-right">
+          <label htmlFor="name" className="text-xs font-medium">
+            اسم المزود
+          </label>
+          <input
+            required
+            value={name}
+            onChange={e => handleCahngeName(e)}
+            type="text"
+            name="name"
+            id="name"
+            className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+          />
+        </div>
+        <div className="flex flex-col gap-3 w-full text-right">
+          <label htmlFor="wholesale" className="text-xs font-medium">
+            سعر الجملة
+          </label>
+          <input
+            required
+            value={wholesale}
+            onChange={e => handleChangeWholesale(e)}
+            type="number"
+            name="wholesale"
+            id="wholesale"
+            className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+          />
+        </div>
+        <div className="flex flex-col gap-3 w-full text-right">
+          <label htmlFor="retail" className="text-xs font-medium">
+            سعر المفرق
+          </label>
+          <input
+            required
+            value={retail}
+            onChange={e => handleCahngeRetail(e)}
+            type="number"
+            name="retail"
+            id="retail"
+            className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+          />
+        </div>
+        <div className="flex flex-col gap-3 w-full text-right">
+          <label htmlFor="private" className="text-xs font-medium">
+            السعر الخاص
+          </label>
+          <input
+            required
+            value={privateValue}
+            onChange={e => handleCahngeprivate(e)}
+            type="number"
+            name="private"
+            id="private"
+            className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+          />
+        </div>
 
-            </FormGroup>
-            :
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <IOSSwitch sx={{ m: 1 }} defaultChecked onChange={(e) => handleFixed(e)} />
-                }
-              />
-
-            </FormGroup>
-
-        }
-      </div>
-
-      <button
-        type='submit'
-        style={{
-          height: "44px",
-        }}
-        className={`bg-main-color w-1/2 self-end text-white rounded-lg flex-center main-button`}
-      >
-        حفظ التغييرات
-      </button>
-      <div className={
-        clsx(
-          'w-full h-full flex items-center justify-center absolute top-0 left-0 bg-[#ffffff7e]',
+        <div className="flex items-center  w-full text-right">
+          <label htmlFor="amount" className="text-xs font-medium">
+            مفعل
+          </label>
           {
-            'hidden'
-              : submit == false
+            active == 0 ?
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <IOSSwitch sx={{ m: 1 }} onChange={(e) => setActive(e.target.value)} />
+                  }
+                />
+
+              </FormGroup>
+              :
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <IOSSwitch sx={{ m: 1 }} defaultChecked onChange={(e) => setActive(e.target.value)} />
+                  }
+                />
+
+              </FormGroup>
+
           }
-        )
-      }>
-        <CircularProgress />
-      </div>
-    </form>
+        </div>
+
+        <button
+          type='submit'
+          style={{
+            height: "44px",
+          }}
+          className={`bg-main-color w-1/2 self-end text-white rounded-lg flex-center main-button`}
+        >
+          حفظ التغييرات
+        </button>
+        <div className={
+          clsx(
+            'w-full h-full flex items-center justify-center absolute top-0 left-0 bg-[#ffffff7e]',
+            {
+              'hidden'
+                : submit == false
+            }
+          )
+        }>
+          <CircularProgress />
+        </div>
+      </form>}
+      {
+        edit == 1 && <form
+          onSubmit={e => handleSubmitFixed(e)}
+          className="flex flex-col gap-1 pt-10 w-96 h-fit" >
+          <div className="flex flex-col gap-3 w-full text-right">
+            <label htmlFor="fixedValue" className="text-xs font-medium">
+              نوع القيمة
+            </label>
+            <select className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300" onChange={e => setFixedValue(e.target.value)} value={fixedValue} name="" id="fixedValue">
+              <option value={2} ></option>
+              <option value={1} >ثابتة</option>
+              <option value={0} >نسبة</option>
+            </select>
+          </div>
+          <button
+            type='submit'
+            style={{
+              height: "44px",
+            }}
+            className={`bg-main-color w-full mt-2 self-end text-white rounded-lg flex-center main-button`}
+          >
+            حفظ التغييرات
+          </button>
+        </form>
+      }
+      {
+        edit == 2 && <form
+          onSubmit={e => handleSubmitHand(e)}
+          className="flex flex-col gap-1 pt-10 w-96 h-fit" >
+          {/* 'طريقة الادخال */}
+          <div className="flex flex-col gap-3 w-full text-right">
+            <label htmlFor="isHand" className="text-xs font-medium">
+              طريقة الادخال
+            </label>
+            <select className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300" onChange={e => setIsHand(e.target.value)} value={isHand} name="" id="isHand">
+              <option value={2} ></option>
+              <option value={1} >يدوي</option>
+              <option value={0} >غير يدوي</option>
+            </select>
+          </div>
+          <button
+            type='submit'
+            style={{
+              height: "44px",
+            }}
+            className={`bg-main-color w-full mt-2 self-end text-white rounded-lg flex-center main-button`}
+          >
+            حفظ التغييرات
+          </button>
+        </form>
+      }
+      {
+        edit == 3 && <form
+          onSubmit={e => handleSubmitFinal(e)}
+          className="flex flex-col gap-1 pt-10 w-96 h-fit" >
+          {/* السعر النهائي */}
+          <div className="flex flex-col gap-3 w-full text-right">
+            <label htmlFor="isFinal" className="text-xs font-medium">
+              السعر النهائي
+            </label>
+            <select className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300" onChange={e => setIsFinal(e.target.value)} value={isFinal} name="" id="isFinal">
+              <option value={2} ></option>
+              <option value={1} >مفعل</option>
+              <option value={0} >غير مفعل</option>
+            </select>
+          </div>
+          <button
+            type='submit'
+            style={{
+              height: "44px",
+            }}
+            className={`bg-main-color w-full mt-2 self-end text-white rounded-lg flex-center main-button`}
+          >
+            حفظ التغييرات
+          </button>
+        </form>
+      }
+        <div className={
+          clsx(
+            'w-full h-full flex items-center justify-center absolute top-0 left-0 bg-[#ffffff7e]',
+            {
+              'hidden'
+                : submit == false
+            }
+          )
+        }>
+          <CircularProgress />
+        </div>
+    </>
+
   )
 }

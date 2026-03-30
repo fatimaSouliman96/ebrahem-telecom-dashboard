@@ -125,9 +125,7 @@ export default function AppsForm({ application, fetchData }) {
         let tt = x / 100
         console.log(tt)
         const value = tt + valuePrice
-          console.log(tt)  
-          console.log(tt + valuePrice)  
-        setSendAmount(tt + valuePrice)
+        setSendAmount(valuePrice)
         if (isDecimal(value)) {
             let decimleValue = parseFloat(value)
             let newValue = roundNumber(decimleValue)
@@ -196,7 +194,6 @@ export default function AppsForm({ application, fetchData }) {
             }
         }
     }
-
 
     const valdutionAmount = (value) => {
         if (value > parseInt(balance)) {

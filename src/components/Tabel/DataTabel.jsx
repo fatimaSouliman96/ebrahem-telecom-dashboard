@@ -92,10 +92,16 @@ const DataTable = ({
   const [openDetailsfinincal, setOpenDetailsfinincal] = useState(false)
   const [billName, setBillName] = useState()
   const [stutas, setStutas] = useState()
-  const [page, setPage] = useState(1)
+const [page, setPage] = useState(1)
 
-  const all = Math.ceil(total / 10);
-  console.log(total)
+  const isLocalMode = !total || total === 0;
+  const displayTotal = isLocalMode ? (rows?.length || 0) : total;
+  const all = Math.ceil(displayTotal / 10);
+  
+  const displayRows = isLocalMode 
+    ? rows?.slice((page - 1) * 10, page * 10) || []
+    : rows;
+
   const getPaginationRange = (current, all) => {
     
     const delta = 2;
@@ -132,7 +138,9 @@ const DataTable = ({
     if (newPage < 1 || newPage > all) return;
 
     setPage(newPage);
-    fetchData(newPage);
+    if (!isLocalMode) {
+      fetchData(newPage);
+    }
   };
 
   const handleOpenApp = () => {
@@ -434,7 +442,7 @@ const DataTable = ({
 
       {!loading && !error && rows && rows.length > 0 && (
         isMobile ? (
-          <MobileDataTable columns={extendedColumns} rows={rows} loading={loading} notFound={notFound} />
+          <MobileDataTable columns={extendedColumns} rows={displayRows} loading={loading} notFound={notFound} />
         ) : (
           <div className="dataTable" style={{ direction: "rtl" }}>
           <Menu
@@ -481,15 +489,20 @@ const DataTable = ({
 
           <DataGrid
             className="dataGrid"
-            rows={rows}
+            rows={displayRows}
             sx={{ width: "100%" }}
             columns={extendedColumns}
             initialState={{
               pagination: {
-                paginationModel: { page: 0 },
+                paginationModel: { page: page - 1 },
               },
             }}
-            pageSizeOptions={[5, 10, 15, 20]}
+            pageSizeOptions={[10]}
+            disablePagination={false}
+            onPaginationModelChange={(model) => {
+              const newPage = model.page + 1;
+              handlePageChange(newPage);
+            }}
             checkboxSelection={false}
             disableRowSelectionOnClick
           />

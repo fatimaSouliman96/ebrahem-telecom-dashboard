@@ -1130,7 +1130,7 @@ export const inquriesColumns = [
       );
     },
   },
- 
+
   {
     field: "quantity",
     type: "string",
@@ -1551,7 +1551,7 @@ export const pricesSpecialColumns = [
       );
     },
   },
-   {
+  {
     field: "minimum",
     type: "string",
     headerName: "الحد الادنى",
@@ -1802,7 +1802,6 @@ export const providersPricesColumns = [
 ];
 
 export const providersColumns = [
-
   {
     field: "id",
     headerName: "الرقم",
@@ -1821,6 +1820,42 @@ export const providersColumns = [
       return (
         <p className="font-semibold text-[#202224]/80 ">
           {params.row.name}
+        </p>
+      );
+    },
+  },
+  {
+    field: "wholesale",
+    headerName: "سعر الجملة",
+    minWidth: 150,
+    renderCell: (params) => {
+      return (
+        <p className="font-semibold text-[#202224]/80 ">
+          {params.row.wholesale}
+        </p>
+      );
+    },
+  },
+  {
+    field: "retail",
+    headerName: "سعر المفرق",
+    minWidth: 150,
+    renderCell: (params) => {
+      return (
+        <p className="font-semibold text-[#202224]/80 ">
+          {params.row.retail}
+        </p>
+      );
+    },
+  },
+    {
+    field: "private",
+    headerName: "سعر الخاص",
+    minWidth: 150,
+    renderCell: (params) => {
+      return (
+        <p className="font-semibold text-[#202224]/80 ">
+          {params.row.private}
         </p>
       );
     },
@@ -1850,7 +1885,85 @@ export const providersColumns = [
         </p>
       );
     },
-  }
+  },
+  {
+    field: "is_fixed",
+    type: "string",
+    headerName: " نوع القيمة",
+    minWidth: 150,
+    renderCell: (params) => {
+      return (
+        <p className="font-semibold text-[#202224]/80 ">
+          {
+            params.row.is_fixed == 0 ?
+              <div className="flex items-center gap-1" >
+                <div className="w-2 h-2 rounded " ></div>
+                <p>نسبة</p>
+
+              </div>
+              :
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded " ></div>
+                <p>قيمة ثابتة</p>
+
+              </div>
+          }
+        </p>
+      );
+    },
+  },
+  {
+    field: "is_hand",
+    type: "string",
+    headerName: "نوع الادخال",
+    minWidth: 150,
+    renderCell: (params) => {
+      return (
+        <p className="font-semibold text-[#202224]/80 ">
+          {
+            params.row.is_hand == 1 ?
+              <div className="flex items-center gap-1" >
+                <div className="w-2 h-2 rounded" ></div>
+                <p>يدوي</p>
+
+              </div>
+              :
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded" ></div>
+                <p>غير يدوي</p>
+
+              </div>
+          }
+        </p>
+      );
+    },
+  },
+  {
+    field: "is_final",
+    type: "string",
+    headerName: "السعر النهائي",
+    minWidth: 150,
+    renderCell: (params) => {
+      return (
+        <p className="font-semibold text-[#202224]/80 ">
+          {
+            params.row.is_final == 1 ?
+              <div className="flex items-center gap-1" >
+                <div className="w-2 h-2 rounded bg-green-500" ></div>
+                <p>مفعل</p>
+
+              </div>
+              :
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded bg-red-500" ></div>
+                <p>غير مفعل</p>
+
+              </div>
+          }
+        </p>
+      );
+    },
+  },
 ];
 export const appsColumns = [
 

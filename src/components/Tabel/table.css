@@ -3,6 +3,36 @@
   width: 100%;
 }
 
+/* DataTable wrapper for horizontal scroll - FIX for laptop column hiding */
+.dataTable {
+  overflow-x: auto !important;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dataTable::-webkit-scrollbar {
+  height: 8px;
+}
+
+.dataTable::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.dataTable::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.dataTable::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Ensure DataGrid takes full space to trigger scroll */
+.dataTable .MuiDataGrid-root {
+  min-width: 1600px; /* ~12-14 columns * ~120px avg */
+}
+
 /* DataGrid root */
 .table-data .MuiDataGrid-root {
   border: 0 !important;
