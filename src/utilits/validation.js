@@ -1,4 +1,4 @@
-// 📁 src/utils/validation.js
+// 📁 src/utilits/validation.js
 
 export const validateFields = (fields, rules) => {
   const errors = {};
@@ -29,4 +29,16 @@ export const validateFields = (fields, rules) => {
 
   return errors;
 };
+
+// Filter only valid chars progressively
+export const filterNumberInput = (value) => {
+  return value.replace(/[^0-9.,]/g, '').replace(/,+/g, ',').replace(/\.,*/g, '.').replace(/[.,]/g, match => match).slice(0, 12);
+};
+
+// Validator for complete value
+export const isValidPositiveNumber = (value) => {
+  const normalized = value.replace(',', '.');
+  return normalized === '' || (/^\d+(\.\d{0,2})?$/.test(normalized) && parseFloat(normalized) > 0);
+};
+
 

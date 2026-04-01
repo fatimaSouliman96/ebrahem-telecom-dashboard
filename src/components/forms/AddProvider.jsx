@@ -8,6 +8,8 @@ import axios from 'axios'
 import { baseUrl } from '../../constants/baseUrl'
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast'
+import { filterNumberInput, isValidPositiveNumber } from '../../utilits/validation.js'
+
 
 export default function AddProvider({ fetchData, close }) {
 
@@ -15,36 +17,28 @@ export default function AddProvider({ fetchData, close }) {
   const [name, setName] = useState("")
   const [isHand, setIsHand] = useState(2)
   const [isFinal, setIsFinal] = useState(2)
-  const [wholesale, setWholesale] = useState()
-  const [retail, setRetail] = useState()
+  const [wholesale, setWholesale] = useState('')
+  const [retail, setRetail] = useState('')
 
-  const [privateValue, setPrivateValue] = useState()
+  const [privateValue, setPrivateValue] = useState('')
   const [active, setActive] = useState(2)
   const [fixedValue, setFixedValue] = useState(2)
 
   const handleCahngeName = (e) => {
     setName(e.target.value)
   }
+
   const handleChangeWholesale = (e) => {
-    if (e.target.value > 0) {
-      setWholesale(e.target.value)
-    } else {
-      null
-    }
+    const value = filterNumberInput(e.target.value)
+    setWholesale(value)
   }
   const handleCahngeRetail = (e) => {
-    if (e.target.value > 0) {
-      setRetail(e.target.value)
-    } else {
-      null
-    }
+    const value = filterNumberInput(e.target.value)
+    setRetail(value)
   }
   const handleCahngeprivate = (e) => {
-    if (e.target.value > 0) {
-      setPrivateValue(e.target.value)
-    } else {
-      null
-    }
+    const value = filterNumberInput(e.target.value)
+    setPrivateValue(value)
   }
 
   const handleSubmit = async (e) => {
@@ -107,7 +101,7 @@ export default function AddProvider({ fetchData, close }) {
             required
             value={wholesale}
             onChange={e => handleChangeWholesale(e)}
-            type="number"
+            type="text"
             name="wholesale"
             id="wholesale"
             className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
@@ -121,7 +115,7 @@ export default function AddProvider({ fetchData, close }) {
             required
             value={retail}
             onChange={e => handleCahngeRetail(e)}
-            type="number"
+            type="text"
             name="retail"
             id="retail"
             className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
@@ -135,7 +129,7 @@ export default function AddProvider({ fetchData, close }) {
             required
             value={privateValue}
             onChange={e => handleCahngeprivate(e)}
-            type="number"
+            type="text"
             name="private"
             id="private"
             className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"

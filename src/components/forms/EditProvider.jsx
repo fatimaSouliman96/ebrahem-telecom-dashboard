@@ -8,6 +8,7 @@ import axios from 'axios'
 import { baseUrl } from '../../constants/baseUrl'
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast'
+import { filterNumberInput, isValidPositiveNumber } from '../../utilits/validation.js';
 
 export default function EditProvider({ data, fetchData, close }) {
 
@@ -16,11 +17,11 @@ export default function EditProvider({ data, fetchData, close }) {
   const id = data?.id
   const [submit, setSubmit] = useState(false)
   const [name, setName] = useState(data.name)
-  const [wholesale, setWholesale] = useState()
-  const [retail, setRetail] = useState()
+  const [wholesale, setWholesale] = useState((data.wholesale || '').toString())
+  const [retail, setRetail] = useState((data.retail || '').toString())
   const [fixedValue, setFixedValue] = useState(data.is_fixed)
   const [isHand, setIsHand] = useState(data.is_hand)
-  const [privateValue, setPrivateValue] = useState()
+  const [privateValue, setPrivateValue] = useState((data.private || '').toString())
   const [active, setActive] = useState(data.is_active)
   const [isFinal, setIsFinal] = useState(data.is_final)
 
@@ -32,25 +33,16 @@ export default function EditProvider({ data, fetchData, close }) {
   }
 
   const handleChangeWholesale = (e) => {
-    if (e.target.value > 0) {
-      setWholesale(e.target.value)
-    } else {
-      null
-    }
+    const value = filterNumberInput(e.target.value)
+    setWholesale(value)
   }
   const handleCahngeRetail = (e) => {
-    if (e.target.value > 0) {
-      setRetail(e.target.value)
-    } else {
-      null
-    }
+    const value = filterNumberInput(e.target.value)
+    setRetail(value)
   }
   const handleCahngeprivate = (e) => {
-    if (e.target.value > 0) {
-      setPrivateValue(e.target.value)
-    } else {
-      null
-    }
+    const value = filterNumberInput(e.target.value)
+    setPrivateValue(value)
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -58,6 +50,9 @@ export default function EditProvider({ data, fetchData, close }) {
     let data = {
       name: name,
       is_active: fixedValue,
+      retail: retail,
+      wholesale: wholesale,
+      private: privateValue
 
     }
 
@@ -185,7 +180,7 @@ export default function EditProvider({ data, fetchData, close }) {
             اسم المزود
           </label>
           <input
-            required
+
             value={name}
             onChange={e => handleCahngeName(e)}
             type="text"
@@ -199,42 +194,42 @@ export default function EditProvider({ data, fetchData, close }) {
             سعر الجملة
           </label>
           <input
-            required
             value={wholesale}
             onChange={e => handleChangeWholesale(e)}
-            type="number"
+            type="text"
             name="wholesale"
             id="wholesale"
             className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
           />
+
         </div>
         <div className="flex flex-col gap-3 w-full text-right">
           <label htmlFor="retail" className="text-xs font-medium">
             سعر المفرق
           </label>
           <input
-            required
             value={retail}
             onChange={e => handleCahngeRetail(e)}
-            type="number"
+            type="text"
             name="retail"
             id="retail"
             className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
           />
+
         </div>
         <div className="flex flex-col gap-3 w-full text-right">
           <label htmlFor="private" className="text-xs font-medium">
             السعر الخاص
           </label>
           <input
-            required
             value={privateValue}
             onChange={e => handleCahngeprivate(e)}
-            type="number"
+            type="text"
             name="private"
             id="private"
             className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
           />
+
         </div>
 
         <div className="flex items-center  w-full text-right">
@@ -362,17 +357,17 @@ export default function EditProvider({ data, fetchData, close }) {
           </button>
         </form>
       }
-        <div className={
-          clsx(
-            'w-full h-full flex items-center justify-center absolute top-0 left-0 bg-[#ffffff7e]',
-            {
-              'hidden'
-                : submit == false
-            }
-          )
-        }>
-          <CircularProgress />
-        </div>
+      <div className={
+        clsx(
+          'w-full h-full flex items-center justify-center absolute top-0 left-0 bg-[#ffffff7e]',
+          {
+            'hidden'
+              : submit == false
+          }
+        )
+      }>
+        <CircularProgress />
+      </div>
     </>
 
   )
