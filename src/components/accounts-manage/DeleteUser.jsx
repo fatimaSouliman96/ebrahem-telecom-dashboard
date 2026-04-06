@@ -26,7 +26,7 @@ export default function DeleteUser({ userName, handleClose, id, fetchData }) {
       )
         .then(res => {
           toast.success("تم حذف المستخدم بنجاح")
-          fetchData(0)
+          fetchData(1)
           handleClose()
 
         })

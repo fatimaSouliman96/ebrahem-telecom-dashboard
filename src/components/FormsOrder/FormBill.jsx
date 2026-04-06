@@ -35,10 +35,15 @@ export default function FormBill({ fetchData, setting }) {
   const [isFixed, setIsFixed] = useState()
   const [price, setPrice] = useState()
   const [balance, setBalance] = useState();
-
   const [serviceProvider, setServiceProvider] = useState([])
-  const [s, sets] = useState()
+  const [bundles, setBundles] = useState()
   const [discountAmount, setDiscountAmount] = useState()
+  const [isFinal, setIsFinal] = useState()
+  const [isHand, setIsHand] = useState()
+  const [providerPrice, setProviderPrice] = useState()
+  const [bundlePrice, setBundlePrice] = useState()
+  const [sendAmount, setSendAmount] = useState()
+  const [netAmount, setNetAmount] = useState()
 
   const isDecimal = (num) => num % 1 !== 0;
   const roundNumber = num => Math.ceil(num);
@@ -77,7 +82,7 @@ export default function FormBill({ fetchData, setting }) {
         }
       })
       .then(res => {
-        sets(res.data)
+        setBundles(res.data)
       })
 
   }
@@ -92,19 +97,53 @@ export default function FormBill({ fetchData, setting }) {
     setStaticId(e.target.value)
   }
   const handleChangeProviderId = (e) => {
+    setNetAmount()
+    setSendAmount()
+    setId("")
     setProviderId(e.target.value)
+    const selectedProvider = serviceProvider.filter(ele => ele.id == e.target.value)
+    setIsFinal(selectedProvider[0].is_final)
+    if (selectedProvider[0].is_fixed == null) {
+      setIsFixed(0)
+    } else {
+      setIsFixed(selectedProvider[0].is_fixed)
+    }
+
+    setIsHand(selectedProvider[0].is_hand)
+    setProviderPrice(parseFloat(selectedProvider[0].price))
     fetchs(e.target.value)
   }
   const handleChangeId = (e) => {
+    setNetAmount()
+    setSendAmount()
+    setAmount()
     setId(e.target.value)
+    const selectedBundle = bundles.filter(ele => ele.id == e.target.value)
+    setBundlePrice(selectedBundle[0].price)
+    if (isFinal == 1) {
+      setSendAmount(selectedBundle[0].price)
+      setAmount(selectedBundle[0].price)
+    } else if (isHand == 0) {
+      if (isFixed == 0) {
+        let x = bundlePrice * providerPrice
+        let y = x / 100
+        let newAmount = y + bundlePrice
+        setAmount(newAmount)
+        setSendAmount(bundlePrice)
+      } else {
+        let newAmount = bundlePrice + providerPrice
+        setAmount(newAmount)
+        setSendAmount(bundlePrice)
+      }
+    } else {
+      return
+    }
   }
   const handleChangeNumber = (e) => {
     setNumber(e.target.value)
   }
-  // const handleChangeOrderType = (e) => {
-  //   setOrderType(e.target.value)
-  // }
   const handleChangeBillType = (e) => {
+    setAmount("")
     setBillType(e.target.value)
     switch (e.target.value) {
       case "water":
@@ -132,6 +171,28 @@ export default function FormBill({ fetchData, setting }) {
   }
   const handleChangename = (e) => {
     setName(e.target.value)
+  }
+  const handleChangeAmountNet = (e) => {
+    setNetAmount(e.target.value)
+    let netAmount = e.target.value
+    amountFunNet(netAmount)
+  }
+  const amountFunNet = (netAmount) => {
+
+    if (isFixed == 0) {
+      let x = netAmount * bundlePrice
+      let y = x * providerPrice
+      let z = y / 100
+      let newAmount = z + x
+      setAmount(newAmount)
+      setSendAmount(netAmount)
+      console.log(newAmount)
+    } else {
+      let x = netAmount * bundlePrice
+      let newAmount = x + providerPrice
+      setAmount(newAmount)
+      setSendAmount(netAmount)
+    }
   }
   const handleChangeAmount = (e) => {
     setAmount(e.target.value)
@@ -161,7 +222,6 @@ export default function FormBill({ fetchData, setting }) {
 
 
   }
-
   const discountAmountFun = () => {
     if (isFixed == true) {
       let newAmount = price + parseInt(amount)
@@ -242,7 +302,7 @@ export default function FormBill({ fetchData, setting }) {
             internet_service_provider_id: providerId,
             static_IP: staticId,
             customer_name: name,
-            amount: amount,
+            amount: sendAmount,
             bundle: Id,
             action: "payment"
           })
@@ -253,7 +313,7 @@ export default function FormBill({ fetchData, setting }) {
             static_IP: staticId,
             order_type: "wholesale",
             customer_name: name,
-            amount: amount,
+            amount: sendAmount,
             bundle: Id,
             action: "payment"
           })
@@ -285,7 +345,6 @@ export default function FormBill({ fetchData, setting }) {
 
 
   }
-
   const fetchPrices = async (billName) => {
     await axios.request(
       {
@@ -298,7 +357,11 @@ export default function FormBill({ fetchData, setting }) {
       }
 
     ).then((res) => {
-      setIsFixed(res.data.is_fixed)
+      if (res.data.is_fixed == null) {
+        setIsFixed(false)
+      } else {
+        setIsFixed(res.data.is_fixed)
+      }
       setPrice(res.data.price)
     })
       .catch(e => {
@@ -306,7 +369,6 @@ export default function FormBill({ fetchData, setting }) {
 
       })
   }
-
   const removeValues = () => {
     getBalanses()
     user.roles[0].name !== "pointOfSale" && fetchData(1)
@@ -322,8 +384,6 @@ export default function FormBill({ fetchData, setting }) {
     setBillType("")
     setId("")
   }
-
-
   return (
     <form className="flex flex-col gap-4" onSubmit={e => handleSubmit(e)}>
       <div className="grid grid-cols-3 w-full justify-between gap-4">
@@ -455,7 +515,7 @@ export default function FormBill({ fetchData, setting }) {
           />
         </div>
         {/* amount */}
-        <div className="flex flex-col gap-3 ">
+        {billType !== "net" && <div className="flex flex-col gap-3 ">
           <label htmlFor="city" className="text-xs font-medium">
             المبلغ
             <span className='text-red-600 text-xs font-medium'>*</span>
@@ -471,8 +531,10 @@ export default function FormBill({ fetchData, setting }) {
             className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
           />
           {errors.amount !== "" && <p className='text-red-600'>{errors.amount}</p>}
-        </div>
+        </div>}
         {/* number */}
+
+
         {billType == "net" || billType == "line" ? <div className="flex flex-col gap-3 ">
           <label htmlFor="city" className="text-xs font-medium">
             الرقم
@@ -534,13 +596,40 @@ export default function FormBill({ fetchData, setting }) {
             >
               <option value={""}></option>
               {
-                s?.map(ele => {
+                bundles?.map(ele => {
                   return <option value={ele.id}>{ele.bundel} {ele.price} </option>
                 })
               }
             </select>
             {errors.amount !== "" && <p className='text-red-600'>{errors.amount}</p>}
           </div> : null}
+        {
+          billType == "net" &&
+            isFinal == 0 ?
+            isHand == 1 ?
+              bundlePrice &&
+              <div className="flex flex-col gap-3 ">
+                <label htmlFor="city" className="text-xs font-medium">
+                  المبلغ
+                  <span className='text-red-600 text-xs font-medium'>*</span>
+                </label>
+                <input
+                  required
+                  value={netAmount}
+                  onChange={e => handleChangeAmountNet(e)}
+                  type="number"
+                  name="amount"
+                  placeholder={`باقي ${balance}`}
+                  id="amount"
+                  className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
+                />
+                {errors.amount !== "" && <p className='text-red-600'>{errors.amount}</p>}
+              </div>
+              :
+              null
+            :
+            null
+        }
         {/* معرف ثابت */}
         {billType == "net" ? <div className="flex flex-col gap-3 ">
           <label htmlFor="city" className="text-xs font-medium">
@@ -604,7 +693,9 @@ export default function FormBill({ fetchData, setting }) {
       </div>
 
       <ModalPob open={open} handleClose={handleStateOpen}>
-        <DiscountedAmount url={url} data={data} setConfirm={setConfirm} amount={discountAmount} handelClose={handleStateOpen} removeValues={removeValues} setSubmit={setSubmit} />
+        <DiscountedAmount url={url} data={data} setConfirm={setConfirm} amount={
+          billType == "net" ? amount : discountAmount
+        } handelClose={handleStateOpen} removeValues={removeValues} setSubmit={setSubmit} />
       </ModalPob>
     </form>
 

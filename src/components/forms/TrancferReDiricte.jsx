@@ -75,7 +75,7 @@ export default function TrancferReDiricte({ fetchData, userIdPoint, userId, clos
             fetchBalances()
             close()
             setSubmit(false)
-            fetchData(0)
+            fetchData(1)
         }).catch((e) => {
         
             if (e) {

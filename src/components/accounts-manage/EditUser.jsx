@@ -76,7 +76,7 @@ export default function EditUser({ handleClose, user, rollesName, fetchData }) {
         then(res => {
           toast.success("تم تعديل المستخدم بنجاح")
           setSubmit(false)
-          fetchData(0)
+          fetchData(1)
           handleClose()
         })
       console.log(response);
@@ -108,7 +108,7 @@ export default function EditUser({ handleClose, user, rollesName, fetchData }) {
         then(res => {
           toast.success("تم تعديل كلمة المرور بنجاح")
           setSubmit(false)
-          fetchData(0)
+          fetchData(1)
           handleClose()
         })
       console.log(response);

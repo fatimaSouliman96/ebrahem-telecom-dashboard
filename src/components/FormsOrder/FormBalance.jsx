@@ -255,7 +255,12 @@ export default function FormBalance({ fetchData, mobile }) {
           console.log(topUpType)
           setOptions(selectedPrice)
           setPrice(selectedPrice.price);
+          if(selectedPrice.is_fixed == null){
+              setIsFixed(0)
+          }else{
+            
           setIsFixed(selectedPrice.is_fixed);
+          }
 
         }
         else {
@@ -369,7 +374,7 @@ export default function FormBalance({ fetchData, mobile }) {
                 <option > </option>
                 <option value={"lastpaid"}>لاحق الدفع</option>
                 <option value={"prepaid"}>مسبق الدفع</option>
-                <option value={"cash"}>كاش</option>
+                <option value={""}>كاش</option>
               </select>
             </div>
          

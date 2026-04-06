@@ -64,7 +64,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchData(0);
+    fetchData(1);
   }, [])
   return (
     <>

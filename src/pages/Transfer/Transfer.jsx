@@ -55,7 +55,7 @@ export default function Transfer() {
   }
 
   useEffect(() => {
-    fetchData(0);
+    fetchData(1);
   }, [])
 
   return (

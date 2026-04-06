@@ -122,7 +122,7 @@ export default function AddUserModal({
       });
 
       toast.success("تمت اضافة المستخدم بنجاح");
-      fetchData(0);
+      fetchData(1);
       handleClose();
     } catch (error) {
       toast.error("حدث خطأ أثناء الإضافة");

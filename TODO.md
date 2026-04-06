@@ -1,10 +1,2 @@
-# TODO: Number Validation Fix Plan
+# Fix Table Pagination Issue\n\n## Steps:\n1. [x] Create TODO.md\n2. [ ] Read MobileDataTable.jsx to check pagination\n3. [ ] Edit DataTabel.jsx - Disable DataGrid pagination, keep custom pagination\n4. [ ] Test pagination (no double requests, stays on new page)\n5. [ ] Update TODO.md with completion\n6. [ ] attempt_completion\n\n**Status**: Planning phase complete, editing phase starting."
 
-## Approved Plan Steps:
-- [x] Step 1: Add shared `isValidPositiveNumber` validator to src/utilits/validation.js
-- [x] Step 2: Update src/components/forms/AddProvider.jsx: Remove broken fn, fix onChange handlers, change input types to 'text'
-- [x] Step 3: Import shared validator in AddProvider.jsx (EditProvider already uses equivalent)
-- [ ] Step 4: Test both forms (type letters, commas, paste invalid → should block)
-- [ ] Step 5: Mark complete & attempt_completion
-
-**Status: Steps 1-3 complete. Forms now use shared validator allowing only digits + optional comma/dot, positive numbers. Ready for test.**

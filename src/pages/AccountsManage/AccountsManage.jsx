@@ -76,7 +76,7 @@ export default function AccountsManage() {
 
 
   useEffect(() => {
-    getData(0)
+    getData(1)
   }, [])
 
   return (

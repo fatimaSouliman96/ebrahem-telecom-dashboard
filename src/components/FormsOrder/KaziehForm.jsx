@@ -24,6 +24,8 @@ export default function KaziehForm({ fetchData, kazieh }) {
   const [number, setNumber] = useState()
   const [price, setPrice] = useState()
   const [isFixed, setIsFixed] = useState()
+  const [isCity, setIsCity] = useState()
+  const [city, setCity] = useState()
   const [errorsQuantity, setErrorsQuantity] = useState('')
   const [balanceTypes, setBalanceTypes] = useState([
     {
@@ -77,11 +79,11 @@ export default function KaziehForm({ fetchData, kazieh }) {
       setQuantity(e.target.value)
       if (!quantityValdate(e.target.value)) {
         if (isFixed == 0) {
-          console.log(e.target.value)
+
           let amountx = e.target.value * price
           let x = (amountx) / 100
           console.log(price)
-          let amountValue = x + parseInt(e.target.value)
+          let amountValue = x + e.target.value
           if (isDecimal(amountValue)) {
             const newValue = roundNumber(amountValue)
             setAmount(newValue)
@@ -160,8 +162,6 @@ export default function KaziehForm({ fetchData, kazieh }) {
     setErrors({ ...errors, phone: error });
   };
 
-
-
   const handleChangeTopUpType = (e) => {
 
     setErrors({
@@ -183,21 +183,8 @@ export default function KaziehForm({ fetchData, kazieh }) {
     localStorage.setItem("company", e.target.value)
     localStorage.setItem("minimum", "")
     setCompany(e.target.value)
-    if (e.target.value == "MTN") {
-      setBalanceTypes([
-        {
-          value: "lastpaid",
-          text: "لاحق الدفع"
-        },
-        {
-          value: "prepaid",
-          text: "مسبق الدفع"
-        }
-      ])
-    }
+
   }
-
-
 
   const fetchPrices = async (e) => {
 
@@ -236,7 +223,12 @@ export default function KaziehForm({ fetchData, kazieh }) {
         const selectedPrice = res.data.prices.find(ele => ele.company === company && ele.top_up_type === topUpType);
         localStorage.setItem("minimum", selectedPrice.minimum)
         setPrice(selectedPrice.price);
-        setIsFixed(selectedPrice.is_fixed);
+        if (selectedPrice.is_fixed == null) {
+          setIsFixed(0)
+        } else {
+          setIsFixed(selectedPrice.is_fixed);
+        }
+
         setPrices(1)
 
       })
@@ -275,6 +267,8 @@ export default function KaziehForm({ fetchData, kazieh }) {
       formData.append("amount", amount);
       // user.roles[0].name !== "pointOfSale" && formData.append("order_type", orderType);
       formData.append("unit_price", amount);
+      formData.append("is_city", isCity);
+      formData.append("city", city);
       formData.append("source", "kazieh");
       setData(formData)
 
@@ -403,7 +397,58 @@ export default function KaziehForm({ fetchData, kazieh }) {
                     />
                     {errorsQuantity !== "" && <p className='text-red-600 text-base'>{errorsQuantity}</p>}
                   </div>
+
                 }
+                <div className="flex flex-col gap-3 h-[110px]">
+                  <label htmlFor="name" className="text-xs font-medium">
+                    المدينة
+                    <span className='text-red-600 text-xs font-medium'>*</span>
+                  </label>
+                  <select
+                    required
+                    name="city"
+                    id="city"
+                    value={city}
+                    onChange={e => setCity(e.target.value)}
+                    className="rounded-xl  border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300">
+                    <option value={""} ></option>
+                    <option value={"دمشق"} >دمشق</option>
+                    <option value={"ريف دمشق"} >ريف دمشق
+                    </option>
+                    <option value={"حلب"} >حلب</option>
+                    <option value={"حمص"} >حمص</option>
+                    <option value={"حماة"} >حماة</option>
+                    <option value={"اللاذقية"} >اللاذقية</option>
+                    <option value={"طرطوس"} >طرطوس</option>
+                    <option value={"إدلب"} >إدلب</option>
+                    <option value={"درعا"} >درعا</option>
+                    <option value={"السويداء"} >السويداء</option>
+                    <option value={"القنيطرة"} >القنيطرة</option>
+                    <option value={"دير الزور"} >دير الزور</option>
+                    <option value={"الرقة"} >الرقة</option>
+                    <option value={"الحسكة"} >الحسكة</option>
+                  </select>
+                </div>
+                <div className="flex flex-col gap-3 h-[110px]">
+                     <label htmlFor="name" className="text-xs font-medium">
+                      النوع
+                      <span className='text-red-600 text-xs font-medium'>*</span>
+                    </label>
+                  <select
+                    required
+                    name="isCity"
+                    id="isCity"
+                    value={isCity}
+                    onChange={e => setIsCity(e.target.value)}
+                    className="rounded-xl  border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300">
+                    <option value={""} >اختر مدينة او ريف</option>
+                    <option value={"ريف"} >ريف
+                    </option>
+                    <option value={"مدينة"} >مدينة</option>
+
+
+                  </select>
+                </div>
                 {/* المبلغ */}
                 <div className="flex flex-col gap-3 h-[110px]">
                   <label htmlFor="name" className="text-xs font-medium">

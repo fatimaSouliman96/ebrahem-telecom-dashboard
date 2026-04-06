@@ -48,7 +48,7 @@ export default function AddBalance() {
   }
 
   useEffect(() => {
-    fetchData(0)
+    fetchData(1)
   }, [])
 
   return (

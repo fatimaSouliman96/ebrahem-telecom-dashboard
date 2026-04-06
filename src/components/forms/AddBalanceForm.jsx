@@ -154,7 +154,7 @@ export default function AddBalanceForm({ fetchData }) {
       });
 
       toast.success("تمت اضافة الرصيد بنجاح");
-      fetchData(0);
+      fetchData(1);
       getBalances();
       // reset fields
       dispatch({ type: "RESET_FIELDS" });

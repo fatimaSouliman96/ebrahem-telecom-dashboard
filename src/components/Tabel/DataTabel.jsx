@@ -246,7 +246,7 @@ const [page, setPage] = useState(1)
 
       )
         .then(res => {
-          fetchData(0)
+          fetchData(1)
           toast.success("تم  تعطيل الحساب بنجاح")
           setSubmit(false)
         })
@@ -304,7 +304,7 @@ const [page, setPage] = useState(1)
 
       )
         .then(res => {
-          fetchData(0)
+          fetchData(1)
           toast.success("تمت العملية بنجاح")
           setSubmit(false)
         })
@@ -492,19 +492,10 @@ const [page, setPage] = useState(1)
             rows={displayRows}
             sx={{ width: "100%" }}
             columns={extendedColumns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: page - 1 },
-              },
-            }}
-            pageSizeOptions={[10]}
-            disablePagination={false}
-            onPaginationModelChange={(model) => {
-              const newPage = model.page + 1;
-              handlePageChange(newPage);
-            }}
             checkboxSelection={false}
             disableRowSelectionOnClick
+            pagination={false}
+            hideFooterPagination={true}
           />
         </div>
         )

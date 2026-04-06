@@ -159,6 +159,20 @@ export default function Details({ data, state }) {
         {data?.billable?.governorate && <li className="p-2 border-b border-[#A6A6A6] text-sm">
           المحافظة  : <span>{data?.billable?.governorate}</span>
         </li>}
+        {data?.billable?.source && 
+        data?.billable?.source == "kazieh" ? 
+        <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          المحافظة  : <span>{data?.billable?.city}</span>
+        </li>
+        :
+        null}
+        {data?.billable?.source && 
+        data?.billable?.source == "kazieh" ? 
+        <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          النوع  : <span>{data?.billable?.is_city == 0 ? "ريف" : "مدينة"}</span>
+        </li>
+        :
+        null}
 
       </ul>
 
