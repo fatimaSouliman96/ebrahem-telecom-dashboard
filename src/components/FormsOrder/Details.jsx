@@ -99,10 +99,10 @@ export default function Details({ data, state }) {
         {data?.billable?.player_id && <li className="p-2 border-b border-[#A6A6A6] text-sm">
           معرف اللاعب : <span>{data?.billable?.player_id}</span>
         </li>}
-
+{/* 
         {data?.billable?.qty && <li className="p-2 border-b border-[#A6A6A6] text-sm">
           الكمية  : <span>{data?.billable?.qty}</span>
-        </li>}
+        </li>} */}
         {data?.billable?.type && <li className="p-2 border-b border-[#A6A6A6] text-sm">
           النوع  : <span>{data?.billable?.type}</span>
         </li>}
@@ -132,8 +132,11 @@ export default function Details({ data, state }) {
         {data?.billable?.code && <li className="p-2 border-b border-[#A6A6A6] text-sm">
           الكود  : <span>{data?.billable?.code}</span>
         </li>}
-        {data?.billable?.quantity && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-          الكمية  : <span>{data?.billable?.quantity}</span>
+        {data?.amount && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          المبلغ الاجمالي  : <span>{data?.amount}</span>
+        </li>}
+        {data?.base_amount && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          المبلغ الاساسي  : <span>{data?.base_amount}</span>
         </li>}
 
         {data?.billable?.counter_number && <li className="p-2 border-b border-[#A6A6A6] text-sm">

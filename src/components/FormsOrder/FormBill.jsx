@@ -174,24 +174,25 @@ export default function FormBill({ fetchData, setting }) {
   }
   const handleChangeAmountNet = (e) => {
     setNetAmount(e.target.value)
-    let netAmount = e.target.value
-    amountFunNet(netAmount)
+    let value = parseInt(e.target.value)
+    amountFunNet(value)
   }
-  const amountFunNet = (netAmount) => {
+  const amountFunNet = (valueAmount) => {
 
     if (isFixed == 0) {
-      let x = netAmount * bundlePrice
-      let y = x * providerPrice
+      let y = valueAmount * providerPrice
       let z = y / 100
-      let newAmount = z + x
+      console.log(valueAmount * providerPrice)
+      console.log(y / 100)
+      console.log(z + valueAmount)
+      let newAmount = z + valueAmount
       setAmount(newAmount)
-      setSendAmount(netAmount)
+      setSendAmount(valueAmount)
       console.log(newAmount)
     } else {
-      let x = netAmount * bundlePrice
-      let newAmount = x + providerPrice
+      let newAmount = valueAmount + providerPrice
       setAmount(newAmount)
-      setSendAmount(netAmount)
+      setSendAmount(valueAmount)
     }
   }
   const handleChangeAmount = (e) => {
@@ -581,7 +582,7 @@ export default function FormBill({ fetchData, setting }) {
             {errors.amount !== "" && <p className='text-red-600'>{errors.amount}</p>}
           </div> : null}
         {billType == "net" ?
-          <div className="flex flex-col gap-3 ">
+          isHand == 0 && <div className="flex flex-col gap-3 ">
             <label htmlFor="city" className="text-xs font-medium">
               الباقة
               <span className='text-red-600 text-xs font-medium'>*</span>
@@ -607,7 +608,6 @@ export default function FormBill({ fetchData, setting }) {
           billType == "net" &&
             isFinal == 0 ?
             isHand == 1 ?
-              bundlePrice &&
               <div className="flex flex-col gap-3 ">
                 <label htmlFor="city" className="text-xs font-medium">
                   المبلغ

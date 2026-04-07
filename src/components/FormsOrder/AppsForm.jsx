@@ -101,15 +101,16 @@ export default function AppsForm({ application, fetchData }) {
     const handleChangeQyt = (e) => {
 
         setErrorsQyt("")
-        setQyt(e.target.value)
-        if (e.target.value < min || e.target.value > max) {
+        let value = parseInt(e.target.value)
+        setQyt(value)
+        if (value < min || value > max) {
             setErrorsQyt(`يجب ان تكون الكمية بين ${min} و ${max}`)
         } else {
             setErrorsQyt("")
             if (isFixed === 0) {
-                isFixed0AndMinNot1(e.target.value)
+                isFixed0AndMinNot1(value)
             } else if (isFixed === 1) {
-                isFixed1AndMinNot1(e.target.value)
+                isFixed1AndMinNot1(value)
             } else {
                 null
             }

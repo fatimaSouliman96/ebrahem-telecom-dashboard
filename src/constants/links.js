@@ -1,6 +1,6 @@
 export const sideBarLinks = [
   {
-    path: "/",
+    path: "",
     text: "الرئيسية",
     icon: "/assets/sideBarIcons/iconHome.svg",
     iconA: "/assets/sideBarIcons/iconHomeActive.svg",

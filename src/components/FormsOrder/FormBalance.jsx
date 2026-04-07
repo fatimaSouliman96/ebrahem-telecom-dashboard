@@ -57,6 +57,7 @@ export default function FormBalance({ fetchData, mobile }) {
   const user = JSON.parse(localStorage.getItem("user"))
 
   const handleChangeQuantity = (e) => {
+    let entredAmount = parseFloat(e.target.value)
     setErrors({
       quantity: "",
       phone: "",
@@ -64,28 +65,29 @@ export default function FormBalance({ fetchData, mobile }) {
     })
 
     if (topUpType == "prepaid") {
-      setAmount(e.target.value)
-      valueBalance(e.target.value)
-      console.log(options)
+      setAmount(entredAmount)
+      valueBalance(entredAmount)
+      
       options?.map(ele => {
-        if (ele.price == e.target.value) {
+        if (ele.price == entredAmount) {
             setPrice(ele.price);
           setIsFixed(ele.is_fixed);
-          console.log(ele.minimum )
+
           setQuantity(ele.minimum)
         }
       })
     } else {
-      if (e.target.value == "") {
+      if (entredAmount == "") {
         setAmount("")
         setQuantity()
       } else {
-        setQuantity(e.target.value)
-        if (!quantityValdate(e.target.value)) {
+        setQuantity(entredAmount)
+        if (!quantityValdate(entredAmount)) {
           if (isFixed == 0) {
-            let amountx = e.target.value * price 
+            let amountx = entredAmount * price 
             let x = ( amountx / 100 )
-            let amountValue = x + parseInt(e.target.value)
+            let amountValue = x + entredAmount
+            
             if (isDecimal(amountValue)) {
               let newValue = roundNumber(amountValue)
               setAmount(newValue)
@@ -95,7 +97,7 @@ export default function FormBalance({ fetchData, mobile }) {
               valueBalance(amountValue)
             }
           } else {
-            let amountValue = parseInt(e.target.value) + price
+            let amountValue = entredAmount + price
             if (isDecimal(amountValue)) {
               let newValue = roundNumber(amountValue)
               setAmount(newValue)
@@ -113,11 +115,11 @@ export default function FormBalance({ fetchData, mobile }) {
   const quantityValdate = (value) => {
     const minValue = parseInt(localStorage.getItem("minimum"));
     if (parseInt(value) < parseInt(localStorage.getItem("minimum"))) {
-      console.log("اصغر")
+    
       setErrorsQuantity(`لا يمكن أقل من الحد الأدنى ${minValue}`);
       return true;
     } else if (parseInt(value) >= parseInt(localStorage.getItem("minimum"))) {
-      console.log("اكبر")
+    
       setErrorsQuantity("");
       return false;
     }
@@ -252,7 +254,7 @@ export default function FormBalance({ fetchData, mobile }) {
           const selectedPrice = res.data.prices.find(ele => ele.company === company && ele.top_up_type === topUpType);
 
           localStorage.setItem("minimum", selectedPrice.minimum)
-          console.log(topUpType)
+         
           setOptions(selectedPrice)
           setPrice(selectedPrice.price);
           if(selectedPrice.is_fixed == null){
@@ -267,7 +269,7 @@ export default function FormBalance({ fetchData, mobile }) {
           const selectedPrice = res.data.prices.filter(ele => ele.company === company && ele.top_up_type === topUpType);
 
           localStorage.setItem("minimum", selectedPrice.minimum)
-          console.log(selectedPrice)
+         
           setOptions(selectedPrice)
         
         }
@@ -374,7 +376,7 @@ export default function FormBalance({ fetchData, mobile }) {
                 <option > </option>
                 <option value={"lastpaid"}>لاحق الدفع</option>
                 <option value={"prepaid"}>مسبق الدفع</option>
-                <option value={""}>كاش</option>
+                <option value={"cash"}>كاش</option>
               </select>
             </div>
          

@@ -67,23 +67,25 @@ export default function KaziehForm({ fetchData, kazieh }) {
   const user = JSON.parse(localStorage.getItem("user"))
 
   const handleChangeQuantity = (e) => {
+    let entredAmount = parseInt(e.target.value)
     setErrors({
       quantity: "",
       phone: "",
       amount: ""
     })
-    if (e.target.value == "") {
+    if (entredAmount == "") {
       setAmount("")
       setQuantity()
     } else {
-      setQuantity(e.target.value)
-      if (!quantityValdate(e.target.value)) {
+      setQuantity(entredAmount)
+      if (!quantityValdate(entredAmount)) {
         if (isFixed == 0) {
 
-          let amountx = e.target.value * price
-          let x = (amountx) / 100
-          console.log(price)
-          let amountValue = x + e.target.value
+          let amountx = entredAmount * price
+          let x = amountx / 100
+        
+          let amountValue = x + entredAmount
+
           if (isDecimal(amountValue)) {
             const newValue = roundNumber(amountValue)
             setAmount(newValue)
@@ -111,11 +113,11 @@ export default function KaziehForm({ fetchData, kazieh }) {
   const quantityValdate = (value) => {
     const minValue = parseInt(localStorage.getItem("minimum"));
     if (parseInt(value) < parseInt(localStorage.getItem("minimum"))) {
-      console.log("اصغر")
+
       setErrorsQuantity(`لا يمكن أقل من الحد الأدنى ${minValue}`);
       return true;
     } else if (parseInt(value) >= parseInt(localStorage.getItem("minimum"))) {
-      console.log("اكبر")
+  
       setErrorsQuantity("");
       return false;
     }
@@ -125,11 +127,11 @@ export default function KaziehForm({ fetchData, kazieh }) {
 
 
     if (parseInt(value) < parseInt(balance)) {
-      console.log(value)
+      
       setErrors({ ...errors, amount: `` })
     }
     else if (parseInt(value) > parseInt(balance)) {
-      console.log(value)
+      
       setErrors({ ...errors, amount: `لا يوجد رصيد كافي رصيدك ${balance}` })
 
     }
@@ -223,6 +225,7 @@ export default function KaziehForm({ fetchData, kazieh }) {
         const selectedPrice = res.data.prices.find(ele => ele.company === company && ele.top_up_type === topUpType);
         localStorage.setItem("minimum", selectedPrice.minimum)
         setPrice(selectedPrice.price);
+     
         if (selectedPrice.is_fixed == null) {
           setIsFixed(0)
         } else {

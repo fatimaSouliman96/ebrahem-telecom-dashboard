@@ -3,11 +3,9 @@ import { Link, NavLink } from "react-router-dom";
 import { sideBarLinks, sideBarLinksEmploee, sideBarLinksMnage } from "../../constants/links";
 import "./sideBar.css";
 
-
 const SideBar = React.memo(({ open, openLogOut }) => {
 
   const user = JSON.parse(localStorage.getItem('user'))
-
 
   return (
   <aside
@@ -28,6 +26,7 @@ const SideBar = React.memo(({ open, openLogOut }) => {
           <li key={index} className="px-4">
             {item.allowed.includes(user?.roles[0]?.name) == true ?
               <NavLink
+                end={item.text === "الرئيسية"}
                 className="color-main font-inter text-sm font-normal flex items-center  pr-10 py-2 gap-4 rounded-xl hover:bg-[#DDDCE6]"
                 to={item.path}
               >
@@ -133,3 +132,4 @@ const SideBar = React.memo(({ open, openLogOut }) => {
 })
 
 export default SideBar;
+
