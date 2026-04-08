@@ -582,7 +582,7 @@ export default function FormBill({ fetchData, setting }) {
             {errors.amount !== "" && <p className='text-red-600'>{errors.amount}</p>}
           </div> : null}
         {billType == "net" ?
-          isHand == 0 || isFinal == 1 && <div className="flex flex-col gap-3 ">
+         <div className="flex flex-col gap-3 ">
             <label htmlFor="city" className="text-xs font-medium">
               الباقة
               <span className='text-red-600 text-xs font-medium'>*</span>
