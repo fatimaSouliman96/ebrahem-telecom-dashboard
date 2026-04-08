@@ -125,15 +125,19 @@ export default function FormBill({ fetchData, setting }) {
       setAmount(selectedBundle[0].price)
     } else if (isHand == 0) {
       if (isFixed == 0) {
-        let x = bundlePrice * providerPrice
+
+        let x = selectedBundle[0].price * providerPrice
+    
         let y = x / 100
-        let newAmount = y + bundlePrice
+
+        let newAmount = y + selectedBundle[0].price
+   
         setAmount(newAmount)
-        setSendAmount(bundlePrice)
+        setSendAmount(selectedBundle[0].price)
       } else {
-        let newAmount = bundlePrice + providerPrice
+        let newAmount = selectedBundle[0].price + providerPrice
         setAmount(newAmount)
-        setSendAmount(bundlePrice)
+        setSendAmount(selectedBundle[0].price)
       }
     } else {
       return
@@ -698,6 +702,5 @@ export default function FormBill({ fetchData, setting }) {
         } handelClose={handleStateOpen} removeValues={removeValues} setSubmit={setSubmit} />
       </ModalPob>
     </form>
-
   )
 }
