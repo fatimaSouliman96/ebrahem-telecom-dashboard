@@ -165,7 +165,9 @@ export default function KaziehForm({ fetchData, kazieh }) {
   };
 
   const handleChangeTopUpType = (e) => {
-
+        setPrices(0)
+    setIsFixed()
+    setAmount()
     setErrors({
       quantity: "",
       phone: "",
@@ -177,6 +179,9 @@ export default function KaziehForm({ fetchData, kazieh }) {
   }
 
   const handleChangeCompany = (e) => {
+    setPrices(0)
+     setIsFixed()
+       setAmount()
     setErrors({
       quantity: "",
       phone: "",

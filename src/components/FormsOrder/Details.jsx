@@ -99,10 +99,10 @@ export default function Details({ data, state }) {
         {data?.billable?.player_id && <li className="p-2 border-b border-[#A6A6A6] text-sm">
           معرف اللاعب : <span>{data?.billable?.player_id}</span>
         </li>}
-{/* 
+
         {data?.billable?.qty && <li className="p-2 border-b border-[#A6A6A6] text-sm">
           الكمية  : <span>{data?.billable?.qty}</span>
-        </li>} */}
+        </li>}
         {data?.billable?.type && <li className="p-2 border-b border-[#A6A6A6] text-sm">
           النوع  : <span>{data?.billable?.type}</span>
         </li>}

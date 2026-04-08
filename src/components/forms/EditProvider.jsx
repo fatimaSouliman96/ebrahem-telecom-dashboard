@@ -49,7 +49,7 @@ export default function EditProvider({ data, fetchData, close }) {
     setSubmit(true)
     let data = {
       name: name,
-      is_active: fixedValue,
+      is_active: active,
       retail: retail,
       wholesale: wholesale,
       private: privateValue
@@ -241,7 +241,7 @@ export default function EditProvider({ data, fetchData, close }) {
               <FormGroup>
                 <FormControlLabel
                   control={
-                    <IOSSwitch sx={{ m: 1 }} onChange={(e) => setActive(e.target.value)} />
+                    <IOSSwitch sx={{ m: 1 }} onChange={(e) => setActive(1)} />
                   }
                 />
 
@@ -250,7 +250,7 @@ export default function EditProvider({ data, fetchData, close }) {
               <FormGroup>
                 <FormControlLabel
                   control={
-                    <IOSSwitch sx={{ m: 1 }} defaultChecked onChange={(e) => setActive(e.target.value)} />
+                    <IOSSwitch sx={{ m: 1 }} defaultChecked onChange={(e) => setActive(0)} />
                   }
                 />
 

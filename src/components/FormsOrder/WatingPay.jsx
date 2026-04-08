@@ -2,7 +2,7 @@ import { useState } from "react"
 import { billBalanceType, billStatus, companyNames, orderType, billName } from "../../constants/data";
 import clsx from "clsx";
 import { CircularProgress } from "@mui/material"
-;
+  ;
 import axios from "axios";
 import { baseUrl } from "../../constants/baseUrl";
 import Cookies from 'js-cookie';
@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 
 export default function WatingPay({ fetchData, data, changeStatus }) {
 
- 
+
   const [submit, setSubmit] = useState(false)
 
   const user = localStorage.getItem("user")
@@ -127,84 +127,86 @@ export default function WatingPay({ fetchData, data, changeStatus }) {
         }
       </div>
 
-        <ul className="list-disc list-inside mr-[24px] rtl">
+      <ul className="list-disc list-inside mr-[24px] rtl">
 
-          {/*App  */}
+        {/*App  */}
 
-          {data?.billable?.player_id && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            معرف اللاعب : <span>{data?.billable?.player_id}</span>
-          </li>}
-    
-     
-          {data?.billable?.type   && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            النوع  : <span>{data?.billable?.type  }</span>
-          </li>}
+        {data?.billable?.player_id && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          معرف اللاعب : <span>{data?.billable?.player_id}</span>
+        </li>}
 
 
-          {data?.billable?.customer_name && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            اسم نقطة البيع : <span>{data?.billable?.customer_name}</span>
-          </li>}
-          {data?.billable?.transfer_method && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            طريقة التحويل : <span>{data?.billable?.transfer_method}</span>
-          </li>}
-          {data?.billable?.transfer_number && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            رقم الحوالة : <span>{data?.billable?.transfer_number}</span>
-          </li>}
-          {data?.billable?.source && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            المصدر  : <span>{data?.billable?.source}</span>
-          </li>}
-          {data?.billable?.company && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            الشركة  : <span>{data?.billable?.company}</span>
-          </li>}
-          {data?.billable?.top_up_type && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            نوع الخط  : <span>{data?.billable?.top_up_type}</span>
-          </li>}
-          {data?.billable?.number && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            الرقم  : <span>{data?.billable?.number}</span>
-          </li>}
-          {data?.billable?.code && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            الكود  : <span>{data?.billable?.code}</span>
-          </li>}
-          {data?.base_amount && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            المبلغ الاساسي  : <span>{data?.base_amount}</span>
-          </li>}
-          {data?.amount && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            المبلغ الاجمالي  : <span>{data?.amount}</span>
-          </li>}
+        {data?.billable?.type && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          النوع  : <span>{data?.billable?.type}</span>
+        </li>}
+
+        {data?.billable?.qty && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          الكمية  : <span>{data?.billable?.qty}</span>
+        </li>}
+        {data?.billable?.customer_name && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          اسم نقطة البيع : <span>{data?.billable?.customer_name}</span>
+        </li>}
+        {data?.billable?.transfer_method && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          طريقة التحويل : <span>{data?.billable?.transfer_method}</span>
+        </li>}
+        {data?.billable?.transfer_number && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          رقم الحوالة : <span>{data?.billable?.transfer_number}</span>
+        </li>}
+        {data?.billable?.source && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          المصدر  : <span>{data?.billable?.source}</span>
+        </li>}
+        {data?.billable?.company && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          الشركة  : <span>{data?.billable?.company}</span>
+        </li>}
+        {data?.billable?.top_up_type && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          نوع الخط  : <span>{data?.billable?.top_up_type}</span>
+        </li>}
+        {data?.billable?.number && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          الرقم  : <span>{data?.billable?.number}</span>
+        </li>}
+        {data?.billable?.code && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          الكود  : <span>{data?.billable?.code}</span>
+        </li>}
+        {data?.base_amount && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          المبلغ الاساسي  : <span>{data?.base_amount}</span>
+        </li>}
+        {data?.amount && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          المبلغ الاجمالي  : <span>{data?.amount}</span>
+        </li>}
 
 
-          {data?.billable?.counter_number && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            رقم العداد : <span>{data?.billable?.counter_number}</span>
-          </li>}
-          {data?.billable?.internet_service_provider_name && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            مزود الخدمة : <span>{data?.billable?.internet_service_provider_name}</span>
-          </li>}
-          {data?.billable?.bundle && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            الباقة : <span>{data?.billable?.bundle}</span>
-          </li>}
-          {data?.billable?.barcode_number  ? <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            رقم الباركود : <span>{
-              data?.billable?.barcode_number 
-            }</span>
-          </li> : null}
-          {data?.billable?.notes  && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            الملاحظات : <span>{data?.billable?.notes }</span>
-          </li>}
-          {data?.billable?.subscription_number  && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            رقم الاشتراك  : <span>{data?.billable?.subscription_number }</span>
-          </li>}
-          {data?.billable?.governorate && <li className="p-2 border-b border-[#A6A6A6] text-sm">
-            المحافظة  : <span>{data?.billable?.governorate}</span>
-          </li>}
+        {data?.billable?.counter_number && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          رقم العداد : <span>{data?.billable?.counter_number}</span>
+        </li>}
+        {data?.billable?.internet_service_provider_name && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          مزود الخدمة : <span>{data?.billable?.internet_service_provider_name}</span>
+        </li>}
+        {data?.billable?.bundle && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          الباقة : <span>{data?.billable?.bundle}</span>
+        </li>}
+        {data?.billable?.barcode_number ? <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          رقم الباركود : <span>{
+            data?.billable?.barcode_number
+          }</span>
+        </li> : null}
+        {data?.billable?.notes && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          الملاحظات : <span>{data?.billable?.notes}</span>
+        </li>}
+        {data?.billable?.subscription_number && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          رقم الاشتراك  : <span>{data?.billable?.subscription_number}</span>
+        </li>}
+        {data?.billable?.governorate && <li className="p-2 border-b border-[#A6A6A6] text-sm">
+          المحافظة  : <span>{data?.billable?.governorate}</span>
+        </li>}
 
-        </ul>
+      </ul>
 
 
-      { <div className="flex  gap-3 pt-4" >
+      {<div className="flex  gap-3 pt-4" >
         <button onClick={(e) => handleProccesBill(e)} className="bg-main-color text-white rounded-lg p-1 w-[35%] h-[34px]">
           قبول الطلب
         </button>
-      </div> }
+      </div>}
 
 
 

@@ -139,45 +139,39 @@ export default function FormBalance({ fetchData, mobile }) {
 
   const handleChangeNumber = (e) => {
     let value = e.target.value.replace(/\D/g, ""); // فقط أرقام
-    setNumber(value); // تحديث القيمة مباشرةً
     setCode(value)
-
     let error = "";
+    // if (!value) {
+    //   error = "";
+    // } else if (company == "MTN") {
+    //   // MTN
+    //   if (!value.startsWith("094") &&
+    //     !value.startsWith("095") &&
+    //     !value.startsWith("096")) {
+    //     error = "يجب أن يبدأ الرقم بـ 094 أو 095 أو 096";
+    //   } else if (value.length < 10) {
+    //     error = "الرقم قصير جدًا، يجب أن يكون 10 أرقام";
+    //   } else if (value.length > 10) {
+    //     error = "الرقم طويل جدًا، يجب أن يكون 10 أرقام";
+    //   }
 
-    if (!value) {
-      error = "";
-    } else if (company == "MTN") {
-      // MTN
-      if (!value.startsWith("094") &&
-        !value.startsWith("095") &&
-        !value.startsWith("096")) {
-        error = "يجب أن يبدأ الرقم بـ 094 أو 095 أو 096";
-      } else if (value.length < 10) {
-        error = "الرقم قصير جدًا، يجب أن يكون 10 أرقام";
-      } else if (value.length > 10) {
-        error = "الرقم طويل جدًا، يجب أن يكون 10 أرقام";
-      }
-
-    } else if (company == "Syriatel") {
-      // Syriatel
-      if (!value.startsWith("093") &&
-        !value.startsWith("098") &&
-        !value.startsWith("099")) {
-        error = "يجب أن يبدأ الرقم بـ 093 أو 098 أو 099";
-      } else if (value.length < 10) {
-        error = "الرقم قصير جدًا، يجب أن يكون 10 أرقام";
-      } else if (value.length > 10) {
-        error = "الرقم طويل جدًا، يجب أن يكون 10 أرقام";
-      }
-    }
-
-
-
-
+    // } else if (company == "Syriatel") {
+    //   // Syriatel
+    //   if (!value.startsWith("093") &&
+    //     !value.startsWith("098") &&
+    //     !value.startsWith("099")) {
+    //     error = "يجب أن يبدأ الرقم بـ 093 أو 098 أو 099";
+    //   } else if (value.length < 10) {
+    //     error = "الرقم قصير جدًا، يجب أن يكون 10 أرقام";
+    //   } else if (value.length > 10) {
+    //     error = "الرقم طويل جدًا، يجب أن يكون 10 أرقام";
+    //   }
+    // }
     setErrors({ ...errors, phone: error });
   };
 
   const handleChangeTopUpType = (e) => {
+    setIsFixed()
     setPrices(false)
     setErrors({
       quantity: "",
@@ -301,8 +295,7 @@ export default function FormBalance({ fetchData, mobile }) {
 
       formData.append("top_up_type", topUpType.toString())
       formData.append("company", company.toString())
-      { code !== "" && formData.append("code", code.toString()) }
-      { number !== "" && formData.append("number", number.toString()) }
+      formData.append("code", code.toString())
       formData.append("quantity", quantity.toString())
       formData.append("amount", amount.toString())
       // user.roles[0].name !== "pointOfSale" && formData.append("order_type", orderType.toString())
@@ -478,17 +471,17 @@ export default function FormBalance({ fetchData, mobile }) {
 
                   {/* رقم المستلم */}
                   {<div className="flex flex-col gap-3 h-[110px]">
-                    <label htmlFor="name" className="text-xs font-medium">
+                    <label htmlFor="code" className="text-xs font-medium">
                       رقم المستلم
                       <span className='text-red-600 text-xs font-medium'>*</span>
                     </label>
                     <input
                       required
                       type="tel"
-                      name="number"
-                      placeholder="09********"
-                      id="number"
-                      value={number}
+                      name="code"
+                      placeholder="اكتب الرقم أو الكود"
+                      id="code"
+                      value={code}
                       onChange={e => handleChangeNumber(e)}
                       className="rounded-xl border-black/10 border px-5 py-4 w-full outline-none focus:border-main-color transition-all duration-300"
                     />
